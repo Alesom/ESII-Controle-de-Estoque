@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 16, 2016 at 07:57 
+-- Generation Time: Aug 16, 2016 at 08:04 
 -- Server version: 10.1.11-MariaDB
 -- PHP Version: 7.0.3
 
@@ -92,7 +92,8 @@ CREATE TABLE `usuario` (
   `cod` bigint(20) UNSIGNED NOT NULL,
   `nome` varchar(16) NOT NULL,
   `funcao` varchar(50) NOT NULL,
-  `senha` varchar(30) NOT NULL
+  `senha` varchar(30) NOT NULL,
+  `codl` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -139,7 +140,8 @@ ALTER TABLE `remocao`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`cod`),
-  ADD UNIQUE KEY `cod` (`cod`);
+  ADD UNIQUE KEY `cod` (`cod`),
+  ADD KEY `codl` (`codl`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -187,6 +189,12 @@ ALTER TABLE `produto`
 --
 ALTER TABLE `remocao`
   ADD CONSTRAINT `remocao_ibfk_1` FOREIGN KEY (`codp`) REFERENCES `produto` (`cod`);
+
+--
+-- Constraints for table `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`codl`) REFERENCES `local` (`codl`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
