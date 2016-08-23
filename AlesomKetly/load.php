@@ -24,8 +24,11 @@
 
 	if ($num>0) {
 		while ($row = mysqli_fetch_assoc($resultado)) {
-			echo $row['codp'] . " " . $row['nomep'] . " " . $row['qtd'] . " " . $row['nomeg']
-			 . " " . $row['nomel'] . '<br/>';
+			echo "<tr>";
+			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 
+			<td><center>" . $row['qtd'] . "</center></td> <td><center>" . $row['nomeg'] . "</center></td> 
+			<td><center>" . $row['nomel'] . "</center></td>";
+			echo "</tr> <br/>";
 		}
 	} else {
 		echo '<p>Nenhum produto encontrado.</p>';

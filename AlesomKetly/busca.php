@@ -52,8 +52,21 @@
 	  		</div>
 
 			<div class="">
-				<div class="" id="idpd">
-
+				<div class="">
+					<table class="table">
+						<thead>
+							<tr>
+								<td><center><b>Código</b></center></td>
+								<td><center><b>Nome</b></center></td>
+								<td><center><b>Quantidade</b></center></td>
+								<td><center><b>Grupo</b></center></td>
+								<td><center><b>Local</b></center></td>
+							</tr>
+						</thead>
+				        <tbody id="idpd">
+				        	
+				        </tbody>
+      				</table>
 				</div>
 			</div>
 
