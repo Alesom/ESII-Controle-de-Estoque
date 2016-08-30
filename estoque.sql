@@ -1,3 +1,6 @@
+DROP DATABASE estoque;
+CREATE DATABASE estoque;
+
 -- phpMyAdmin SQL Dump
 -- version 4.5.2
 -- http://www.phpmyadmin.net
@@ -9,6 +12,10 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+-- alterando o formato da data de yyyy-mm-dd para dd-mm-yyyy [en_US]->[pt_br]
+SET GLOBAL lc_time_names=pt_BR;
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -65,7 +72,9 @@ CREATE TABLE `produto` (
   `nome` varchar(50) NOT NULL,
   `qtd` int(11) DEFAULT NULL,
   `codg` varchar(3) DEFAULT NULL,
-  `codl` varchar(3) DEFAULT NULL
+  `codl` varchar(3) DEFAULT NULL,
+  `qtdmin` int(11) DEFAULT NULL,
+  `alarm` boolean DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -92,7 +101,7 @@ CREATE TABLE `usuario` (
   `cod` bigint(20) UNSIGNED NOT NULL,
   `nome` varchar(16) NOT NULL,
   `funcao` varchar(50) NOT NULL,
-  `senha` varchar(30) NOT NULL,
+  `senha` varchar(100) NOT NULL,
   `codl` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -109,15 +118,13 @@ ALTER TABLE `grupo`
 --
 -- Indexes for table `insercao`
 --
-ALTER TABLE `insercao`
-  ADD PRIMARY KEY (`codp`,`data`),
-  ADD UNIQUE KEY `codp` (`codp`);
+ALTER TABLE `insercao` ADD PRIMARY KEY (`codp`,`data`);
+  
 
 --
 -- Indexes for table `local`
 --
-ALTER TABLE `local`
-  ADD PRIMARY KEY (`codl`);
+ALTER TABLE `local` ADD PRIMARY KEY (`codl`);
 
 --
 -- Indexes for table `produto`
@@ -131,9 +138,7 @@ ALTER TABLE `produto`
 --
 -- Indexes for table `remocao`
 --
-ALTER TABLE `remocao`
-  ADD PRIMARY KEY (`data`,`codp`),
-  ADD UNIQUE KEY `codp` (`codp`);
+ALTER TABLE `remocao`ADD PRIMARY KEY (`data`,`codp`);
 
 --
 -- Indexes for table `usuario`
@@ -160,8 +165,6 @@ ALTER TABLE `produto`
 --
 -- AUTO_INCREMENT for table `remocao`
 --
-ALTER TABLE `remocao`
-  MODIFY `codp` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `usuario`
 --

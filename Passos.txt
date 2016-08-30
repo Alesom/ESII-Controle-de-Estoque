@@ -1,0 +1,37 @@
+Passos:
+	Primeiro uso:
+		[exclusivo para administrador do Software]
+		1- Iniciar apache e mySql:
+			-Em ambiente linux é possivel com o comando:
+
+			-Em ambiente Windows:
+				Inicie a GUI XAMPP e dê start em apache e mySql.
+
+		2- Acessar a página phpmyadmin disponivel em: 
+			localhost/phpmyadmin/
+			Localizar o arquivo "scrip_estoque.sql" e editar usuário e senha para que não fique no default:
+				Editar na linha: 
+					CREATE USER ....						
+			importar o arquivo script sql "script_estoque.sql" e executar.
+
+		3- A inserção dos demais usuários deverá ser feita manualmente:
+			-O phpmyadmin possui aba de inserção
+			-Pode ser realizada inserção usando comando SQL:
+				INSERT INTO usuario (nome,funcao,senha,codl) VALUES ([nome],[função],[senha],[codigo_local]);
+
+	Usos seguintes (caso o servidor seja desligado):
+		1- Iniciar apache e mySql:
+			-Em ambiente linux é possivel com o comando:
+
+			-Em ambiente Windows:
+				Inicie a GUI XAMPP e dê start em apache e mySql.
+
+		2- Usuário do software pode acessar e fazer login na pagina, caso tentar acessar outra pagina e não realizar login, será redirecionado automaticamente:
+			localhost/login.php
+
+			
+
+
+
+
+

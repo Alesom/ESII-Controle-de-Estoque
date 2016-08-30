@@ -1,12 +1,17 @@
 <?php
-	session_cache_limiter('private');
-	$cache_limiter = session_cache_limiter();
 
-	//Limitando pra 30 min
-	session_cache_expire(30);
-	$cache_expire = session_cache_expire();
-
-	session_start();
+	$temposessao = 3600; //em segundos
+	session_start(); 
+	if (isset($_SESSION["sessiontime"])) {
+	 	if ($_SESSION["sessiontime"] < (time() - $temposessao)) {
+	 		session_unset();
+//	 		echo "Seu tempo Expirou!";	
+	 	} 
+	}else{
+		session_unset();
+	}
+	$_SESSION["sessiontime"] = time();
+	
 
 	/*Definir Padrão e em seguida configurar todas as maquinas:
 
