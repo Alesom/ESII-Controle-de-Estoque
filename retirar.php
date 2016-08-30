@@ -23,8 +23,9 @@
 		$resultado = mysqli_query($banco,$busca);
 		$dados = mysqli_fetch_array($resultado);
 		$new_qtd = $dados["qtd"] - $qtdade;
-
-		if($new_qtd>=0 || $qtdade<0){
+		if($qtdade < 0){
+			$_SESSION['msg']="Não é possivel remover uma quantidade negativa";
+		}else if($new_qtd>=0){
 
 			$sql1 = "UPDATE produto SET qtd = '$new_qtd' WHERE cod = '$codp'";
 			$sql = "INSERT INTO remocao VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
