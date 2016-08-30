@@ -59,7 +59,7 @@
       					<button type="submit" class="hide" disabled></button>
     				</div>
   				</form>
-  				<select>
+  				<!--<select>
 	  				<option><b>Ordenar por:</b></option>
 	  				<option>Nome Produto A-Z</option>
 	  				<option>Nome Produto Z-A</option>
@@ -68,7 +68,7 @@
 	  				<option>Local A-Z</option>
 	  				<option>Grupo Z-A</option>
 
-  				</select>
+  				</select>-->
 	  		</div>
 
 			<div class="">

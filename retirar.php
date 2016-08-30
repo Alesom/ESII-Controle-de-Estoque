@@ -62,6 +62,16 @@
 	<meta charset="utf-8" />
 </head> 
 <body>
+	<div style="position:right;"><img src="people.jpeg"/><a href="index.php?logout=1"><button>Logout</button></a></div>
+	<div id="top-bar" style='background-color:#009933;'>
+		<a href="buscas.php"><button>Inserir Produtos</button></a>
+		<a href="buscas.php"><button>Remover Produtos</button></a>
+		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
+		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
+		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
+		<a href="buscas.php"><button>Buscar por Produtos</button></a>
+	</div>
+
 	<div id="cadp" align="center">
 	
 		<label><b>Remover unidades de Produto</b></label>
