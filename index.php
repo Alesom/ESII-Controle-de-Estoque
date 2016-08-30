@@ -1,5 +1,98 @@
 <?php
 	require ("connect.php");
+	$teste_sql= "SELECT * FROM usuario ";
+	$teste_result = mysqli_query($conexao,$teste_sql);
+	$teste_row_count=mysqli_num_rows($teste_result);
+
+	if($teste_row_count==0){
+		$_SESSION['first'] = "begin";
+	}
+	if(isset($_POST['entrar'])){
+		$usuario = $_POST["user"];
+		$senha = md5($_POST["pass"]);  
+
+		$sql = "SELECT * FROM usuario WHERE nome = '$usuario' AND senha ='$senha'";		
+		$result = mysqli_query($conexao,$sql);
+		$row = mysqli_fetch_array($result);
+		if(mysqli_num_rows($result) == 1){	
+			 
+			$_SESSION['name'] = $usuario;
+			$_SESSION['password'] = $_POST['pass'];
+			$_SESSION['funcao'] = $row['funcao'];
+			header("Location: index.php");
+		}else{
+			$_SESSION['Error'] = "Usuário ou senha não conferem";
+		}
+	}else if(isset($_POST['logout']) || isset($_GET['logout'])){
+		unset($_SESSION['name']);
+		unset($_SESSION['senha']);
+		unset($_SESSION['funcao']);
+		unset($_SESSION['first']);
+		header("Location: index.php");
+	}else if(isset($_POST['newpeople'])){
+		if(isset($_POST['newpass1']) && isset($_POST['newpass2'])){
+			$pass1 = $_POST['newpass1'];	
+			$pass2 = $_POST['newpass2'];
+			if(isset($_SESSION['first'])){
+				$pass1 = md5($pass2);
+				$nome  = $_POST['newname'];
+				$funcao= "boss";
+				$codl  = $_POST['newplace'];
+				$placename = $_POST['newplacen'];
+				$sql = "INSERT INTO local VALUES ('$codl','$placename')";
+				$cons = mysqli_query($conexao ,$sql);	
+				$sql = "INSERT INTO usuario (nome,funcao,senha,codl) VALUES ('$nome','$funcao','$pass1','$codl')";
+				$cons = mysqli_query($conexao ,$sql);	
+				if(!$cons){
+					$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);	
+				}else{
+					unset($_SESSION['first']);
+					$_SESSION['newerror']="Usuário Cadastrado.";	
+					header("Location:index.php");
+				}
+			}else if($pass1==$pass2){
+				if(isset($_SESSION['name'])){
+					$quem = $_SESSION['name'];
+					$qpass = md5($_SESSION['password']);
+					$sql = "SELECT * FROM usuario WHERE nome = '$quem' AND senha ='$qpass'";
+					$result = mysqli_query($conexao,$sql,MYSQLI_USE_RESULT);
+					$row = $result->fetch_assoc();
+					if($row['funcao']=='boss'){
+						$pass1 = md5($pass2);
+						$nome  = $_POST['newname'];
+						$funcao= $_POST['newfunction'];
+						$codl  = $_POST['codlocal'];
+						mysqli_free_result($result);
+						mysqli_next_result($conexao);
+						$sql = "INSERT INTO usuario (nome,funcao,senha,codl) VALUES ('$nome','$funcao','$pass1','$codl')";
+						$cons = mysqli_query($conexao ,$sql);
+						if(!$cons)
+							$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);	
+						else
+							$_SESSION['newerror']="Usuário Cadastrado.";	
+					}else
+						$_SESSION['newerror']="you have no power here";	
+				}echo $_SESSION['newerror']="Você precisa fazer login";	
+			}else
+				$_SESSION['newerror']="As senhas não conferem.";
+		}
+	}else if(isset($_GET['fp'])){
+		if(isset($_POST['changepass'])){
+			$email = $_POST['email'];
+			$pass1 = $_POST['pass1'];
+			$pass2 = $_POST['pass2'];
+			if($pass1 == $pass2){
+				$pass1= md5($pass2);
+				$sql = "UPDATE usuario SET senha = '$pass1' WHERE nome = '$email'";
+				$result = mysqli_query($conexao,$sql);
+
+				if($result){
+					$_SESSION['changed'] = 1;				}		
+			}else{
+				$_SESSION['changed'] = "As senhas não conferem";
+			}
+		}
+	}
 ?>
 <html>	
 	<head>	
@@ -47,104 +140,7 @@
 
 	<!-- section login BEGIN-->
 		<section >
-			<?php
-				$teste_sql= "SELECT * FROM usuario ";
-				$teste_result = mysqli_query($conexao,$teste_sql);
-				$teste_row_count=mysqli_num_rows($teste_result);
-				if($teste_row_count==0){
-					$_SESSION['first'] = "begin";
-				}
-				if(isset($_POST['entrar'])){
-					$usuario = $_POST["user"];
-					$senha = md5($_POST["pass"]);  
-
-					$sql = "SELECT * FROM usuario WHERE nome = '$usuario' AND senha ='$senha'";		
-					$result = mysqli_query($conexao,$sql);
-					$row = mysqli_fetch_array($result);
-					if(mysqli_num_rows($result) == 1){	
-						 
-						$_SESSION['name'] = $usuario;
-						$_SESSION['password'] = $_POST['pass'];			
-						//$resultado = mysqli_query($conexao,$sql);
-						
-						//$row = $result->fetch_assoc();
-						$_SESSION['funcao'] = $row['funcao'];
-						header("Location: index.php");
-					}else{
-						$_SESSION['Error'] = "Usuário ou senha não conferem";
-					}
-				}else if(isset($_POST['logout'])){
-					unset($_SESSION['name']);
-					unset($_SESSION['senha']);
-					unset($_SESSION['first']);
-					header("Location: index.php");
-				}else if(isset($_POST['newpeople'])){
-					if(isset($_POST['newpass1']) && isset($_POST['newpass2'])){
-						$pass1 = $_POST['newpass1'];	
-						$pass2 = $_POST['newpass2'];
-						if(isset($_SESSION['first'])){
-							$pass1 = md5($pass2);
-							$nome  = $_POST['newname'];
-							//$funcao= $_POST['newfunction'];
-							$funcao= "boss";
-							$codl  = $_POST['newplace'];
-							$placename = $_POST['newplacen'];
-							$sql = "INSERT INTO local VALUES ('$codl','$placename')";
-							$cons = mysqli_query($conexao ,$sql);	
-							$sql = "INSERT INTO usuario (nome,funcao,senha,codl) VALUES ('$nome','$funcao','$pass1','$codl')";
-							$cons = mysqli_query($conexao ,$sql);	
-							if(!$cons){
-								$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);	
-							}else{
-								unset($_SESSION['first']);
-								$_SESSION['newerror']="Usuário Cadastrado.";	
-								header("Location:index.php");
-							}
-						}else if($pass1==$pass2){
-							if(isset($_SESSION['name'])){
-								$quem = $_SESSION['name'];
-								$qpass = md5($_SESSION['password']);
-								$sql = "SELECT * FROM usuario WHERE nome = '$quem' AND senha ='$qpass'";
-								$result = mysqli_query($conexao,$sql,MYSQLI_USE_RESULT);
-								$row = $result->fetch_assoc();
-								if($row['funcao']=='boss'){
-									$pass1 = md5($pass2);
-									$nome  = $_POST['newname'];
-									$funcao= $_POST['newfunction'];
-									$codl  = $_POST['newplace'];
-									mysqli_free_result($result);
-									mysqli_next_result($conexao);
-									$sql = "INSERT INTO usuario (nome,funcao,senha,codl) VALUES ('$nome','$funcao','$pass1','$codl')";
-									$cons = mysqli_query($conexao ,$sql);
-									if(!$cons)
-										$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);	
-									else
-										$_SESSION['newerror']="Usuário Cadastrado.";	
-								}else
-									$_SESSION['newerror']="you have no power here";	
-							}echo $_SESSION['newerror']="Você precisa fazer login";	
-						}else
-							$_SESSION['newerror']="As senhas não conferem.";
-					}
-				}else if(isset($_GET['fp'])){
-					if(isset($_POST['changepass'])){
-						$email = $_POST['email'];
-						$pass1 = $_POST['pass1'];
-						$pass2 = $_POST['pass2'];
-						if($pass1 == $pass2){
-							$pass1= md5($pass2);
-							$sql = "UPDATE usuario SET senha = '$pass1' WHERE nome = '$email'";
-							$result = mysqli_query($conexao,$sql);
-
-							if($result){
-								$_SESSION['changed'] = 1;				}		
-						}else{
-							$_SESSION['changed'] = "As senhas não conferem";
-						}
-					}
-				}
-
-			?>
+			
 			<div id="lin" align="center" >			
 				<form action="index.php" method="POST" >
 					<input type="text" name="user" <?php if(isset($usuario))echo'value="'.$usuario.'"'; else echo'placeholder="Login"';?> required /><br/>
@@ -175,7 +171,7 @@
 			<div align="center" style='<?php if(isset($_SESSION['first']))echo'display:block;';else echo'display:none;'; ?>'>
 				<p>I am the boss!!</p>
 				<fieldset style="background-color:#009900;">
-				<label>Cadestre um novo usuário</label>
+				<label>Cadastre um novo usuário</label>
 				<form action="index.php" method="POST">
 					<input type="text" name="newname" placeholder="Usuário"/><br/>
 					<input type="password" name="newpass1" placeholder="Nova Senha"><br/>
@@ -194,7 +190,7 @@
 			<div align="center" id="cad_user" style="display:none;">
 				<p>I am the boss!!</p>
 				<fieldset style="background-color:#009900;">
-				<label>Cadestre um novo usuário</label>
+				<label>Cadastre um novo usuário</label>
 				<form action="index.php" method="POST">
 					<input type="text" name="newname" placeholder="Usuário"/><br/>
 					<input type="password" name="newpass1" placeholder="Nova Senha"><br/>

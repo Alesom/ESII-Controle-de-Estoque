@@ -4,6 +4,10 @@
 
 	$banco = conectadb($dbHostname, $dbUsername, $dbPassword);
 
+	session_start();
+	if(!isset($_SESSION['name'])){
+		header("Location:index.php");
+	}
 	selectdb($banco, $dbDatabase);
 
 	//percorrer todos os produtos e verificar se há algum com qtd menor ou igual a qtdmin.

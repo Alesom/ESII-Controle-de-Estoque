@@ -3,6 +3,10 @@
 	require_once 'inserts/logindb.php';
 	$banco = conectadb($dbHostname, $dbUsername, $dbPassword);
 
+	session_start();
+	if(!isset($_SESSION['name'])){
+		header("Location:index.php");
+	}
 	
 	mysqli_autocommit($banco, FALSE);
 

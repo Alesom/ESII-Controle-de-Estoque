@@ -4,10 +4,10 @@
 	$banco = conectadb($dbHostname, $dbUsername, $dbPassword);
 	selectdb($banco, $dbDatabase);
 
-//	if(!isset($_SESSION['name'])){
-//		header("Location:index.php");
-//	}
-	
+	session_start();
+	if(!isset($_SESSION['name'])){
+		header("Location:index.php");
+	}	
 
 	if(isset($_POST['confirma'])){
 		$codp = $_POST['codigo'];

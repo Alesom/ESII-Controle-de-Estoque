@@ -4,6 +4,10 @@
 	$banco = conectadb($dbHostname, $dbUsername, $dbPassword);
 	mysqli_autocommit($banco, FALSE);
 	selectdb($banco, $dbDatabase);
+	session_start();
+	if(!isset($_SESSION['name'])){
+		header("Location:index.php");
+	}
 	
 
 	if(isset($_POST['retirarprod'])){
@@ -20,7 +24,7 @@
 		$dados = mysqli_fetch_array($resultado);
 		$new_qtd = $dados["qtd"] - $qtdade;
 
-		if($new_qtd>=0){
+		if($new_qtd>=0 || $qtdade<0){
 
 			$sql1 = "UPDATE produto SET qtd = '$new_qtd' WHERE cod = '$codp'";
 			$sql = "INSERT INTO remocao VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
