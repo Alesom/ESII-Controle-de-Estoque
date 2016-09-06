@@ -103,20 +103,16 @@
 				/*Se estiver logado não há necessidade de pedir login, mas oferecer opção de logout*/
 				if(<?php if(isset($_SESSION['name'])) echo '1';else echo '0';?>){
 					document.getElementById('lin').style.display='none';
-					document.getElementById('lout').style.display='block';
 					document.getElementById('fp').style.display='none';
 				}else if(<?if(!isset($_SESSION['first']))echo'1';else echo "0";?>){
 					document.getElementById('lin').style.display='block';
-					document.getElementById('lout').style.display='none';			
 					document.getElementById('fp').style.display='none';
 				}else{//no caso de primeiro uso, permitir o admin se cadastrar sem problemas
 					document.getElementById('lin').style.display='none';
-					document.getElementById('lout').style.display='none';			
 					document.getElementById('fp').style.display='none';
 				}
 				if(<?php if(isset($_GET['fp']))echo'1'; else echo'0';?>){//esqueceu a senha: desenvolver metodo de recuperação
 					document.getElementById('lin').style.display='none';
-					document.getElementById('lout').style.display='none';			
 					document.getElementById('fp').style.display='block';
 				}
 			}
@@ -127,7 +123,7 @@
 	</head>
 
 	<body onload="check_login();"> <!-- A função também deverá definir em que #section da página está -->	
-	<div style="position:right;"><img src="people.jpeg"/><a href="index.php?logout=1"><button>Logout</button></a></div>
+	<div style="position:right;"><img src="IdetidadeVisual.png" height="40px" /><a href="index.php?logout=1"><button>Logout</button></a></div>
 	<div id="top-bar" style='background-color:#009933;'>
 		<a href="buscas.php"><button>Inserir Produtos</button></a>
 		<a href="buscas.php"><button>Remover Produtos</button></a>
@@ -149,11 +145,6 @@
 					<?php if(isset($_SESSION['Error']))echo '<p>'.$_SESSION['Error'].'</p>'; unset($_SESSION['Error']);?>
 				</form>
 				<a href='index.php?fp=1'>Esqueci minha senha</a>
-			</div>
-			<div id="lout" align="center" >	
-				<form action="index.php" method="POST">
-				<input type="submit" name="logout" Value="logout"/>
-				</form>
 			</div>
 			<div id='fp' align="center">
 				<form action="index.php?fp=1" method="POST">
@@ -213,19 +204,22 @@
 			</div>
 
 		</section>
+		<div>
+			<?
+	//percorrer todos os produtos e verificar se hÃ¡ algum com qtd menor ou igual a qtdmin.
+			if(isset($_SESSION['name'])){
+				$sql = "SELECT * FROM produto WHERE qtd<=qtdmin AND alarm=1";
+				$res = mysqli_query($conexao,$sql);
+				echo'<h1> Alarmes</h1>';
+				while ($resu = mysqli_fetch_assoc($res)){
+					echo "<p>O produto <b>".$resu['nome']."</b> conta com <b>".$resu['qtd'].'</b> unidades, a quantidade mínima é de <b>'.$resu['qtdmin']."</b> unidades<br /></p>";
+				}
+			}
 
-	<!-- /section login END-->
+			//echo json_encode($my);
+			?>
 
-	<!-- section cadastro BEGIN-->
-		<section <?php if(isset($_GET['cadastro']))echo'onload="show_cadastro();"';?>>
-			
-		</section>
-	<!-- /section cadastro END-->
-	<!-- section busca BEGIN-->
-		<section <?php if(isset($_GET['busca']))echo'onload="show_cadastro();"';?>>
-			
-		</section>
-	<!-- /section busca END-->
+		</div>
 
 
 	</body>

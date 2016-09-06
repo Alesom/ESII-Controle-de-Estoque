@@ -1,19 +1,28 @@
-<?php
-	require_once 'inserts/functions.php';
-	require_once 'inserts/logindb.php';
+<!doctype html>
+<html lang="pt-br" dir="ltr">
+    <head>
+        <title>JSON Ajax com jQuery</title>
+    </head>
+	<body> 
+	<div id="teste"></div>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
 
-	$banco = conectadb($dbHostname, $dbUsername, $dbPassword);
-
-	session_start();
-	if(!isset($_SESSION['name'])){
-		header("Location:index.php");
-	}
-	selectdb($banco, $dbDatabase);
-
-	//percorrer todos os produtos e verificar se há algum com qtd menor ou igual a qtdmin.
-	$sql = "SELECT * FROM produto WHERE qtd<=qtdmin";
-	$res = mysqli_query($banco,$sql);
-	while ($resu = mysqli_fetch_assoc($res))
-		echo '<p> Restam apenas '.$resu['qtd'].' do produto: <b>'.$resu['nome'].'</b> a quantidade minima configurada é de '.$resu['qtdmin'].'</p>';
-	
-?>
+			    $.ajax({
+			        url : "teste.php",
+			        dataType : "json",
+			        success : function(data){
+			            var html = "";
+			            for($i=0; $i < data.length; $i++){
+			                html += 	"O produto <b>"+data[$i].nome +"</b> conta apenas com <b>"+ data[$i].valor;
+			                html += "</b> unidades, a quantidade mínima é de <b>"+data[$i].minimo
+			                html += "</b> unidades<br />";
+			            }
+			            $('#teste').html(html);
+			        }
+			    });
+			});
+		</script>
+	</body>
+</html>
