@@ -78,7 +78,7 @@
 
 		    	}?> /><br/>
 			Quantidade:<input type="text" name="qtdade" placeholder="00" /><br/>
-			Data: <input type="Datetime" name="data" /><br/>
+			Data: <input type="date" name="data" value=<?echo'"'.date('Y-m-d').'"';?>/><br/>
 		 	<input type="submit" name="insertprod" value="Inserir"/><br/>
 		</form> 
 		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
