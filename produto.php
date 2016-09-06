@@ -11,13 +11,21 @@
 		$qtdademin = $_POST['qtdademin'];
 		$codlocal = $_POST['codlocal'];
 		$codgrupo = $_POST['codgrupo'];
+		$data= date ("Y-m-d");
+		echo $data;
 		$sql = "INSERT INTO produto VALUES ('$cod','$nome','$qtdade','$codgrupo','$codlocal','$qtdademin','1')";
 		$cons = mysqli_query($conexao ,$sql);
 		if(!$cons){
 		$_SESSION['msg']='O produto'.$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 		}
-		else
+		else{
+			$sql = "INSERT INTO insercao VALUES ('$cod','$qtdade','$data')";
+			$cons = mysqli_query($conexao ,$sql);
+				if(!$cons){
+					echo "putaquepariu". mysqli_error($conexao);
+				}
 			$_SESSION['msg']="O produto ".$nome." foi cadastrado com sucesso.";
+		}
 	}
 	
 	if(isset($_POST['cadg'])){
@@ -49,6 +57,7 @@
 <head> 
 	<title>Formulário Cadastro</title> 
 	<meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<script type="text/javascript">
 	function opera(){
 			if(<?php if(isset($_GET['cadp'])) echo '1';else echo '0';?>){
@@ -73,18 +82,18 @@
 </head> 
 <body onload="opera();">
 	<div id="top-bar" style='background-color:#009933;'>
-		<a href="index.php"><button>Início</button></a>
+		<img src="imagens/IdentidadeVisual.png" style="height:80px;"/>
 		<a href="buscas.php"><button>Inserir Produtos</button></a>
 		<a href="buscas.php"><button>Remover Produtos</button></a>
 		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
 		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
 		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 		<a href="buscas.php"><button>Buscar por Produtos</button></a>
-		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>'; ?>
-		
+		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
+			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
+		?>		
 		<a href="index.php?logout=1"><button>Logout</button></a>
 	</div>
-	
 	<div id="cadp" align="center">
 	
 		<label>Cadastro de Produto</label>

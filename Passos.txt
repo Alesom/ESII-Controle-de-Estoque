@@ -1,4 +1,5 @@
 Passos:
+
 	Primeiro uso:
 		[exclusivo para administrador do Software]
 		1- Iniciar apache e mySql:
@@ -19,6 +20,7 @@ Passos:
 			-Pode ser realizada inserção usando comando SQL:
 				INSERT INTO usuario (nome,funcao,senha,codl) VALUES ([nome],[função],[senha],[codigo_local]);
 
+
 	Usos seguintes (caso o servidor seja desligado):
 		1- Iniciar apache e mySql:
 			-Em ambiente linux é possivel com o comando:
@@ -27,7 +29,7 @@ Passos:
 				Inicie a GUI XAMPP e dê start em apache e mySql.
 
 		2- Usuário do software pode acessar e fazer login na pagina, caso tentar acessar outra pagina e não realizar login, será redirecionado automaticamente:
-			localhost/login.php
+			localhost/index.php
 
 			
 

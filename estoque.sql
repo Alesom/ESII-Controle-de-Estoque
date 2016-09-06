@@ -1,3 +1,6 @@
+DROP DATABASE estoque;
+CREATE DATABASE estoque;
+
 -- phpMyAdmin SQL Dump
 -- version 4.5.2
 -- http://www.phpmyadmin.net
