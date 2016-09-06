@@ -104,16 +104,24 @@
 				if(<?php if(isset($_SESSION['name'])) echo '1';else echo '0';?>){
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
+					document.getElementById("cad_user").style.display="none";
 				}else if(<?if(!isset($_SESSION['first']))echo'1';else echo "0";?>){
 					document.getElementById('lin').style.display='block';
 					document.getElementById('fp').style.display='none';
+					document.getElementById("cad_user").style.display="none";
 				}else{//no caso de primeiro uso, permitir o admin se cadastrar sem problemas
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
+					document.getElementById("cad_user").style.display="none";
 				}
 				if(<?php if(isset($_GET['fp']))echo'1'; else echo'0';?>){//esqueceu a senha: desenvolver metodo de recuperação
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='block';
+					document.getElementById("cad_user").style.display="none";
+				}if(<?if(isset($_GET['cad_user']))echo'1'; else echo'0';?>){
+					document.getElementById('lin').style.display='none';
+					document.getElementById('fp').style.display='none';
+					document.getElementById("cad_user").style.display="block";
 				}
 			}
 			function cad_user() {
@@ -123,8 +131,9 @@
 	</head>
 
 	<body onload="check_login();"> <!-- A função também deverá definir em que #section da página está -->	
-	<div style="position:right;"><img src="IdetidadeVisual.png" height="40px" /><a href="index.php?logout=1"><button>Logout</button></a></div>
+	
 	<div id="top-bar" style='background-color:#009933;'>
+		<a href="index.php"><button>Início</button></a>
 		<a href="buscas.php"><button>Inserir Produtos</button></a>
 		<a href="buscas.php"><button>Remover Produtos</button></a>
 		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
@@ -132,6 +141,8 @@
 		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 		<a href="buscas.php"><button>Buscar por Produtos</button></a>
 		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<button onClick="cad_user();">Cadastrar Novo Usuário</button>'; ?>
+		
+		<a href="index.php?logout=1"><button>Logout</button></a>
 	</div>
 
 	<!-- section login BEGIN-->

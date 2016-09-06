@@ -1,10 +1,6 @@
 <?php
-	require_once 'inserts/functions.php';
-	require_once 'inserts/logindb.php';
-	$banco = conectadb($dbHostname, $dbUsername, $dbPassword);
-	selectdb($banco, $dbDatabase);
-
-	session_start();
+	require ("connect.php");
+	
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}	
@@ -21,9 +17,9 @@
 		else
 			$alarme = '0';
 		$sql = "UPDATE produto SET nome='$nome',qtdmin='$qtdmin',codg = '$codg', codl='$codl', alarm ='$alarme'  WHERE cod= '$codp'";
-		$cons = mysqli_query($banco ,$sql);
+		$cons = mysqli_query($conexao ,$sql);
 		if(!$cons){
-		$_SESSION['msg']=$nome.' não pode ser configurado.<br/><p style="color:red;">Erro: '.mysqli_error($banco).'</p>';
+		$_SESSION['msg']=$nome.' não pode ser configurado.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 		}
 		else
 			$_SESSION['msg']=$nome." configurado com sucesso.";
@@ -36,24 +32,28 @@
 	<meta charset="utf-8" />
 </head> 
 <body>
-	<div style="position:right;"><img src="people.jpeg"/><a href="index.php?logout=1"><button>Logout</button></a></div>
 	<div id="top-bar" style='background-color:#009933;'>
+		<a href="index.php"><button>Início</button></a>
 		<a href="buscas.php"><button>Inserir Produtos</button></a>
 		<a href="buscas.php"><button>Remover Produtos</button></a>
 		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
 		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
 		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 		<a href="buscas.php"><button>Buscar por Produtos</button></a>
+		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>'; ?>
+		
+		<a href="index.php?logout=1"><button>Logout</button></a>
 	</div>
+	
 	<div id="cadp" align="center">
 	
 		<label><b>Configurar Produto</b></label>
 		<form action=<?echo '"configurar.php?prod='.$_GET['prod'].'"';?> method="post">	
 			<?php if(isset($_GET['prod'])){					
-					mysqli_next_result($banco);
+					mysqli_next_result($conexao);
 		    		$produto = $_GET['prod'];
 					$busca= "SELECT * FROM produto WHERE cod = '$produto'";
-					$resultado = mysqli_query($banco,$busca);
+					$resultado = mysqli_query($conexao,$busca);
 					$dados = mysqli_fetch_array($resultado);
 					$codp= $dados['cod'];
 					$nome = $dados['nome'];
@@ -71,7 +71,7 @@
 		    Código do Grupo:<select name="codgrupo">
 				<option  <? echo 'value="'.$grupo.'"';?>> <? echo $grupo;?> </option>
 				<?$sql= "SELECT * FROM grupo";
-					$res = mysqli_query($banco,$sql);
+					$res = mysqli_query($conexao,$sql);
 					while ($resu = mysqli_fetch_assoc($res))
 						echo '<option value = "'.$resu['codg'].'">'.$resu['codg'].'</option>';
 				?>
@@ -79,7 +79,7 @@
 		  	Código do Local:<select name="codlocal">
 				<option  <? echo 'value="'.$local.'"';?>> <? echo $local; ?></option>
 				<?$sql= "SELECT * FROM local";
-					$res = mysqli_query($banco,$sql);
+					$res = mysqli_query($conexao,$sql);
 					while ($resu = mysqli_fetch_assoc($res))
 						echo '<option value = "'.$resu['codl'].'">'.$resu['codl'].'</option>';
 				?>
@@ -88,5 +88,6 @@
 		</form> 
 		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
+	<a href="buscas.php"><button><b>Nova Busca</b></button></a> 
 </body>
 </html>

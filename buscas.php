@@ -30,14 +30,16 @@
 		</script>
 	</head>
 	<body onload="preencheBusca()">
-		<div style="position:right;"><img src="people.jpeg"/><a href="index.php?logout=1"><button>Logout</button></a></div>
 		<div id="top-bar" style='background-color:#009933;'>
+			<a href="index.php"><button>Início</button></a>
 			<a href="buscas.php"><button>Inserir Produtos</button></a>
 			<a href="buscas.php"><button>Remover Produtos</button></a>
 			<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
 			<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
 			<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 			<a href="buscas.php"><button>Buscar por Produtos</button></a>
+			<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>'; ?>
+			<a href="index.php?logout=1"><button>Logout</button></a>
 		</div>
 		<div class="">
 		

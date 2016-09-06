@@ -1,16 +1,13 @@
 <?php
-	require_once 'inserts/functions.php';
-	require_once 'inserts/logindb.php';
-	$banco = conectadb($dbHostname, $dbUsername, $dbPassword);
-
-	session_start();
+	require ("connect.php");
+	
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}
 	
-	mysqli_autocommit($banco, FALSE);
+	mysqli_autocommit($conexao, FALSE);
 
-	selectdb($banco, $dbDatabase);	
+	selectdb($conexao, $dbDatabase);	
 	if(isset($_POST['insertprod'])){
 		$codp = $_POST['codigo'];
 		$nome = $_POST['nome'];
@@ -19,25 +16,25 @@
 		$sql = "INSERT INTO insercao VALUES ('$codp','$qtdade','$data')";
 
 		$busca= "SELECT qtd FROM produto WHERE cod = '$codp'";
-		$resultado = mysqli_query($banco,$busca);
+		$resultado = mysqli_query($conexao,$busca);
 		$dados = mysqli_fetch_array($resultado);
 		$new_qtd = $dados["qtd"] + $qtdade;
 		$sql1 = "UPDATE produto SET qtd = '$new_qtd' WHERE cod = '$codp'";
 
 
 		try {
-			$cons = mysqli_query($banco ,$sql);
-		    $cons1 = mysqli_query($banco ,$sql1);
+			$cons = mysqli_query($conexao ,$sql);
+		    $cons1 = mysqli_query($conexao ,$sql1);
 		    if(!$cons || !$cons1){
 		    	throw new Exception("FOdeu a porra toda", 1);    	
 		    }
 		    if(!$cons)
-				$_SESSION['msg']='O produto'.$nome.' não pode ser inserido.<br/><p style="color:red;">Erro: '.mysqli_error($banco).'</p>';
+				$_SESSION['msg']='O produto'.$nome.' não pode ser inserido.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 			else
 				$_SESSION['msg']=$qtdade." unidades de ".$nome." foram inseridas com sucesso.";
 
 
-		    $a = mysqli_commit($banco);
+		    $a = mysqli_commit($conexao);
 		    if(!$a)	throw new Exception("Não foi possivel efetivar a inserção, problema com o banco. Consulte Administrador", 1);
 		} catch (Exception $e) {
 		    echo 'Ocorreu um erro: ',  $e->getMessage(), "\n";
@@ -51,14 +48,17 @@
 	<meta charset="utf-8" />
 </head> 
 <body>
-	<div style="position:right;"><img src="people.jpeg"/><a href="index.php?logout=1"><button>Logout</button></a></div>
 	<div id="top-bar" style='background-color:#009933;'>
+		<a href="index.php"><button>Início</button></a>
 		<a href="buscas.php"><button>Inserir Produtos</button></a>
 		<a href="buscas.php"><button>Remover Produtos</button></a>
 		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
 		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
 		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 		<a href="buscas.php"><button>Buscar por Produtos</button></a>
+		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<button onClick="cad_user();">Cadastrar Novo Usuário</button>'; ?>
+		
+		<a href="index.php?logout=1"><button>Logout</button></a>
 	</div>
 	<div id="cadp" align="center">
 	
@@ -70,7 +70,7 @@
 		    	<?php if(isset($_GET['prod'])){
 		    		$produto = $_GET['prod'];
 					$busca= "SELECT nome FROM produto WHERE cod = '$produto'";
-					$resultado = mysqli_query($banco,$busca);
+					$resultado = mysqli_query($conexao,$busca);
 					$dados = mysqli_fetch_array($resultado);
 					echo '	value="'.$dados["nome"].'"';
 

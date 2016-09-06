@@ -11,21 +11,40 @@
 		session_unset();
 	}
 	$_SESSION["sessiontime"] = time();
-	
 
-	/*Definir Padrão e em seguida configurar todas as maquinas:
+	$dbHostname = "localhost";
+	$dbDatabase = "estoque";
+	$dbUsername = "root";
+	$dbPassword = "";
 
-	$host="127.0.0.1"; 	|| 	$host="localhost"; 
-	$admin="admin"; 	||	$admin="uffs";		||	$admin="po";
-	$pass="123";		||	$pass="";//sugestão
-	$db="estoque";
-	*/
+	$conexao = mysqli_connect($dbHostname,$dbUsername,$dbPassword,$dbDatabase) or die(mysql_error());
 
-	$host = "localhost";
-	$bd = "estoque";
-	$user = "root";
-	$pass = "";
 
-	$conexao = mysqli_connect($host,$user,$pass,$bd) or die(mysql_error());
+
+
+
+	function conectadb($dbHostname, $dbUsername, $dbPassword){
+		$con = mysqli_connect($dbHostname, $dbUsername, $dbPassword);
+		if(!$con) {
+			die("Não foi possível conectar ao MySQL: " . mysqli_error($con));
+	 	}
+	 	return $con;
+	}
+
+	function selectdb($con, $db) {
+		mysqli_select_db($con, $db)
+	 		or die("Não foi possível selecionar a base de dados: ".mysqli_error($con));
+	}
+
+	function query($con, $query) {
+
+		$result = mysqli_query($con, $query);
+
+		if (!$result) {
+			die ("Falha de acesso à base: " . mysqli_error($con) . mysqli_errno($con));
+		}
+		return $result;
+	}
+
 
 ?>
