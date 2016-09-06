@@ -94,11 +94,10 @@
 					$busca= "SELECT qtd FROM produto WHERE cod = '$produto'";
 					$resultado = mysqli_query($conexao,$busca);
 					$dados = mysqli_fetch_array($resultado);
-					//echo $dados[0];
 					echo '	<text><b>['.$dados["qtd"].'] </b>unidades disponiveis</text>';
 
 		    	?><br/>
-			Data: <input type="date" name="data" /><br/>
+			Data: <input type="date" name="data" value=<?echo'"'.date('Y-m-d').'"';?>/><br/>
 			Destino:<input type="text" name="destino"/><br/>
 			Chamado:<input type="text" name="chamado"/><br/>
 			
