@@ -1,5 +1,5 @@
-DROP DATABASE estoque;
-CREATE DATABASE estoque;
+-- DROP DATABASE estoque;
+-- CREATE DATABASE estoque;
 
 -- phpMyAdmin SQL Dump
 -- version 4.5.2
