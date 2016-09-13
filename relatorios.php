@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Busca</title>
+		<title>Relatório</title>
 		<meta charset="UTF-8">
 
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -21,8 +21,11 @@
 				var nomeg = document.getElementById("IdNomeG").value;
 				var codl = document.getElementById("IdCodL").value;
 				var nomel = document.getElementById("IdNomeL").value;
-				var url = 'loads.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg + 
-							'&codl=' + codl + '&nomel=' + nomel;
+				var ano = document.getElementById("checkboxAno").value;
+				var saida = document.getElementById("checkboxSaida").value;
+				var entrada = document.getElementById("checkboxEntrada").value;
+				var url = 'consultRelatorio.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg + 
+							'&codl=' + codl + '&nomel=' + nomel + '&ano=' + ano + '&saida=' + saida + '&entrada=' + entrada;
 				$.get(url, function(dataReturn) {
 					$('#idpd').html(dataReturn);
 				});
@@ -44,38 +47,36 @@
 		<a href="index.php?logout=1"><button>Logout</button></a>
 	</div>	
 	<div class="">
-		<div class="">
-      		<form name="fsearch" action="" method="POST">
-				<div class="">
-  					<input id="IdCodP" type="search" name="codp" 
-  						placeholder="Código do Produto" oninput="preencheBusca()"> <br/>
-  					<input id="IdNomeP" type="search" name="nomep" 
-  						placeholder="Nome do Produto" oninput="preencheBusca()"> <br/>
-  					<input id="IdCodG" type="search" name="codg" 
-  						placeholder="Código do Grupo" oninput="preencheBusca()"> <br/>
-  					<input id="IdNomeG" type="search" name="nomeg" 
-  						placeholder="Nome do Grupo" oninput="preencheBusca()"> <br/>
-  					<input id="IdCodL" type="search" name="codl" 
-  						placeholder="Código do Local" oninput="preencheBusca()"> <br/>
-  					<input id="IdNomeL" type="search" name="nomel" 
-  						placeholder="Nome do Local" oninput="preencheBusca()"> <br/>
-  					<button type="submit" class="hide" disabled></button>
-				</div>
-			</form>
-				<div>
-					<a href="relatorioGeral.php"><button>Gerar Relatório geral de produtos</button></a>
-  				</div>
-  				<!--<select>
-	  				<option><b>Ordenar por:</b></option>
-	  				<option>Nome Produto A-Z</option>
-	  				<option>Nome Produto Z-A</option>
-	  				<option>Grupo A-Z</option>
-	  				<option>Grupo Z-A</option>
-	  				<option>Local A-Z</option>
-	  				<option>Grupo Z-A</option>
+		
+			<div class="">
+	      		<form name="fsearch" action="" method="POST">
+    				<div class="">
+      					<input id="IdCodP" type="search" name="codp" 
+      						placeholder="Código do Produto" oninput="preencheBusca()"> <br/>
+      					<input id="IdNomeP" type="search" name="nomep" 
+      						placeholder="Nome do Produto" oninput="preencheBusca()"> <br/>
+      					<input id="IdCodG" type="search" name="codg" 
+      						placeholder="Código do Grupo" oninput="preencheBusca()"> <br/>
+      					<input id="IdNomeG" type="search" name="nomeg" 
+      						placeholder="Nome do Grupo" oninput="preencheBusca()"> <br/>
+      					<input id="IdCodL" type="search" name="codl" 
+      						placeholder="Código do Local" oninput="preencheBusca()"> <br/>
+      					<input id="IdNomeL" type="search" name="nomel" 
+      						placeholder="Nome do Local" oninput="preencheBusca()"> <br/>
+  						<input id="checkboxAno" type="checkbox" name="checkboxAno" 
+      						 oninput="preencheBusca()"> Relatório Anual<br/>
 
-  				</select>-->
-  		</div>
+      					<label class="checkbox-inline">
+  							<input type="checkbox" id="checkboxSaida" value="option2" name = "checkboxsaida" oninput="preencheBusca()"> Saída
+						</label>
+						<label class="checkbox-inline">
+  							<input type="checkbox" id="checkboxEntrada" value="option2" name = "checkboxentrada" oninput="preencheBusca()"> Entrada
+						</label>
+						
+      					<button type="submit" class="botton" disabled> Gerar Relatório</button>
+    				</div>
+  				</form>
+	  		</div>
 
 			<div class="">
 				<div class="">
@@ -87,6 +88,8 @@
 								<td><center><b>Quantidade</b></center></td>
 								<td><center><b>Grupo</b></center></td>
 								<td><center><b>Local</b></center></td>
+								<td><center><b>Data de Entrada</b></center></td>
+								<td><center><b>Data de Saída</b></center></td>
 							</tr>
 						</thead>
 				        <tbody id="idpd">
