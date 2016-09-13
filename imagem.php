@@ -3,12 +3,62 @@
 include('phplot/phplot.php');
 require('connect.php');
 #Matriz utilizada para gerar os graficos
-$data = array(
-array('Jan', 20, 2, 4), array('Fev', 30, 3, 4), array('Mar', 20, 4, 14),
-array('Abr', 30, 5, 4), array('Mai', 13, 6, 4), array('Jun', 37, 7, 24),
-array('Jul', 10, 8, 4), array('Ago', 15, 9, 4), array('Set', 20, 5, 12),
-array('Out', 28, 4, 14), array('Nov', 16, 7, 14), array('Dez', 24, 3, 15),
-);
+if(isset($_GET['type'])){
+	switch($_GET['periodo']){
+		case 'anual':
+			$datai="".$_GET['ano']."-01-01 00:00:00";
+			$dataf="".$_GET['ano']."-12-31 23:59:59";
+			break;
+		case 'mensal':
+			switch($_GET['mes']){
+				case 'jan':
+					$mes = "01";
+					break;
+				case 'fev':
+					$mes = "02";
+					break;
+				case 'mar':
+					$mes = "03";
+					break;
+				case 'abr':
+					$mes = "04";
+					break;
+				case 'mai':
+					$mes = "05";
+					break;
+				case 'jun':
+					$mes = "06";
+					break;
+				case 'jul':
+					$mes = "07";
+					break;
+				case 'ago':
+					$mes = "08";
+					break;
+				case 'set':
+					$mes = "09";
+					break;
+				case 'out':
+					$mes = "10";
+					break;
+				case 'nov':
+					$mes = "11";
+					break;
+				case 'dez':
+					$mes = "12";
+					break;
+			}
+			$datai="".$_GET['ano'].$mes."-01 00:00:00";
+			$dataf="".$_GET['ano'].$mes."-31 23:59:59";
+			break;
+		case 'intervalo':
+			$datai="".$_GET['datai'];
+			$dataf="".$_GET['dataf'];
+			
+			break;
+	}
+}
+
 
 	$data1;
 	$a=0;
@@ -25,13 +75,29 @@ array('Out', 28, 4, 14), array('Nov', 16, 7, 14), array('Dez', 24, 3, 15),
 		$data1[$a]	= array($resu['nome'],$resu['qtd'],$resu1['soma'],$resu2['soma']);
 		$a++;
 	}
+	
 
 #Instancia o objeto e setando o tamanho do grafico na tela
 $plot = new PHPlot(800,500);
 #Tipo de borda, consulte a documentacao
 $plot->SetImageBorderType('none');
 #Tipo de grafico, nesse caso barras, existem diversos(pizza…)
-$plot->SetPlotType('bars');
+if(isset($_GET["type"])){
+	switch ($_GET["type"]){
+	case 'Barra':
+		$plot->SetPlotType('bars');
+		break;
+	case 'Pizza':
+		$plot->SetPlotType('pie');
+		break;
+	case 'Bolha':
+		$plot->SetPlotType('bubbles');
+		break;
+	case 'Pontos':
+		$plot->SetPlotType('linepoints');
+		break;
+	}
+}	
 #Tipo de dados, nesse caso texto que esta no array
 $plot->SetDataType('text-data');
 #Setando os valores com os dados do array
