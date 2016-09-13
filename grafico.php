@@ -20,14 +20,8 @@
 		?>		
 		<a href="index.php?logout=1"><button>Logout</button></a>
 	</div>
-	<div align="center">
-		<a href="imagem.php?type=barra"><button>Barra</button></a>
-		<a href="imagem.php?type=pizza"><button>Pizza</button></a>
-		<a href="imagem.php?type=bolha"><button>Bolha</button></a>
-		<a href="imagem.php?type=pontos"><button>Pontos</button></a>
-	</div>
 	
-	<form>
+	<form method="GET" action="imagem.php">
 		<input type= "number" name ="datai" value="2016" />
 		<input type = "radio" name = 'periodo' value = 'anual' checked /> anual<br/>
 		<select name="mes">
@@ -47,7 +41,12 @@
 		<input type = "radio" name = 'periodo' value = 'mensal' /> mensal<br/>		
 		<input type= "text" name ="datai" placeholder="Data Inicial" />
 		<input type= "text" name ="dataf" placeholder="Data Final" />
-		<input type = "radio" name = 'periodo' value = 'interval' /> intervalo		
+		<input type = "radio" name = 'periodo' value = 'interval' /> intervalo	<br/>
+		
+		<input type="submit" name="type" value="Pontos" />
+		<input type="submit" name="type" value="Bolha" />
+		<input type="submit" name="type" value="Pizza" />
+		<input type="submit" name="type" value="Barra" />
 	</form>
 
 	</body>

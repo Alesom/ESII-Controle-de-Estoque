@@ -3,6 +3,63 @@
 include('phplot/phplot.php');
 require('connect.php');
 #Matriz utilizada para gerar os graficos
+if(isset($_GET['type'])){
+	switch($_GET['periodo']){
+		case 'anual':
+			$datai="".$_GET['ano']."-01-01 00:00:00";
+			$dataf="".$_GET['ano']."-12-31 23:59:59";
+			break;
+		case 'mensal':
+			switch($_GET['mes']){
+				case 'jan':
+					$mes = "01";
+					break;
+				case 'fev':
+					$mes = "02";
+					break;
+				case 'mar':
+					$mes = "03";
+					break;
+				case 'abr':
+					$mes = "04";
+					break;
+				case 'mai':
+					$mes = "05";
+					break;
+				case 'jun':
+					$mes = "06";
+					break;
+				case 'jul':
+					$mes = "07";
+					break;
+				case 'ago':
+					$mes = "08";
+					break;
+				case 'set':
+					$mes = "09";
+					break;
+				case 'out':
+					$mes = "10";
+					break;
+				case 'nov':
+					$mes = "11";
+					break;
+				case 'dez':
+					$mes = "12";
+					break;
+			}
+			$datai="".$_GET['ano'].$mes."-01 00:00:00";
+			$dataf="".$_GET['ano'].$mes."-31 23:59:59";
+			break;
+		case 'intervalo':
+			$datai="".$_GET['datai'];
+			$dataf="".$_GET['dataf'];
+			
+			break;
+	}
+}
+
+
 	$data1;
 	$a=0;
 	$sql = "SELECT * FROM produto";
@@ -18,6 +75,7 @@ require('connect.php');
 		$data1[$a]	= array($resu['nome'],$resu['qtd'],$resu1['soma'],$resu2['soma']);
 		$a++;
 	}
+	
 
 #Instancia o objeto e setando o tamanho do grafico na tela
 $plot = new PHPlot(800,500);
@@ -26,16 +84,16 @@ $plot->SetImageBorderType('none');
 #Tipo de grafico, nesse caso barras, existem diversos(pizza…)
 if(isset($_GET["type"])){
 	switch ($_GET["type"]){
-	case 'barra':
+	case 'Barra':
 		$plot->SetPlotType('bars');
 		break;
-	case 'pizza':
+	case 'Pizza':
 		$plot->SetPlotType('pie');
 		break;
-	case 'bolha':
+	case 'Bolha':
 		$plot->SetPlotType('bubbles');
 		break;
-	case 'pontos':
+	case 'Pontos':
 		$plot->SetPlotType('linepoints');
 		break;
 	}
