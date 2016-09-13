@@ -4,7 +4,7 @@
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}
-	
+	mysqli_autocommit($conexao,False);
 
 	if(isset($_POST['retirarprod'])){
 		$codp = $_POST['codigo'];
@@ -45,11 +45,13 @@
 			
 			}catch(Exception $e ){
 				echo "Deu erro nessa porra".$e->getMessage();
+				mysqli_rollback($conexao);
 			}
 		}else
 				$_SESSION['msg']="Preste atenção na quantidade disponível. Você está retirando mais produtos do que há.";
 
 	}
+	mysqli_autocommit($conexao,True);
 ?>
 <!DOCTYPE html>
 <html>
@@ -110,6 +112,3 @@
 
 </body>
 </html>
-
-
-

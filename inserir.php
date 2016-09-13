@@ -40,6 +40,8 @@
 		    echo 'Ocorreu um erro: ',  $e->getMessage(), "\n";
 		}		
 	}
+	mysqli_autocommit($conexao, TRUE
+		);
 ?>
 <!DOCTYPE html>
 <html>
