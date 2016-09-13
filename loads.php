@@ -20,10 +20,11 @@
 	if ($num>0) {
 		while ($row = mysqli_fetch_assoc($resultado)) {
 			echo "<tr>";
-			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 
-			<td><center>" . $row['qtd'] . "</center></td> <td><center>" . $row['nomeg'] . "</center></td> 
-			<td><center>" . $row['nomel'] . "</center></td><td><a href='retirar.php?prod=".$row['codp']."'><button>Retirar</button></a></td><td><a href='inserir.php?prod=".$row['codp']."'><button>Inserir</button></td><td><a href='configurar.php?prod=".$row['codp']."'><button>Configurar</button></td>";
-			echo "</tr> <br/>";
+ 			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 
+ 			<td><center>" . $row['qtd'] . "</center></td> <td><center>" . $row['nomeg'] . "</center></td> 
+			<td><center>" . $row['nomel'] . "</center></td><td><a href='retirar.php?prod=".$row['codp']."'><button>Retirar</button></a></td><td><a href='inserir.php?prod=".$row['codp']."'><button>Inserir</button></td><td><a href='configurar.php?prod=".$row['codp']."'><button>Configurar</button></td>
+			
+ 			</tr> <br/>";
 		}
 	} else {
 		echo '<p>Nenhum produto encontrado.</p>';
