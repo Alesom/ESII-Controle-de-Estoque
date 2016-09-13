@@ -22,7 +22,7 @@
 				var codl = document.getElementById("IdCodL").value;
 				var nomel = document.getElementById("IdNomeL").value;
 				var ano = document.getElementById("checkboxAno").value;
-				var saida = document.getElementById("checkboxSaida").value;
+				var saida = document.getElementById("saida1213").value;
 				var entrada = document.getElementById("checkboxEntrada").value;
 				var url = 'consultRelatorio.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg + 
 							'&codl=' + codl + '&nomel=' + nomel + '&ano=' + ano + '&saida=' + saida + '&entrada=' + entrada;
@@ -67,10 +67,11 @@
       						 oninput="preencheBusca()"> Relatório Anual<br/>
 
       					<label class="checkbox-inline">
-  							<input type="checkbox" id="checkboxSaida" value="option2" name = "checkboxsaida" oninput="preencheBusca()"> Saída
+  							<input type="checkbox" id="saida1213" value = "1" oninput="preencheBusca()"> Saída
 						</label>
 						<label class="checkbox-inline">
-  							<input type="checkbox" id="checkboxEntrada" value="option2" name = "checkboxentrada" oninput="preencheBusca()"> Entrada
+  							<input type="checkbox" id="checkboxEntrada" name = "checkboxentrada" 
+  								oninput="preencheBusca()" > Entrada
 						</label>
 						
       					<button type="submit" class="botton" disabled> Gerar Relatório</button>

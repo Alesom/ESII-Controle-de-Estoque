@@ -7,10 +7,11 @@
 	$nomeg = $_GET['nomeg'];
 	$codl = $_GET['codl'];
 	$nomel = $_GET['nomel'];
-	$ano = $_GET['ano'];
-	$saida = $_GET['saida'];
-	$entrada = $_GET['entrada'];
-	
+	$anoF = $_GET['ano'];
+	$saidaF = $_GET['saida'];
+	$entradaF = $_GET['entrada'];
+
+
 	$Saida = "SELECT p.cod AS codp, p.nome AS nomep, s.qtd AS qtd, g.nome 
 							AS nomeg, l.nome AS nomel, s.data AS datas, s.codp AS scodp 
 							FROM produto AS p INNER JOIN remocao AS s on (p.cod = s.codp)
@@ -19,23 +20,6 @@
 							WHERE p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%' 
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'
 				ORDER BY s.data";
-
-	$resultado = query($conexao, $Saida);
-	$num = mysqli_num_rows($resultado);
-
-	if ($num>0) {
-		while ($row = mysqli_fetch_assoc($resultado)) {
-			echo "<tr>";
-			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 
-			<td><center>" . $row['qtd'] . "</center></td> <td><center>" . $row['nomeg'] . "</center></td> 
-			<td><center>" . $row['nomel']."</center></td> 
-			<td><center>---</center></td> 
-			<td><center>" . $row['datas'];
-			echo "</tr> <br/>";
-		}
-	} else {
-		echo '<p>Nenhum produto encontrado.</p>';
-	}
 
 	$Entrada = "SELECT p.cod AS codp, p.nome AS nomep, e.qtd AS qtd, g.nome 
 							AS nomeg, l.nome AS nomel, e.data AS datae, e.codp AS ecodp 
@@ -46,11 +30,17 @@
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'
 				ORDER BY e.data";
 
-	$resultado = query($conexao, $Entrada);
-	$num = mysqli_num_rows($resultado);
+	$SaidaRes = query($conexao, $Saida);
+	$NSaidaRes = mysqli_num_rows($SaidaRes);
 
-	if ($num>0) {
-		while ($row = mysqli_fetch_assoc($resultado)) {
+
+	$EntradaRes = query($conexao, $Entrada);
+	$NEntradaRes = mysqli_num_rows($EntradaRes);
+
+	if (($NSaidaRes<=0 && $NEntradaRes<=0) || (!isset($saidaF) && !isset($entradaF))) {
+		echo '<p>Nenhum produto encontrado.</p>';
+	}else if (($NSaidaRes<=0 && $NEntradaRes > 0) || (!isset($saidaF) && isset($entradaF) )){
+		while ($row = mysqli_fetch_assoc($EntradaRes)) {
 			echo "<tr>";
 			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 
 			<td><center>" . $row['qtd'] . "</center></td> <td><center>" . $row['nomeg'] . "</center></td> 
@@ -59,7 +49,60 @@
 			<td><center>---" ;
 			echo "</tr> <br/>";
 		}
-	} else {
-		echo '<p>Nenhum produto encontrado.</p>';
+	}else if (($NSaidaRes > 0 && $NEntradaRes <= 0) || (isset($saidaF) && !isset($entradaF) )){
+		while ($row = mysqli_fetch_assoc($SaidaRes)) {
+			echo "<tr>";
+			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 
+			<td><center>" . $row['qtd'] . "</center></td> <td><center>" . $row['nomeg'] . "</center></td> 
+			<td><center>" . $row['nomel']."</center></td> 
+			<td><center>---</center></td> 
+			<td><center>" . $row['datas'];
+			echo "</tr> <br/>";
+		}
+	}else{
+		$rowS = mysqli_fetch_assoc($SaidaRes);
+		$rowE = mysqli_fetch_assoc($EntradaRes);
+		while ($rowS || $rowE){
+			if ($rowE && $rowS){
+				if ($rowE['datae'] <= $rowS['datas']){
+					echo "<tr>";
+					echo "<td><center>". $rowE['codp'] . "</center></td> <td>". $rowE['nomep'] . "</td> 
+					<td><center>" . $rowE['qtd'] . "</center></td> <td><center>" . $rowE['nomeg'] . "</center></td> 
+					<td><center>" . $rowE['nomel']."</center></td> 
+					<td><center>". $rowE['datae']."</center></td> 
+					<td><center>---" ;
+					echo "</tr> <br/>";
+					$rowE = mysqli_fetch_assoc($EntradaRes);
+				}else{
+					echo "<tr>";
+					echo "<td><center>". $rowS['codp'] . "</center></td> <td>". $rowS['nomep'] . "</td> 
+					<td><center>" . $rowS['qtd'] . "</center></td> <td><center>" . $rowS['nomeg'] . "</center></td> 
+					<td><center>" . $rowS['nomel']."</center></td> 
+					<td><center>---</center></td> 
+					<td><center>" . $rowS['datas'];
+					echo "</tr> <br/>";
+					$rowS = mysqli_fetch_assoc($SaidaRes);
+				}
+			}else if ($rowE){
+				echo "<tr>";
+				echo "<td><center>". $rowE['codp'] . "</center></td> <td>". $rowE['nomep'] . "</td> 
+				<td><center>" . $rowE['qtd'] . "</center></td> <td><center>" . $rowE['nomeg'] . "</center></td> 
+				<td><center>" . $rowE['nomel']."</center></td> 
+				<td><center>". $rowE['datae']."</center></td> 
+				<td><center>---" ;
+				echo "</tr> <br/>";
+				$rowE = mysqli_fetch_assoc($EntradaRes);
+			}else{
+				echo "<tr>";
+				echo "<td><center>". $rowS['codp'] . "</center></td> <td>". $rowS['nomep'] . "</td> 
+				<td><center>" . $rowS['qtd'] . "</center></td> <td><center>" . $rowS['nomeg'] . "</center></td> 
+				<td><center>" . $rowS['nomel']."</center></td> 
+				<td><center>---</center></td> 
+				<td><center>" . $rowS['datas'];
+				echo "</tr> <br/>";
+				$rowS = mysqli_fetch_assoc($SaidaRes);
+			}
+		}
 	}
+
 ?>
