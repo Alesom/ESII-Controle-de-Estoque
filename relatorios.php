@@ -13,17 +13,6 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 
 		<script type="text/javascript">
-			var saida=ano=entrada=0;
-			//var entrada ='0';
-			function chkbox(){
-				if(document.getElementById("checkboxSaida").checked) saida='1';
-				else saida='0';
-				if(document.getElementById("checkboxEntrada").checked) entrada='1';
-				else entrada='0';				
-				if(document.getElementById("checkboxAno").checked) ano='1';
-				else ano='0';									
-				preencheBusca();				
-			}
 			function preencheBusca() {
 				var codp = document.getElementById("IdCodP").value;
 				var nomep = document.getElementById("IdNomeP").value;
@@ -31,6 +20,12 @@
 				var nomeg = document.getElementById("IdNomeG").value;
 				var codl = document.getElementById("IdCodL").value;
 				var nomel = document.getElementById("IdNomeL").value;
+				if(document.getElementById("checkboxSaida").checked) var saida='1';
+				else var saida='0';
+				if(document.getElementById("checkboxEntrada").checked) var entrada='1';
+				else var entrada='0';				
+				if(document.getElementById("checkboxAno").checked) var ano='1';
+				else var ano='0';
 				//var ano = document.getElementById("checkboxAno").value;
 				//var saida = document.getElementById("checkboxSaida").value;
 				//var entrada = document.getElementById("checkboxEntrada").value;
@@ -74,14 +69,14 @@
       					<input id="IdNomeL" type="search" name="nomel" 
       						placeholder="Nome do Local" oninput="preencheBusca()"> <br/>
   						<input id="checkboxAno" type="checkbox" name="checkboxAno" 
-      						 onchange="chkbox()"> Relatório Anual<br/>
+      						 onchange="preencheBusca()"> Relatório Anual<br/>
 
       					<label class="checkbox-inline">
-  							<input type="checkbox" id="checkboxSaida" onchange="chkbox()"> Saída
+  							<input type="checkbox" id="checkboxSaida" onchange="preencheBusca()"> Saída
 						</label>
 						<label class="checkbox-inline">
   							<input type="checkbox" id="checkboxEntrada" name = "checkboxentrada" 
-  								onchange="chkbox()"> Entrada
+  								onchange="preencheBusca()"> Entrada
 						</label>
 						
       					<button type="submit" class="botton" disabled> Gerar Relatório</button>
