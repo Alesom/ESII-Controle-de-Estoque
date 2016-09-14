@@ -11,6 +11,8 @@
 	$saidaF = $_GET['saida'];
 	$entradaF = $_GET['entrada'];
 
+	echo '<p>'.$anoF.$saidaF.$entradaF.'<p>';
+
 
 	$Saida = "SELECT p.cod AS codp, p.nome AS nomep, s.qtd AS qtd, g.nome 
 							AS nomeg, l.nome AS nomel, s.data AS datas, s.codp AS scodp 
@@ -37,9 +39,9 @@
 	$EntradaRes = query($conexao, $Entrada);
 	$NEntradaRes = mysqli_num_rows($EntradaRes);
 
-	if (($NSaidaRes<=0 && $NEntradaRes<=0) || (!isset($saidaF) && !isset($entradaF))) {
+	if (($NSaidaRes<=0 && $NEntradaRes<=0) || (!$saidaF && !$entradaF)) {
 		echo '<p>Nenhum produto encontrado.</p>';
-	}else if (($NSaidaRes<=0 && $NEntradaRes > 0) || (!isset($saidaF) && isset($entradaF) )){
+	}else if (($NSaidaRes<=0 && $NEntradaRes > 0) || (!$saidaF && $entradaF) ){
 		while ($row = mysqli_fetch_assoc($EntradaRes)) {
 			echo "<tr>";
 			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 
@@ -49,7 +51,7 @@
 			<td><center>---" ;
 			echo "</tr> <br/>";
 		}
-	}else if (($NSaidaRes > 0 && $NEntradaRes <= 0) || (isset($saidaF) && !isset($entradaF) )){
+	}else if (($NSaidaRes > 0 && $NEntradaRes <= 0) || ($saidaF && !$entradaF )){
 		while ($row = mysqli_fetch_assoc($SaidaRes)) {
 			echo "<tr>";
 			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 

@@ -13,7 +13,17 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 
 		<script type="text/javascript">
-
+			var saida=ano=entrada=0;
+			//var entrada ='0';
+			function chkbox(){
+				if(document.getElementById("checkboxSaida").checked) saida='1';
+				else saida='0';
+				if(document.getElementById("checkboxEntrada").checked) entrada='1';
+				else entrada='0';				
+				if(document.getElementById("checkboxAno").checked) ano='1';
+				else ano='0';									
+				preencheBusca();				
+			}
 			function preencheBusca() {
 				var codp = document.getElementById("IdCodP").value;
 				var nomep = document.getElementById("IdNomeP").value;
@@ -21,9 +31,9 @@
 				var nomeg = document.getElementById("IdNomeG").value;
 				var codl = document.getElementById("IdCodL").value;
 				var nomel = document.getElementById("IdNomeL").value;
-				var ano = document.getElementById("checkboxAno").value;
-				var saida = document.getElementById("saida1213").value;
-				var entrada = document.getElementById("checkboxEntrada").value;
+				//var ano = document.getElementById("checkboxAno").value;
+				//var saida = document.getElementById("checkboxSaida").value;
+				//var entrada = document.getElementById("checkboxEntrada").value;
 				var url = 'consultRelatorio.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg + 
 							'&codl=' + codl + '&nomel=' + nomel + '&ano=' + ano + '&saida=' + saida + '&entrada=' + entrada;
 				$.get(url, function(dataReturn) {
@@ -64,14 +74,14 @@
       					<input id="IdNomeL" type="search" name="nomel" 
       						placeholder="Nome do Local" oninput="preencheBusca()"> <br/>
   						<input id="checkboxAno" type="checkbox" name="checkboxAno" 
-      						 oninput="preencheBusca()"> Relatório Anual<br/>
+      						 onchange="chkbox()"> Relatório Anual<br/>
 
       					<label class="checkbox-inline">
-  							<input type="checkbox" id="saida1213" value = "1" oninput="preencheBusca()"> Saída
+  							<input type="checkbox" id="checkboxSaida" onchange="chkbox()"> Saída
 						</label>
 						<label class="checkbox-inline">
   							<input type="checkbox" id="checkboxEntrada" name = "checkboxentrada" 
-  								oninput="preencheBusca()" > Entrada
+  								onchange="chkbox()"> Entrada
 						</label>
 						
       					<button type="submit" class="botton" disabled> Gerar Relatório</button>

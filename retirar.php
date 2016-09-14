@@ -49,7 +49,6 @@
 			}
 		}else
 				$_SESSION['msg']="Preste atenção na quantidade disponível. Você está retirando mais produtos do que há.";
-
 	}
 	mysqli_autocommit($conexao,True);
 ?>
@@ -99,7 +98,7 @@
 					echo '	<text><b>['.$dados["qtd"].'] </b>unidades disponiveis</text>';
 
 		    	?><br/>
-			Data: <input type="date" name="data" value=<?echo'"'.date('Y-m-d').'"';?>/><br/>
+			Data: <input type="date" name="data" value=<?echo'"'.date ("Y-m-d H:i").'"';?>/><br/>
 			Destino:<input type="text" name="destino"/><br/>
 			Chamado:<input type="text" name="chamado"/><br/>
 			
