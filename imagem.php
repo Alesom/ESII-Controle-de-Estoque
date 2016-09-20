@@ -3,7 +3,7 @@
 include('phplot/phplot.php');
 require('connect.php');
 #Matriz utilizada para gerar os graficos
-if(isset($_GET['type'])){
+
 	switch($_GET['periodo']){
 		case 'anual':
 			$datai="".$_GET['ano']."-01-01 00:00:00";
@@ -48,18 +48,44 @@ if(isset($_GET['type'])){
 					$mes = "12";
 					break;
 			}
-			$datai="".$_GET['ano'].$mes."-01 00:00:00";
-			$dataf="".$_GET['ano'].$mes."-31 23:59:59";
+			$datai=$_GET['ano'].'-'.$mes."-01 00:00:00";
+			$dataf=$_GET['ano'].'-'.$mes."-31 23:59:59";
 			break;
 		case 'intervalo':
-			$datai="".$_GET['datai'];
-			$dataf="".$_GET['dataf'];
-			
+			$datai=$_GET['datai'];
+			$dataf=$_GET['dataf'];			
 			break;
 	}
-}
+	
+	$codp=$_GET['codp'];
+	
+	$query1="SELECT * FROM produto p join insercao i on p.cod=i.codp WHERE p.cod = '$codp' AND i.data between '$datai' AND '$dataf'";
+	$query2="SELECT * FROM produto p join remocao r on r.codp=p.cod WHERE p.cod = '$codp' AND r.data between '$datai' AND '$dataf' ";
+	
+	echo $codp. "<br/>".$datai. "<br/>".$dataf;
+	//$res1 = mysqli_query($conexao,$query1);
+	//if($res1)
+	echo	 "ola";
+	$res1= query($conexao, $query1);
+	while ($resu = mysqli_fetch_assoc($res1)){
+		$data1[$a]= array($resu['qtd'],$resu['data']);
+		//echo $data1[$b][$a];
+		$a++;
+	}
+	
+	$res2= query($conexao, $query2);
+	//$res2 = mysqli_query($conexao,$query2);
+	$a=0;
+	$b=0;
+	
+	while ($resu1 = mysqli_fetch_assoc($res2)){
+		$data1[$a]= array($resu1['data'],$resu1['qtd']);
+		//echo $data1[$b][$a];   
+		$a++;
+		//$b++;
+	}
 
-
+/*
 	$data1;
 	$a=0;
 	$sql = "SELECT * FROM produto";
@@ -74,7 +100,7 @@ if(isset($_GET['type'])){
 		$resu2 = mysqli_fetch_assoc($res2);
 		$data1[$a]	= array($resu['nome'],$resu['qtd'],$resu1['soma'],$resu2['soma']);
 		$a++;
-	}
+	}*/
 	
 
 #Instancia o objeto e setando o tamanho do grafico na tela
@@ -105,11 +131,10 @@ $plot->SetDataValues($data1);
 #Titulo do grafico
 $plot->SetTitle('Produtos');
 #Legenda, nesse caso serao tres pq o array possui 3 valores que serao apresentados
-$plot->SetLegend(array('Disponivel','Retiradas','Inseridos'));
+$plot->SetLegend(array('Disponivel','Retiradas','Inseridos','naofacoideia'));
 #Utilizados p/ marcar labels, necessario mas nao se aplica neste ex. (manual) :
 $plot->SetXTickLabelPos('none');
 $plot->SetXTickPos('none');
 #Gera o grafico na tela
-$plot->DrawGraph();
-$plot->SetFileFormat("png");
+//$plot->DrawGraph();
 ?>
