@@ -11,8 +11,8 @@
 		$qtdademin = $_POST['qtdademin'];
 		$codlocal = $_POST['codlocal'];
 		$codgrupo = $_POST['codgrupo'];
-		$data= date ("Y-m-d");
-		echo $data;
+		$data= date ("Y-m-d H:i");
+		//echo $data;
 		$sql = "INSERT INTO produto VALUES ('$cod','$nome','$qtdade','$codgrupo','$codlocal','$qtdademin','1')";
 		$cons = mysqli_query($conexao ,$sql);
 		if(!$cons){

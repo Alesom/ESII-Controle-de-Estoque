@@ -21,7 +21,7 @@
 			$_SESSION['funcao'] = $row['funcao'];
 			header("Location: index.php");
 		}else{
-			$_SESSION['Error'] = "Usuário ou senha não conferem";
+			$_SESSION['newerror'] = "Usuário ou senha não conferem";
 		}
 	}else if(isset($_POST['logout']) || isset($_GET['logout'])){
 		unset($_SESSION['name']);
@@ -36,7 +36,7 @@
 			if(isset($_SESSION['first'])){
 				$pass1 = md5($pass2);
 				$nome  = $_POST['newname'];
-				$funcao= "boss";
+				$funcao= $_POST['newfunction'];
 				$codl  = $_POST['newplace'];
 				$placename = $_POST['newplacen'];
 				$sql = "INSERT INTO local VALUES ('$codl','$placename')";
@@ -57,7 +57,7 @@
 					$sql = "SELECT * FROM usuario WHERE nome = '$quem' AND senha ='$qpass'";
 					$result = mysqli_query($conexao,$sql,MYSQLI_USE_RESULT);
 					$row = $result->fetch_assoc();
-					if($row['funcao']=='boss'){
+					if($row['funcao']=='Administrador'){
 						$pass1 = md5($pass2);
 						$nome  = $_POST['newname'];
 						$funcao= $_POST['newfunction'];
@@ -72,10 +72,10 @@
 							$_SESSION['newerror']="Usuário Cadastrado.";	
 					}else
 						$_SESSION['newerror']="you have no power here";	
-				}echo $_SESSION['newerror']="Você precisa fazer login";	
+				}
 			}else
 				$_SESSION['newerror']="As senhas não conferem.";
-		}
+		}else $_SESSION['newrror']="As senhas não conferem";	
 	}else if(isset($_GET['fp'])){
 		if(isset($_POST['changepass'])){
 			$email = $_POST['email'];
@@ -87,9 +87,10 @@
 				$result = mysqli_query($conexao,$sql);
 
 				if($result){
-					$_SESSION['changed'] = 1;				}		
+					$_SESSION['newerror'] = "Senha Alterada";
+				}		
 			}else{
-				$_SESSION['changed'] = "As senhas não conferem";
+				$_SESSION['newerror'] = "As senhas não conferem";
 			}
 		}
 	}
@@ -141,7 +142,7 @@
 		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
 		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 		<a href="buscas.php"><button>Buscar por Produtos</button></a>
-		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
+		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='Administrador')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
 			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
 		?>		
 		<a href="index.php?logout=1"><button>Logout</button></a>
@@ -154,7 +155,6 @@
 					<input type="text" name="user" <?php if(isset($usuario))echo'value="'.$usuario.'"'; else echo'placeholder="Login"';?> required /><br/>
 					<input type="password" name="pass" <?php if(isset($_POST['pass']))echo'value="'.$_POST['pass'].'"'; else echo'placeholder="Senha"';?> required /><br/>
 					<input type="submit" name="entrar" Value="Login"/>
-					<?php if(isset($_SESSION['Error']))echo '<p>'.$_SESSION['Error'].'</p>'; unset($_SESSION['Error']);?>
 				</form>
 				<a href='index.php?fp=1'>Esqueci minha senha</a>
 			</div>
@@ -165,14 +165,11 @@
 					<input type="password" name="pass2" placeholder="Confirme Senha"><br/>
 
 					<input type="submit" name="changepass" value="Trocar"><br/>
-					<?php if(isset($_SESSION['changed'])){echo $_SESSION['changed'];}
-					else if(isset($_SESSION['changed']))echo$_SESSION['changed']; unset($_SESSION['changed']);?>
 				</form>
 			</div>
 
 			<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
 			<div align="center" style='<?php if(isset($_SESSION['first']))echo'display:block;';else echo'display:none;'; ?>'>
-				<p>I am the boss!!</p>
 				<fieldset style="background-color:#009900;">
 				<label>Cadastre um novo usuário</label>
 				<form action="index.php" method="POST">
@@ -183,34 +180,36 @@
 					<input type="text" name="newplacen" placeholder="Nome do Local"><br/>
 					<input type="text" name="newfunction" placeholder="Função"><br/>
 					<input type="submit" name="newpeople" value="Registrar"><br/>
-					<?php if(isset($_SESSION['newerror']) && $_SESSION['newerror']=="Usuário Cadastrado."){echo $_SESSION['newerror']; unset($_SESSION['newerror']);}
-					else if(isset($_SESSION['newerror']))echo $_SESSION['newerror']; unset($_SESSION['newerror']);?>
 				</form>
 				</fieldset>
 			</div> 
 
 			<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
 			<div align="center" id="cad_user" style="display:none;">
-				<p>I am the boss!!</p>
-				<fieldset style="background-color:#009900;">
 				<label>Cadastre um novo usuário</label>
+				<fieldset style="background-color:#009900;"><br/>
 				<form action="index.php" method="POST">
 					<input type="text" name="newname" placeholder="Usuário"/><br/>
 					<input type="password" name="newpass1" placeholder="Nova Senha"><br/>
 					<input type="password" name="newpass2" placeholder="Confirme Senha"><br/>
-					Código do Local:<select name="codlocal">
-					<option>Selecione:</option>
+					Código do Local:<br/>
+					<select name="codlocal">
 					<?$busca= "SELECT * FROM local";
 						$resultado = mysqli_query($conexao,$busca);
 						while ($dados = mysqli_fetch_assoc($resultado))
 							echo '<option value = "'.$dados['codl'].'">'.$dados['codl'].'</option>';
 					?>
 				</select><br/>
-				
-					<input type="text" name="newfunction" placeholder="Função"><br/>
+				Função:<br/>
+					<select name="newfunction">
+						<option value="Supervisor">Supervisor</option>
+						<option value="Conferente">Conferente</option>
+						<option value="Estagiário">Estagiário</option>
+						<option value="Administrador">Administrador</option>						
+					</select>
+					<br/>
+					<!--<input type="text" name="newfunction" placeholder="Função"><br/>-->
 					<input type="submit" name="newpeople" value="Registrar"><br/>
-					<?php if(isset($_SESSION['newerror']) && $_SESSION['newerror']=="Usuário Cadastrado."){echo $_SESSION['newerror']; unset($_SESSION['newerror']);}
-					else if(isset($_SESSION['newerror']))echo $_SESSION['newerror']; unset($_SESSION['newerror']);?>
 				</form>
 				</fieldset>
 			</div>
@@ -221,10 +220,10 @@
 	//percorrer todos os produtos e verificar se hÃ¡ algum com qtd menor ou igual a qtdmin.
 			if(isset($_SESSION['name'])){
 				$sql = "SELECT * FROM produto WHERE qtd<=qtdmin AND alarm=1";
-				$res = mysqli_query($conexao,$sql);
-
+				$res = mysqli_query($conexao,$sql);	
 				echo'<h1> Alarmes:</h1>';
 				$count=0;
+				if($res)
 				while ($resu = mysqli_fetch_assoc($res)){
 					$count++;
 					echo "<p>O produto <b>".$resu['nome']."</b> conta com <b>".$resu['qtd'].'</b> unidades, a quantidade mínima é de <b>'.$resu['qtdmin']."</b> unidades<br /></p>";
@@ -233,13 +232,15 @@
 				else
 					unset($_SESSION['falta']);
 			}
-
-			//echo json_encode($my);
 			?>
 		</fieldset>
 		</div>
-
-
+		<?
+			if(isset($_SESSION['newerror'])) {
+				echo $_SESSION['newerror']; 
+				unset($_SESSION['newerror']);
+			} 
+		?>
 	</body>
 </html>
 
