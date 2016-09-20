@@ -130,7 +130,7 @@
 			}
 	</script>
 
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		
 	</head>
 
 	<body onload="check_login();"> <!-- A função também deverá definir em que #section da página está -->	
@@ -145,8 +145,10 @@
 		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='Administrador')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
 			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
 		?>		
+		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
 		<a href="index.php?logout=1"><button>Logout</button></a>
-	</div>
+	</div>	
+	
 	<!-- section login BEGIN-->
 		<section >
 			
