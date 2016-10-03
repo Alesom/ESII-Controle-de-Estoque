@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	require ("connect.php");
 	
 	if(!isset($_SESSION['name'])){
@@ -99,14 +99,14 @@
 	<div id="cadp" align="center">
 	
 		<label>Cadastro de Produto</label>
-		<form action=<?echo '"produto.php?cadp='.$_GET['cadp'].'"';?> method="post">	
+		<form action=<?php echo '"produto.php?cadp='.$_GET['cadp'].'"';?> method="post">	
 		    <input type="text" name="codigo" placeholder="Código do Produto" /><br/>
 		 	<input type="text" name="nome" placeholder="Nome do Produto" /><br/>
 			<input type="text" name="qtdade" placeholder="Quantidade" /><br/>
 			<input type="text" name="qtdademin" placeholder="Quantidade Mínima" /> <br/>			
 			Código do Grupo:<select name="codgrupo">
 				<option>Selecione:</option>
-				<?$busca= "SELECT * FROM grupo";
+				<?php $busca= "SELECT * FROM grupo";
 					$resultado = mysqli_query($conexao,$busca);
 					while ($dados = mysqli_fetch_assoc($resultado))
 						echo '<option value = "'.$dados['codg'].'">'.$dados['codg'].'</option>';
@@ -115,7 +115,7 @@
 			<!--<input type="text" name="codgrupo" placeholder="Código do grupo" /><br/>-->
 			Código do Local:<select name="codlocal">
 				<option>Selecione:</option>
-				<?$busca= "SELECT * FROM local";
+				<?php $busca= "SELECT * FROM local";
 					$resultado = mysqli_query($conexao,$busca);
 					while ($dados = mysqli_fetch_assoc($resultado))
 						echo '<option value = "'.$dados['codl'].'">'.$dados['codl'].'</option>';
@@ -125,7 +125,7 @@
 			<!--<input type="text" name="codlocal" placeholder="Código do local" /><br/>--><br/>
 		 	<input type="submit" name="cadprod" value="Cadastrar"/><br/>
 		</form> 
-		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
+		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
 
 	<div id="cadg" align="center">
@@ -136,7 +136,7 @@
 		 	<input type="text" name="nome" placeholder="Nome do Grupo" /><br/>
 		 	<input type="submit" name="cadg" value="Cadastrar"/><br/>
 		</form> 
-		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
+		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
 	<div id="cadl" align="center">
 		
@@ -146,7 +146,7 @@
 		 	<input type="text" name="nome" placeholder="Nome do local" /><br/>
 		 	<input type="submit" name="cadlocal" value="Cadastrar" /><br/>
 		</form> 
-		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
+		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
 </body>
 </html>

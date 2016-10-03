@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	require ("connect.php");
 	$teste_sql= "SELECT * FROM usuario ";
 	$teste_result = mysqli_query($conexao,$teste_sql);
@@ -106,7 +106,7 @@
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display="none";
-				}else if(<?if(!isset($_SESSION['first']))echo'1';else echo "0";?>){
+				}else if(<?php if(!isset($_SESSION['first']))echo'1';else echo "0";?>){
 					document.getElementById('lin').style.display='block';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display="none";
@@ -218,7 +218,7 @@
 
 		</section>
 		<div><fieldset>
-			<?
+			<?php
 	//percorrer todos os produtos e verificar se hÃ¡ algum com qtd menor ou igual a qtdmin.
 			if(isset($_SESSION['name'])){
 				$sql = "SELECT * FROM produto WHERE qtd<=qtdmin AND alarm=1";
@@ -237,7 +237,7 @@
 			?>
 		</fieldset>
 		</div>
-		<?
+		<?php
 			if(isset($_SESSION['newerror'])) {
 				echo $_SESSION['newerror']; 
 				unset($_SESSION['newerror']);
