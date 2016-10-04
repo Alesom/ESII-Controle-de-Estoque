@@ -9,13 +9,13 @@
 	}
 	if(isset($_POST['entrar'])){
 		$usuario = $_POST["user"];
-		$senha = md5($_POST["pass"]);  
+		$senha = md5($_POST["pass"]);
 
-		$sql = "SELECT * FROM usuario WHERE nome = '$usuario' AND senha ='$senha'";		
+		$sql = "SELECT * FROM usuario WHERE nome = '$usuario' AND senha ='$senha'";
 		$result = mysqli_query($conexao,$sql);
 		$row = mysqli_fetch_array($result);
-		if(mysqli_num_rows($result) == 1){	
-			 
+		if(mysqli_num_rows($result) == 1){
+
 			$_SESSION['name'] = $usuario;
 			$_SESSION['password'] = $_POST['pass'];
 			$_SESSION['funcao'] = $row['funcao'];
@@ -31,7 +31,7 @@
 		header("Location: index.php");
 	}else if(isset($_POST['newpeople'])){
 		if(isset($_POST['newpass1']) && isset($_POST['newpass2'])){
-			$pass1 = $_POST['newpass1'];	
+			$pass1 = $_POST['newpass1'];
 			$pass2 = $_POST['newpass2'];
 			if(isset($_SESSION['first'])){
 				$pass1 = md5($pass2);
@@ -40,14 +40,14 @@
 				$codl  = $_POST['newplace'];
 				$placename = $_POST['newplacen'];
 				$sql = "INSERT INTO local VALUES ('$codl','$placename')";
-				$cons = mysqli_query($conexao ,$sql);	
+				$cons = mysqli_query($conexao ,$sql);
 				$sql = "INSERT INTO usuario (nome,funcao,senha,codl) VALUES ('$nome','$funcao','$pass1','$codl')";
-				$cons = mysqli_query($conexao ,$sql);	
+				$cons = mysqli_query($conexao ,$sql);
 				if(!$cons){
-					$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);	
+					$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);
 				}else{
 					unset($_SESSION['first']);
-					$_SESSION['newerror']="Usuário Cadastrado.";	
+					$_SESSION['newerror']="Usuário Cadastrado.";
 					header("Location:index.php");
 				}
 			}else if($pass1==$pass2){
@@ -67,15 +67,15 @@
 						$sql = "INSERT INTO usuario (nome,funcao,senha,codl) VALUES ('$nome','$funcao','$pass1','$codl')";
 						$cons = mysqli_query($conexao ,$sql);
 						if(!$cons)
-							$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);	
+							$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);
 						else
-							$_SESSION['newerror']="Usuário Cadastrado.";	
+							$_SESSION['newerror']="Usuário Cadastrado.";
 					}else
-						$_SESSION['newerror']="you have no power here";	
+						$_SESSION['newerror']="you have no power here";
 				}
 			}else
 				$_SESSION['newerror']="As senhas não conferem.";
-		}else $_SESSION['newrror']="As senhas não conferem";	
+		}else $_SESSION['newrror']="As senhas não conferem";
 	}else if(isset($_GET['fp'])){
 		if(isset($_POST['changepass'])){
 			$email = $_POST['email'];
@@ -88,16 +88,16 @@
 
 				if($result){
 					$_SESSION['newerror'] = "Senha Alterada";
-				}		
+				}
 			}else{
 				$_SESSION['newerror'] = "As senhas não conferem";
 			}
 		}
 	}
 ?>
-<html>	
-	<head>	
-	<title>Index</title>	
+<html>
+	<head>
+	<title>Index</title>
 	<!-- Bloco de script para login-->
 	<script type="text/javascript">
 			function check_login(){
@@ -130,29 +130,15 @@
 			}
 	</script>
 
-		
 	</head>
 
-	<body onload="check_login();"> <!-- A função também deverá definir em que #section da página está -->	
-	<div id="top-bar" style='background-color:#009933;'>
-		<img src="imagens/IdentidadeVisual.png" style="height:80px;"/>
-		<a href="buscas.php"><button>Inserir Produtos</button></a>
-		<a href="buscas.php"><button>Remover Produtos</button></a>
-		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
-		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
-		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
-		<a href="buscas.php"><button>Buscar por Produtos</button></a>
-		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='Administrador')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
-			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
-		?>		
-		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
-		<a href="index.php?logout=1"><button>Logout</button></a>
-	</div>	
-	
+	<body onload="check_login();"> <!-- A função também deverá definir em que #section da página está -->
+		<? require_once ("menu-principal.php"); ?>
+
 	<!-- section login BEGIN-->
 		<section >
-			
-			<div id="lin" align="center" >			
+
+			<div id="lin" align="center" >
 				<form action="index.php" method="POST" >
 					<input type="text" name="user" <?php if(isset($usuario))echo'value="'.$usuario.'"'; else echo'placeholder="Login"';?> required /><br/>
 					<input type="password" name="pass" <?php if(isset($_POST['pass']))echo'value="'.$_POST['pass'].'"'; else echo'placeholder="Senha"';?> required /><br/>
@@ -184,7 +170,7 @@
 					<input type="submit" name="newpeople" value="Registrar"><br/>
 				</form>
 				</fieldset>
-			</div> 
+			</div>
 
 			<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
 			<div align="center" id="cad_user" style="display:none;">
@@ -207,7 +193,7 @@
 						<option value="Supervisor">Supervisor</option>
 						<option value="Conferente">Conferente</option>
 						<option value="Estagiário">Estagiário</option>
-						<option value="Administrador">Administrador</option>						
+						<option value="Administrador">Administrador</option>
 					</select>
 					<br/>
 					<!--<input type="text" name="newfunction" placeholder="Função"><br/>-->
@@ -222,7 +208,7 @@
 	//percorrer todos os produtos e verificar se hÃ¡ algum com qtd menor ou igual a qtdmin.
 			if(isset($_SESSION['name'])){
 				$sql = "SELECT * FROM produto WHERE qtd<=qtdmin AND alarm=1";
-				$res = mysqli_query($conexao,$sql);	
+				$res = mysqli_query($conexao,$sql);
 				echo'<h1> Alarmes:</h1>';
 				$count=0;
 				if($res)
@@ -239,10 +225,9 @@
 		</div>
 		<?php
 			if(isset($_SESSION['newerror'])) {
-				echo $_SESSION['newerror']; 
+				echo $_SESSION['newerror'];
 				unset($_SESSION['newerror']);
-			} 
+			}
 		?>
 	</body>
 </html>
-

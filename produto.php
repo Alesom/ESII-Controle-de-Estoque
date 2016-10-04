@@ -1,6 +1,6 @@
 ﻿<?php
 	require ("connect.php");
-	
+
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}
@@ -27,7 +27,7 @@
 			$_SESSION['msg']="O produto ".$nome." foi cadastrado com sucesso.";
 		}
 	}
-	
+
 	if(isset($_POST['cadg'])){
 		$cod = $_POST['codigo'];
 		$nome = $_POST['nome'];
@@ -54,8 +54,8 @@
 ?>
 <!DOCTYPE html>
 <html>
-<head> 
-	<title>Formulário Cadastro</title> 
+<head>
+	<title>Formulário Cadastro</title>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<script type="text/javascript">
@@ -77,33 +77,20 @@
 			function showalarm() {
 				document.getElementById("alarme").style.display="block;";
 			}
-			
+
 	</script>
-</head> 
+</head>
 <body onload="opera();">
-	<div id="top-bar" style='background-color:#009933;'>
-		<img src="imagens/IdentidadeVisual.png" style="height:80px;"/>
-		<a href="buscas.php"><button>Inserir Produtos</button></a>
-		<a href="buscas.php"><button>Remover Produtos</button></a>
-		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
-		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
-		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
-		<a href="buscas.php"><button>Buscar por Produtos</button></a>
-		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
-			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
-		?>		
-		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
-		<a href="index.php?logout=1"><button>Logout</button></a>
-	</div>	
-	
+	<? require_once ("menu-principal.php"); ?>	
+
 	<div id="cadp" align="center">
-	
+
 		<label>Cadastro de Produto</label>
-		<form action=<?php echo '"produto.php?cadp='.$_GET['cadp'].'"';?> method="post">	
+		<form action=<?php echo '"produto.php?cadp='.$_GET['cadp'].'"';?> method="post">
 		    <input type="text" name="codigo" placeholder="Código do Produto" /><br/>
 		 	<input type="text" name="nome" placeholder="Nome do Produto" /><br/>
 			<input type="text" name="qtdade" placeholder="Quantidade" /><br/>
-			<input type="text" name="qtdademin" placeholder="Quantidade Mínima" /> <br/>			
+			<input type="text" name="qtdademin" placeholder="Quantidade Mínima" /> <br/>
 			Código do Grupo:<select name="codgrupo">
 				<option>Selecione:</option>
 				<?php $busca= "SELECT * FROM grupo";
@@ -121,35 +108,32 @@
 						echo '<option value = "'.$dados['codl'].'">'.$dados['codl'].'</option>';
 				?>
 			</select><br/>
-			
+
 			<!--<input type="text" name="codlocal" placeholder="Código do local" /><br/>--><br/>
 		 	<input type="submit" name="cadprod" value="Cadastrar"/><br/>
-		</form> 
+		</form>
 		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
 
 	<div id="cadg" align="center">
-		
+
 		<label>Cadastro de Grupos</label>
 		<form action="produto.php?cadg=1" method="post">
 			<input type="text" name="codigo" placeholder="Código do Grupo" /><br/>
 		 	<input type="text" name="nome" placeholder="Nome do Grupo" /><br/>
 		 	<input type="submit" name="cadg" value="Cadastrar"/><br/>
-		</form> 
+		</form>
 		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
 	<div id="cadl" align="center">
-		
+
 		<label>Cadastro de Local</label>
 		<form action="produto.php?cadl=1" method="post">
 			<input type="text" name="codigo" placeholder="Código do local" /><br/>
 		 	<input type="text" name="nome" placeholder="Nome do local" /><br/>
 		 	<input type="submit" name="cadlocal" value="Cadastrar" /><br/>
-		</form> 
+		</form>
 		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
 </body>
 </html>
-
-
-

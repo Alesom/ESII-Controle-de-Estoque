@@ -1,6 +1,6 @@
 <?php
 	require ("connect.php");
-	
+
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}
@@ -28,10 +28,10 @@
 			try{
 				$cons1 = mysqli_query($conexao ,$sql1);
 				$cons = mysqli_query($conexao ,$sql);
-				
+
 				if(!$cons1 || !$cons)
 					throw new Exception("Errrouuuu", 1);
-					
+
 				if(!$cons)
 				$_SESSION['msg']=$qtdade.' de '.$nome.' não pode ser removidas.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 				else
@@ -40,9 +40,9 @@
 				$a = mysqli_commit($conexao);
 				if(!$a)
 					throw new Exception("Não commitado no banco, tente novamente", 1);
-					
-				
-			
+
+
+
 			}catch(Exception $e ){
 				echo "Deu erro nessa porra".$e->getMessage();
 				mysqli_rollback($conexao);
@@ -54,31 +54,18 @@
 ?>
 <!DOCTYPE html>
 <html>
-<head> 
-	<title>Formulário Remoção</title> 
+<head>
+	<title>Formulário Remoção</title>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-</head> 
+</head>
 <body>
-	<div id="top-bar" style='background-color:#009933;'>
-		<img src="imagens/IdentidadeVisual.png" style="height:80px;"/>
-		<a href="buscas.php"><button>Inserir Produtos</button></a>
-		<a href="buscas.php"><button>Remover Produtos</button></a>
-		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
-		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
-		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
-		<a href="buscas.php"><button>Buscar por Produtos</button></a>
-		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
-			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
-		?>		
-		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
-		<a href="index.php?logout=1"><button>Logout</button></a>
-	</div>	
-	
+	<? require_once ("menu-principal.php"); ?>	
+
 	<div id="cadp" align="center">
-	
+
 		<label><b>Remover unidades de Produto</b></label>
-		<form action=<?echo '"retirar.php?prod='.$_GET['prod'].'"';?> method="post">	
+		<form action=<?echo '"retirar.php?prod='.$_GET['prod'].'"';?> method="post">
 
 		    Código do produto:<input type="text" name="codigo" readonly="readonly" <?if(isset($_GET['prod']))echo 'value="'.$_GET['prod'].'"';else echo'placeholder="Código do Produto"'?> /><br/>
 		    Nome do produto:<input type="text" name="nome" readonly="readonly"
@@ -92,7 +79,7 @@
 
 		    	}?> /><br/>
 			Quantidade:<input type="text" name="qtdade" placeholder="00" />
-			<?php 
+			<?php
 		    		$produto = $_GET['prod'];
 					$busca= "SELECT qtd FROM produto WHERE cod = '$produto'";
 					$resultado = mysqli_query($conexao,$busca);
@@ -103,13 +90,13 @@
 			Data: <input type="date" name="data" value=<?echo'"'.date ("Y-m-d H:i").'"';?>/><br/>
 			Destino:<input type="text" name="destino"/><br/>
 			Chamado:<input type="text" name="chamado"/><br/>
-			
+
 		 	<input type="submit" name="retirarprod" value="Retirar"/>
-		 	
-		</form> 
+
+		</form>
 		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
-	<a href="buscas.php"><button><b>Nova Busca</b></button></a> 
+	<a href="buscas.php"><button><b>Nova Busca</b></button></a>
 
 </body>
 </html>

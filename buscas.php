@@ -20,7 +20,7 @@
 				var nomeg = document.getElementById("IdNomeG").value;
 				var codl = document.getElementById("IdCodL").value;
 				var nomel = document.getElementById("IdNomeL").value;
-				var url = 'loads.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg + 
+				var url = 'loads.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg +
 							'&codl=' + codl + '&nomel=' + nomel;
 				$.get(url, function(dataReturn) {
 					$('#idpd').html(dataReturn);
@@ -29,38 +29,25 @@
 		</script>
 	</head>
 	<body onload="preencheBusca()">
-		
-	<div id="top-bar" style='background-color:#009933;'>
-		<img src="imagens/IdentidadeVisual.png" style="height:80px;"/>
-		<a href="buscas.php"><button>Inserir Produtos</button></a>
-		<a href="buscas.php"><button>Remover Produtos</button></a>
-		<a href="produto.php?cadp=1"><button>Cadastrar Produtos</button></a>
-		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
-		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
-		<a href="buscas.php"><button>Buscar por Produtos</button></a>
-		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
-			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
-		?>		
-		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
-		<a href="index.php?logout=1"><button>Logout</button></a>
-	</div>	
-	
+
+	<? require_once ("menu-principal.php"); ?>
+
 	<div class="">
-		
+
 			<div class="">
 	      		<form name="fsearch" action="" method="POST">
     				<div class="">
-      					<input id="IdCodP" type="search" name="codp" 
+      					<input id="IdCodP" type="search" name="codp"
       						placeholder="Código do Produto" oninput="preencheBusca()"> <br/>
-      					<input id="IdNomeP" type="search" name="nomep" 
+      					<input id="IdNomeP" type="search" name="nomep"
       						placeholder="Nome do Produto" oninput="preencheBusca()"> <br/>
-      					<input id="IdCodG" type="search" name="codg" 
+      					<input id="IdCodG" type="search" name="codg"
       						placeholder="Código do Grupo" oninput="preencheBusca()"> <br/>
-      					<input id="IdNomeG" type="search" name="nomeg" 
+      					<input id="IdNomeG" type="search" name="nomeg"
       						placeholder="Nome do Grupo" oninput="preencheBusca()"> <br/>
-      					<input id="IdCodL" type="search" name="codl" 
+      					<input id="IdCodL" type="search" name="codl"
       						placeholder="Código do Local" oninput="preencheBusca()"> <br/>
-      					<input id="IdNomeL" type="search" name="nomel" 
+      					<input id="IdNomeL" type="search" name="nomel"
       						placeholder="Nome do Local" oninput="preencheBusca()"> <br/>
       					<button type="submit" class="hide" disabled></button>
     				</div>
@@ -90,7 +77,7 @@
 							</tr>
 						</thead>
 				        <tbody id="idpd">
-				        	
+
 				        </tbody>
       				</table>
 				</div>
