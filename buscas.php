@@ -38,7 +38,7 @@
 		<a href="produto.php?cadg=1"><button>Cadastrar Grupo</button></a>
 		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 		<a href="buscas.php"><button>Buscar por Produtos</button></a>
-		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='boss')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
+		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='Administrador')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
 			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
 		?>		
 		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>

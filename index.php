@@ -147,7 +147,7 @@
 		?>		
 		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
 		<a href="index.php?logout=1"><button>Logout</button></a>
-	</div>	
+	</div>		
 	
 	<!-- section login BEGIN-->
 		<section >
