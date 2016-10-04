@@ -24,7 +24,7 @@
 	
 	
 	<form method="GET" action="imagem.php">
-		<input type="text" name="codp" value=<?echo $_GET['codp'];?> readonly /><br/>
+		<input type="text" name="prod" value=<?echo $_GET['prod'];?>>
 		<input type= "number" name ="ano" value="2016" />
 		<input type = "radio" name = 'periodo' value = 'anual' checked /> anual<br/>
 		<select name="mes">
@@ -44,7 +44,7 @@
 		<input type = "radio" name = 'periodo' value = 'mensal' /> mensal<br/>		
 		<input type= "text" name ="datai" placeholder="Data Inicial" />
 		<input type= "text" name ="dataf" placeholder="Data Final" />
-		<input type = "radio" name = 'periodo' value = 'intervalo' /> intervalo	<br/>
+		<input type = "radio" name = 'periodo' value = 'interval' /> intervalo	<br/>
 		
 		<input type="submit" name="type" value="Pontos" />
 		<input type="submit" name="type" value="Bolha" />

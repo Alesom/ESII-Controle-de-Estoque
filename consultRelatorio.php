@@ -7,11 +7,12 @@
 	$nomeg = $_GET['nomeg'];
 	$codl = $_GET['codl'];
 	$nomel = $_GET['nomel'];
-	$anoF = $_GET['ano'];
+	$dataI = $_GET['diai'];
+	$dataF = $_GET['diaf'];
 	$saidaF = $_GET['saida'];
 	$entradaF = $_GET['entrada'];
 
-	echo '<p>'.$anoF.$saidaF.$entradaF.'<p>';
+	echo '<p>'.$dataI." -- " .$dataF." -- " .$saidaF." -- " .$entradaF.'<p>';
 
 
 	$Saida = "SELECT p.cod AS codp, p.nome AS nomep, s.qtd AS qtd, g.nome 
@@ -19,16 +20,20 @@
 							FROM produto AS p INNER JOIN remocao AS s on (p.cod = s.codp)
 							INNER JOIN grupo AS g on (p.codg = g.codg) 
 							INNER JOIN local AS l on (p.codl = l.codl)
-							WHERE p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%' 
+							WHERE s.data between '$dataI' AND '$dataF' AND
+							p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%' 
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'
 				ORDER BY s.data";
+
+
 
 	$Entrada = "SELECT p.cod AS codp, p.nome AS nomep, e.qtd AS qtd, g.nome 
 							AS nomeg, l.nome AS nomel, e.data AS datae, e.codp AS ecodp 
 							FROM produto AS p INNER JOIN insercao AS e on (p.cod = e.codp)
 							INNER JOIN grupo AS g on (p.codg = g.codg) 
 							INNER JOIN local AS l on (p.codl = l.codl)
-							WHERE p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%' 
+							WHERE e.data between '$dataI' AND '$dataF' AND
+							p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%' 
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'
 				ORDER BY e.data";
 

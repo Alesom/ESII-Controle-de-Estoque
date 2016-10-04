@@ -4,10 +4,9 @@
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}
-	
+	//desativar o autocommit para quando o php try, as alterações não corretas não vão diretamente para o banco.
 	mysqli_autocommit($conexao, FALSE);
 
-	selectdb($conexao, $dbDatabase);	
 	if(isset($_POST['insertprod'])){
 		$codp = $_POST['codigo'];
 		$nome = $_POST['nome'];
@@ -20,28 +19,29 @@
 		$dados = mysqli_fetch_array($resultado);
 		$new_qtd = $dados["qtd"] + $qtdade;
 		$sql1 = "UPDATE produto SET qtd = '$new_qtd' WHERE cod = '$codp'";
+		if($qtdade<0){
+			$_SESSION['msg']='Favor inserir uma quantidade positiva';
+		}else{
+			try {
+				$cons = mysqli_query($conexao ,$sql);
+			    $cons1 = mysqli_query($conexao ,$sql1);
+			    if(!$cons || !$cons1){
+			    	throw new Exception("na inserção", 1);    	
+			    }
+			    if(!$cons)
+					$_SESSION['msg']='O produto'.$nome.' não pode ser inserido.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+				else
+					$_SESSION['msg']=$qtdade." unidades de ".$nome." foram inseridas com sucesso.";
 
 
-		try {
-			$cons = mysqli_query($conexao ,$sql);
-		    $cons1 = mysqli_query($conexao ,$sql1);
-		    if(!$cons || !$cons1){
-		    	throw new Exception("FOdeu a porra toda", 1);    	
-		    }
-		    if(!$cons)
-				$_SESSION['msg']='O produto'.$nome.' não pode ser inserido.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-			else
-				$_SESSION['msg']=$qtdade." unidades de ".$nome." foram inseridas com sucesso.";
-
-
-		    $a = mysqli_commit($conexao);
-		    if(!$a)	throw new Exception("Não foi possivel efetivar a inserção, problema com o banco. Consulte Administrador", 1);
-		} catch (Exception $e) {
-		    echo 'Ocorreu um erro: ',  $e->getMessage(), "\n";
+			    $a = mysqli_commit($conexao);
+			    if(!$a)	throw new Exception("Não foi possivel efetivar a inserção, problema com o banco. Consulte Administrador", 1);
+			} catch (Exception $e) {
+			    echo 'Ocorreu um erro: ',  $e->getMessage(), "\n";
+			}
 		}		
 	}
-	mysqli_autocommit($conexao, TRUE
-		);
+	mysqli_autocommit($conexao, TRUE);
 ?>
 <!DOCTYPE html>
 <html>
@@ -82,7 +82,7 @@
 
 		    	}?> /><br/>
 			Quantidade:<input type="text" name="qtdade" placeholder="00" /><br/>
-			Data: <input type="date" name="data" value=<?echo'"'.date('Y-m-d').'"';?>/><br/>
+			Data: <input type="date" name="data" value=<?echo'"'.date('Y-m-d H:i').'"';?>/><br/>
 		 	<input type="submit" name="insertprod" value="Inserir"/><br/>
 		</form> 
 		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
