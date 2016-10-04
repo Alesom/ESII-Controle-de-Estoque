@@ -34,7 +34,7 @@ SET GLOBAL lc_time_names=pt_BR;
 --
 
 CREATE TABLE `grupo` (
-  `codg` varchar(3) NOT NULL,
+  `codg` bigint(20) NOT NULL,
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -57,7 +57,7 @@ CREATE TABLE `insercao` (
 --
 
 CREATE TABLE `local` (
-  `codl` varchar(3) NOT NULL,
+  `codl` bigint(20) NOT NULL,
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -109,11 +109,22 @@ CREATE TABLE `usuario` (
 -- Indexes for dumped tables
 --
 
+create table 'fornecedor'(
+	'cnpj' int unsigned not null,
+	'razao_social' varchar(30) not null,
+	'nome_fantasia' varchar(30) not null,
+	'endereco' varchar(40) not null,
+	'telefone' varchar(15)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for table `grupo`
 --
 ALTER TABLE `grupo`
   ADD PRIMARY KEY (`codg`);
+  
+ALTER TABLE 'fornecedor'
+	ADD PRIMARY KEY ('cnpj');
 
 --
 -- Indexes for table `insercao`
@@ -198,7 +209,15 @@ ALTER TABLE `remocao`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`codl`) REFERENCES `local` (`codl`);
+  
+  
+ ALTER TABLE `grupo`
+  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 
+ALTER TABLE `local`
+  MODIFY `codl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
