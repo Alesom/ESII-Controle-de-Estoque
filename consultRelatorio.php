@@ -11,10 +11,7 @@
 	$dataF = $_GET['diaf'];
 	$saidaF = $_GET['saida'];
 	$entradaF = $_GET['entrada'];
-
-	echo '<p>'.$dataI." -- " .$dataF." -- " .$saidaF." -- " .$entradaF.'<p>';
-
-
+	
 	$Saida = "SELECT p.cod AS codp, p.nome AS nomep, s.qtd AS qtd, g.nome 
 							AS nomeg, l.nome AS nomel, s.data AS datas, s.codp AS scodp 
 							FROM produto AS p INNER JOIN remocao AS s on (p.cod = s.codp)
