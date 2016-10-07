@@ -2,7 +2,41 @@
 require_once( 'tcpdf/tcpdf.php' );
 require_once( 'tcpdf/config/tcpdf_config.php' );
 
-$pdf = new TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false, true );
+// Extend the TCPDF class to create custom Header and Footer
+class MYPDF extends TCPDF {
+
+	private $data;
+	private $tamanhoHeaderFonte = 15;
+	private $nomeImagemHeader = 'IdentidadeVisual.png';	
+
+   function __construct( $data ) {
+       parent::__construct( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false, true );  
+	   $this->data = $data;     
+   }
+
+    //Page header
+    public function Header() {
+        // Logo
+        $image_file = K_PATH_IMAGES.$this->nomeImagemHeader;
+        $this->Image($image_file, 13, 10, 15, '', 'PNG', '', 'T', false, 200, '', false, false, 0, false, false, false);
+        // Set font
+        $this->SetFont('helvetica', 'B', $this->tamanhoHeaderFonte);
+        // Title
+        $this->Cell(0, 15, '    Relatório  ('.$this->data.')', 0, false, '', 0, '', 0, false, '', '');		
+    }
+
+    // Page footer
+    public function Footer() {
+        // Position at 15 mm from bottom
+        $this->SetY(-15);
+        // Set font
+        $this->SetFont('helvetica', 'I', 8);
+        // Page number
+        $this->Cell(0, 10, 'Página '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+    }
+}
+
+$pdf = new MYPDF( date( 'd/m/Y', time() ) );
 
 // **************************************** CONFIGURAÇÃO INICIAL ************************************************* //
 
@@ -28,6 +62,9 @@ $pdf->SetMargins( PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT );
 $pdf->SetHeaderMargin( PDF_MARGIN_HEADER );
 $pdf->SetFooterMargin( PDF_MARGIN_FOOTER );
 
+//$pdf->SetPrintHeader(false);
+//$pdf->SetPrintFooter(false);
+
 // set auto page breaks
 $pdf->SetAutoPageBreak( TRUE, PDF_MARGIN_BOTTOM );
 
@@ -43,49 +80,24 @@ $pdf->AddPage();
 
 // **************************************************************************************************************** //
 
+if( isset( $_GET['id'] ) ) {
+	$teste = $_GET['id'];
+} else {
+	$teste = "erro";
+}
 
-$table = <<<EOD
-<table border="1" cellpadding="2" cellspacing="2" align="center">
-
-	<tr nobr="true">
-	  	<td bgcolor="#AAAAAA" style="font-size: 200%">Coluna 1</td>
-	  	<td bgcolor="#AAAAAA" style="font-size: 200%">Coluna 2</td>
-	  	<td bgcolor="#AAAAAA" style="font-size: 200%">Coluna 3</td>
-	</tr>
-
-	<tr nobr="true">
-		<td>Alguma coisa X</td>
-		<td>Alguma coisa X</td>
-		<td>Alguma coisa X</td>
-	 </tr>
-
-	<tr nobr="true">
-		<td>Alguma coisa Z</td>
-		<td>Alguma coisa Z</td>
-		<td>Alguma coisa Z</td>
-	</tr>
-
-	<tr nobr="true">
-		<td>Alguma coisa Z</td>
-		<td>Alguma coisa Z</td>
-		<td>Alguma coisa Z</td>
-	</tr>
-
-	<tr nobr="true">
-		<td>Alguma coisa Z</td>
-		<td>Alguma coisa Z</td>
-		<td>Alguma coisa Z</td>
-	</tr>
-
-	<tr nobr="true">
-		<td>Alguma coisa Z</td>
-		<td>Alguma coisa Z</td>
-		<td>Alguma coisa Z</td>
-	</tr>
-
-
-</table>
-EOD;
+$table = '<table border="1" cellpadding="2" cellspacing="2" align="center">
+<thead>
+		<tr>
+			<td><center><b>Código</b></center></td>
+			<td><center><b>Nome</b></center></td>
+			<td><center><b>Quantidade</b></center></td>
+			<td><center><b>Grupo</b></center></td>
+			<td><center><b>Local</b></center></td>
+			<td><center><b>Data de Entrada</b></center></td>
+			<td><center><b>Data de Saída</b></center></td>
+		</tr>
+	</thead>'.$teste.'</table>';
 
 $pdf->writeHTML( $table, true, false, false, false, '' );
 

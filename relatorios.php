@@ -53,13 +53,21 @@
 				});
 
 			};
+
+
+			function GeraPDF() {
+				var id = document.getElementById("idpd").innerHTML; 
+    			var url = "http://localhost/testepdf.php?id="+id;
+    			window.location.href=url;    
+			}
+
 		</script>
 	</head>
 	<body onload="preencheBusca()">
-<<<<<<< HEAD
+
 	<? require_once ("menu-principal.php"); ?>	
 
-=======
+<!--
 	<div id="top-bar" style='background-color:#009933;'>
 		<img src="imagens/IdentidadeVisual.png" style="height:80px;"/>
 		<a href="buscas.php"><button>Inserir Produtos</button></a>
@@ -74,8 +82,8 @@
 		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
 		<a href="index.php?logout=1"><button>Logout</button></a>
 	</div>		
-		
->>>>>>> 3add3deb932a2755f1c8c462f28abaa5d53081b1
+-->		
+
 	<div class="">
 			<div class="">
 	      		<form name="fsearch" action="imagem.php" method="get">
@@ -157,7 +165,7 @@
   								onchange="preencheBusca()"> Entrada
 						</label>
 
-      					<button type="submit" class="botton" disabled> Gerar Relatório</button>
+      					<button type="button" class="botton" onclick="GeraPDF()"> Gerar Relatório</button>
       					<button type="submit" class="botton" > Gerar Gráfico</button>
     				</div>
   				</form>
