@@ -56,16 +56,16 @@
 
 
 			function GeraPDF() {
-				var id = document.getElementById("idpd").innerHTML; 
+				var id = document.getElementById("idpd").innerHTML;
     			var url = "http://localhost/testepdf.php?id="+id;
-    			window.location.href=url;    
+    			window.location.href=url;
 			}
 
 		</script>
 	</head>
 	<body onload="preencheBusca()">
 
-	<? require_once ("menu-principal.php"); ?>	
+	<? require_once ("menu-principal.php"); ?>
 
 <!--
 	<div id="top-bar" style='background-color:#009933;'>
@@ -77,16 +77,16 @@
 		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 		<a href="buscas.php"><button>Buscar por Produtos</button></a>
 		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='Administrador')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
-			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
-		?>		
+			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>';
+		?>
 		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
 		<a href="index.php?logout=1"><button>Logout</button></a>
-	</div>		
--->		
+	</div>
+-->
 
 	<div class="">
 			<div class="">
-	      		<form name="fsearch" action="imagem.php" method="get">
+	      		<form name="fsearch" action="joao.php" method="get">
     				<div class="">
       					<input id="IdCodP" type="search" name="codp"
       						placeholder="Código do Produto" oninput="preencheBusca()">
@@ -115,7 +115,7 @@
       						 	<br/>
       					<input id="IdNomeG" type="search" name="nomeg"
       						placeholder="Nome do Grupo" oninput="preencheBusca()">
-      						<input type="number" id="IdAnof" name="Ano"onchange="preencheBusca()" value=<?echo '"'.date('Y').'"';?>>Ano
+      						<input type="number" id="IdAnof" name="Ano"onchange="preencheBusca()" value=2017>Ano
       						<br/>
       					<input id="IdCodL" type="search" name="codl"
       						placeholder="Código do Local" oninput="preencheBusca()">
@@ -158,7 +158,7 @@
       						 	onchange="preencheBusca()"> Relatório Mensal<br/>
       					</label>
       					<label class="checkbox-inline">
-  							<input type="checkbox" id="checkboxSaida" onchange="preencheBusca()"> Saída
+  							<input type="checkbox" id="checkboxSaida" name = "checkboxsaida" onchange="preencheBusca()"> Saída
 						</label>
 						<label class="checkbox-inline">
   							<input type="checkbox" id="checkboxEntrada" name = "checkboxentrada"
