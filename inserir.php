@@ -52,7 +52,7 @@
 </head>
 <body>
 <<<<<<< HEAD
-	<? require_once ("menu-principal.php"); ?>	
+	<? require_once ("menu-principal.php"); ?>
 
 =======
 	<div id="top-bar" style='background-color:#009933;'>
@@ -64,19 +64,19 @@
 		<a href="produto.php?cadl=1"><button>Cadastrar Local</button></a>
 		<a href="buscas.php"><button>Buscar por Produtos</button></a>
 		<?php if(isset($_SESSION['funcao']) && $_SESSION['funcao']=='Administrador')echo '<a href="index.php?cad_user=1"><button onClick="cad_user();">Cadastrar Novo Usuário</button></a>';
-			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>'; 
-		?>		
+			if(isset($_SESSION['falta']))echo '<a href="index.php"><button><img src="imagens/alarme.png" style="height:20px;"/></button></a>';
+		?>
 		<a href="relatorios.php"><button>Relatórios de Produtos</button></a>
 		<a href="index.php?logout=1"><button>Logout</button></a>
-	</div>	
-	
+	</div>
+
 >>>>>>> 3add3deb932a2755f1c8c462f28abaa5d53081b1
 	<div id="cadp" align="center">
 
 		<label><b>Inserir unidades de Produto</b></label>
-		<form action=<?echo '"inserir.php?prod='.$_GET['prod'].'"';?> method="post">
+		<form action=<?php echo '"inserir.php?prod='.$_GET['prod'].'"';?> method="post">
 
-		    Código do produto:<input type="text" name="codigo" readonly="readonly" <?if(isset($_GET['prod']))echo 'value="'.$_GET['prod'].'"';else echo'placeholder="Código do Produto"'?> /><br/>
+		    Código do produto:<input type="text" name="codigo" readonly="readonly" <?php if(isset($_GET['prod']))echo 'value="'.$_GET['prod'].'"';else echo'placeholder="Código do Produto"'?> /><br/>
 		    Nome do produto:<input type="text" name="nome" readonly="readonly"
 		    	<?php if(isset($_GET['prod'])){
 		    		$produto = $_GET['prod'];
@@ -87,10 +87,10 @@
 
 		    	}?> /><br/>
 			Quantidade:<input type="text" name="qtdade" placeholder="00" /><br/>
-			Data: <input type="date" name="data" value=<?echo'"'.date('Y-m-d H:i').'"';?>/><br/>
+			Data: <input type="date" name="data" value=<?php echo'"'.date('Y-m-d H:i').'"';?>/><br/>
 		 	<input type="submit" name="insertprod" value="Inserir"/><br/>
 		</form>
-		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
+		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
 	<a href="buscas.php"><button><b>Nova Busca</b></button></a>
 </body>
