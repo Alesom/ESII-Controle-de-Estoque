@@ -60,14 +60,14 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 </head>
 <body>
-	<? require_once ("menu-principal.php"); ?>	
+	<? require_once ("menu-principal.php"); ?>
 
 	<div id="cadp" align="center">
 
 		<label><b>Remover unidades de Produto</b></label>
-		<form action=<?echo '"retirar.php?prod='.$_GET['prod'].'"';?> method="post">
+		<form action=<?php echo '"retirar.php?prod='.$_GET['prod'].'"';?> method="post">
 
-		    Código do produto:<input type="text" name="codigo" readonly="readonly" <?if(isset($_GET['prod']))echo 'value="'.$_GET['prod'].'"';else echo'placeholder="Código do Produto"'?> /><br/>
+		    Código do produto:<input type="text" name="codigo" readonly="readonly" <?php if(isset($_GET['prod']))echo 'value="'.$_GET['prod'].'"';else echo'placeholder="Código do Produto"'?> /><br/>
 		    Nome do produto:<input type="text" name="nome" readonly="readonly"
 		    	<?php if(isset($_GET['prod'])){
 		    		$produto = $_GET['prod'];
@@ -87,7 +87,7 @@
 					echo '	<text><b>['.$dados["qtd"].'] </b>unidades disponiveis</text>';
 
 		    	?><br/>
-			Data: <input type="date" name="data" value=<?echo'"'.date ("Y-m-d H:i").'"';?>/><br/>
+			Data: <input type="date" name="data" value=<?php echo'"'.date ("Y-m-d H:i").'"';?>/><br/>
 			Destino:<input type="text" name="destino"/><br/>
 			Chamado:<input type="text" name="chamado"/><br/>
 
