@@ -1,11 +1,11 @@
 <?php
-	require ("connect.php");
+	require ("connect.php"); // se não existe conexao conecta
 
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}
 
-	if(isset($_POST['confirma'])){
+	if(isset($_POST['confirma'])){ // faz o update no banco de dados;
 		$codp = $_POST['codigo'];
 		$nome = $_POST['nome'];
 		$qtdmin = $_POST['qtdmin'];
@@ -35,11 +35,11 @@
 <body>
 	<? require_once ("menu-principal.php"); ?>
 
-	<div id="cadp" align="center">
+	<div id="cadp" align="left">
 
 		<label><b>Configurar Produto</b></label>
 		<form action=<?echo '"configurar.php?prod='.$_GET['prod'].'"';?> method="post">
-			<?php if(isset($_GET['prod'])){
+			<?php if(isset($_GET['prod'])){ // carrega a página com as configurações que são passadas pelo formulário;
 					mysqli_next_result($conexao);
 		    		$produto = $_GET['prod'];
 					$busca= "SELECT * FROM produto WHERE cod = '$produto'";

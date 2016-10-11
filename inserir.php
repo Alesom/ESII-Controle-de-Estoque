@@ -53,7 +53,7 @@
 <body>
 	<? require_once ("menu-principal.php"); ?>
 
-	<div id="cadp" align="center">
+	<div id="cadp" align="left">
 
 		<label><b>Inserir unidades de Produto</b></label>
 		<form action=<?php echo '"inserir.php?prod='.$_GET['prod'].'"';?> method="post">

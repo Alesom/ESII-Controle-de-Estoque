@@ -83,7 +83,7 @@
 <body onload="opera();">
 	<? require_once ("menu-principal.php"); ?>
 
-	<div id="cadp" align="center">
+	<div id="cadp" align="left">
 
 		<label>Cadastro de Produto</label>
 		<form action=<?php echo '"produto.php?cadp='.$_GET['cadp'].'"';?> method="post">
@@ -110,28 +110,28 @@
 			</select><br/>
 
 			<!--<input type="text" name="codlocal" placeholder="Código do local" /><br/>--><br/>
-		 	<input type="submit" name="cadprod" value="Cadastrar"/><br/>
+		 	<input  class="btn btn-lg btn-default" type="submit" name="cadprod" value="Cadastrar"/><br/>
 		</form>
 		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
 
-	<div id="cadg" align="center">
+	<div id="cadg" align="left">
 
 		<label>Cadastro de Grupos</label>
 		<form action="produto.php?cadg=1" method="post">
 			<input type="text" name="codigo" placeholder="Código do Grupo" /><br/>
 		 	<input type="text" name="nome" placeholder="Nome do Grupo" /><br/>
-		 	<input type="submit" name="cadg" value="Cadastrar"/><br/>
+		 	<input class="btn btn-lg btn-default" type="submit" name="cadg" value="Cadastrar"/><br/>
 		</form>
 		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>
-	<div id="cadl" align="center">
+	<div id="cadl" align="left">
 
 		<label>Cadastro de Local</label>
 		<form action="produto.php?cadl=1" method="post">
 			<input type="text" name="codigo" placeholder="Código do local" /><br/>
 		 	<input type="text" name="nome" placeholder="Nome do local" /><br/>
-		 	<input type="submit" name="cadlocal" value="Cadastrar" /><br/>
+		 	<input class="btn btn-lg btn-default" type="submit" name="cadlocal" value="Cadastrar" /><br/>
 		</form>
 		<?php if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
 	</div>

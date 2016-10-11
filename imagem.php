@@ -53,15 +53,15 @@ require('connect.php');
 			break;
 		case 'intervalo':
 			$datai=$_GET['datai'];
-			$dataf=$_GET['dataf'];			
+			$dataf=$_GET['dataf'];
 			break;
 	}
-	
+
 	$codp=$_GET['codp'];
-	
+
 	$query1="SELECT * FROM produto p join insercao i on p.cod=i.codp WHERE p.cod = '$codp' AND i.data between '$datai' AND '$dataf'";
 	$query2="SELECT * FROM produto p join remocao r on r.codp=p.cod WHERE p.cod = '$codp' AND r.data between '$datai' AND '$dataf' ";
-	
+
 	echo $codp. "<br/>".$datai. "<br/>".$dataf;
 	//$res1 = mysqli_query($conexao,$query1);
 	//if($res1)
@@ -72,15 +72,15 @@ require('connect.php');
 		//echo $data1[$b][$a];
 		$a++;
 	}
-	
+
 	$res2= query($conexao, $query2);
 	//$res2 = mysqli_query($conexao,$query2);
 	$a=0;
 	$b=0;
-	
+
 	while ($resu1 = mysqli_fetch_assoc($res2)){
 		$data1[$a]= array($resu1['data'],$resu1['qtd']);
-		//echo $data1[$b][$a];   
+		//echo $data1[$b][$a];
 		$a++;
 		//$b++;
 	}
@@ -101,7 +101,7 @@ require('connect.php');
 		$data1[$a]	= array($resu['nome'],$resu['qtd'],$resu1['soma'],$resu2['soma']);
 		$a++;
 	}*/
-	
+
 
 #Instancia o objeto e setando o tamanho do grafico na tela
 $plot = new PHPlot(800,500);
@@ -123,7 +123,7 @@ if(isset($_GET["type"])){
 		$plot->SetPlotType('linepoints');
 		break;
 	}
-}	
+}
 #Tipo de dados, nesse caso texto que esta no array
 $plot->SetDataType('text-data');
 #Setando os valores com os dados do array

@@ -1,9 +1,9 @@
-<?php
+<?php //sessão
 	session_start();
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}
-		?>
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,7 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 
 		<script type="text/javascript">
-			function preencheBusca() {
+			function preencheBusca() { // chama o arquivo loads.php para carregar a consulta
 				var codp = document.getElementById("IdCodP").value;
 				var nomep = document.getElementById("IdNomeP").value;
 				var codg = document.getElementById("IdCodG").value;
@@ -23,7 +23,7 @@
 				var url = 'loads.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg +
 							'&codl=' + codl + '&nomel=' + nomel;
 				$.get(url, function(dataReturn) {
-					$('#idpd').html(dataReturn);
+					$('#idpd').html(dataReturn); // Vai preencher no na div com o idpd
 				});
 			};
 		</script>
@@ -36,7 +36,7 @@
 			<div class="">
 	      		<form name="fsearch" action="" method="POST">
     				<div class="">
-      					<input id="IdCodP" type="search" name="codp"
+      					<input  id="IdCodP" type="search" name="codp"
       						placeholder="Código do Produto" oninput="preencheBusca()"> <br/>
       					<input id="IdNomeP" type="search" name="nomep"
       						placeholder="Nome do Produto" oninput="preencheBusca()"> <br/>
@@ -51,16 +51,6 @@
       					<button type="submit" class="hide" disabled></button>
     				</div>
   				</form>
-  				<!--<select>
-	  				<option><b>Ordenar por:</b></option>
-	  				<option>Nome Produto A-Z</option>
-	  				<option>Nome Produto Z-A</option>
-	  				<option>Grupo A-Z</option>
-	  				<option>Grupo Z-A</option>
-	  				<option>Local A-Z</option>
-	  				<option>Grupo Z-A</option>
-
-  				</select>-->
 	  		</div>
 
 			<div class="">
@@ -75,7 +65,7 @@
 								<td><center><b>Local</b></center></td>
 							</tr>
 						</thead>
-				        <tbody id="idpd">
+				        <tbody id="idpd"> <!-- div preenchinda com javascript -->
 
 				        </tbody>
       				</table>

@@ -90,11 +90,11 @@
     				<div class="">
       					<input id="IdCodP" type="search" name="codp"
       						placeholder="Código do Produto" oninput="preencheBusca()">
-      						<input type="number" id="IdAnoi" name="Ano" value="2016" oninput="preencheBusca()">Ano
+      						Ano:<input type="number" id="IdAnoi" name="Ano" value="2016" oninput="preencheBusca()">
 						<br/>
       					<input id="IdNomeP" type="search" name="nomep"
       						placeholder="Nome do Produto" oninput="preencheBusca()">
-      						<select id="IdMesi" name="Mesi">
+      				Mês:<select id="IdMesi" name="Mesi">
 								<option value="01" > Janeiro</option>
 								<option value="02" > Fevereiro</option>
 								<option value="03" > Março</option>
@@ -107,19 +107,19 @@
 								<option value="10" > Outubro</option>
 								<option value="11" > Novembro</option>
 								<option value="12" > Dezembro</option>
-							</select>Mês
+							</select>
 							<br/>
       					<input id="IdCodG" type="search" name="codg"
       						placeholder="Código do Grupo" oninput="preencheBusca()">
-      						<input type="number" id="IdDiai" name="DiaI" value="01" onchange="preencheBusca()" />Dia
+      						Dia:<input type="number" id="IdDiai" name="DiaI" value="01" onchange="preencheBusca()" />
       						 	<br/>
       					<input id="IdNomeG" type="search" name="nomeg"
       						placeholder="Nome do Grupo" oninput="preencheBusca()">
-      						<input type="number" id="IdAnof" name="Ano"onchange="preencheBusca()" value=2017>Ano
+      						Ano:<input type="number" id="IdAnof" name="Ano"onchange="preencheBusca()" value=2017>
       						<br/>
       					<input id="IdCodL" type="search" name="codl"
       						placeholder="Código do Local" oninput="preencheBusca()">
-      						<select id="IdMesf" name="Mesf" onchange="preencheBusca()">
+      				Mês<select id="IdMesf" name="Mesf" onchange="preencheBusca()">
 								<option value="01" > Janeiro</option>
 								<option value="02" > Fevereiro</option>
 								<option value="03" > Março</option>
@@ -133,15 +133,15 @@
 								<option value="11" > Novembro</option>
 								<option value="12" > Dezembro</option>
 
-							</select>Mês
+							</select>
 
       						<br/>
       					<input id="IdNomeL" type="search" name="nomel"
       						placeholder="Nome do Local" oninput="preencheBusca()">
 
-      						<input type="number" id="IdDiaf" onchange="preencheBusca()" name="DiaI" value="01" />Dia <br/>
-  						 	<input type="date" id="IdDiaI" name="diai" readonly>Data Inicial
-  						 	<input type="date" id="IdDiaF" name="diaf" readonly>Data Final
+      				Dia:<input type="number" id="IdDiaf" onchange="preencheBusca()" name="DiaI" value="01" /> <br/>
+  						Data Inicial:<input type="date" id="IdDiaI" name="diai" readonly>
+  						Data Final:<input type="date" id="IdDiaF" name="diaf" readonly>
   						 	<br/>
   						<br/>
 
@@ -165,8 +165,8 @@
   								onchange="preencheBusca()"> Entrada
 						</label>
 
-      					<button type="button" class="botton" onclick="GeraPDF()"> Gerar Relatório</button>
-      					<button type="submit" class="botton" > Gerar Gráfico</button>
+      					<button class="btn btn-lg btn-default" type="button" class="botton" onclick="GeraPDF()"> Gerar Relatório</button>
+      					<button class="btn btn-lg btn-default" type="submit" class="botton" > Gerar Gráfico</button>
     				</div>
   				</form>
 	  		</div>

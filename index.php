@@ -98,6 +98,7 @@
 <html>
 	<head>
 	<title>Index</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<!-- Bloco de script para login-->
 	<script type="text/javascript">
 			function check_login(){
@@ -141,7 +142,7 @@
 				<form action="index.php" method="POST" >
 					<input type="text" name="user" <?php if(isset($usuario))echo'value="'.$usuario.'"'; else echo'placeholder="Login"';?> required /><br/>
 					<input type="password" name="pass" <?php if(isset($_POST['pass']))echo'value="'.$_POST['pass'].'"'; else echo'placeholder="Senha"';?> required /><br/>
-					<input type="submit" name="entrar" Value="Login"/>
+					<input class="btn btn-lg btn-default"type="submit" name="entrar" Value="Login"/>
 				</form>
 				<a href='index.php?fp=1'>Esqueci minha senha</a>
 			</div>
@@ -196,7 +197,7 @@
 					</select>
 					<br/>
 					<!--<input type="text" name="newfunction" placeholder="Função"><br/>-->
-					<input type="submit" name="newpeople" value="Registrar"><br/>
+					<input class="btn btn-lg btn-default" type="submit" name="newpeople" value="Registrar"><br/>
 				</form>
 				</fieldset>
 			</div>
