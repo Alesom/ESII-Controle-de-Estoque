@@ -65,7 +65,7 @@
 	</head>
 	<body onload="preencheBusca()">
 
-	<? require_once ("menu-principal.php"); ?>
+	<?php require_once ("menu-principal.php"); ?>
 
 <!--
 	<div id="top-bar" style='background-color:#009933;'>

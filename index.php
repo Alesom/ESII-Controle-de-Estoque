@@ -133,7 +133,7 @@
 
 	</head>
 	<body onload="check_login();"> <!-- A função também deverá definir em que #section da página está -->
-		<? require_once ("menu-principal.php"); ?>
+		<?php require_once ("menu-principal.php"); ?>
 
 	<!-- section login BEGIN-->
 		<section >
