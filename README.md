@@ -4,6 +4,7 @@ Software de controle de estoque desenvolvido na disciplina de Engenharia de Soft
 P.O. do projeto: Sandro de Moura;
 Team: Alesom Zorzi, André Luiz Mazo, Eduardo Ogliari, Jardel Anton, Jovani de Souza, João Barp e Kétly Gonçalves Machado;
 Scrum Master (sprint 1): Kétly.
+Scrum Master (sprint 2): João Barp.
 
 Tecnologias a serem utilizadas no projeto:
 
