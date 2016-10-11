@@ -81,7 +81,7 @@
 	</script>
 </head>
 <body onload="opera();">
-	<? require_once ("menu-principal.php"); ?>
+	<?php require_once ("menu-principal.php"); ?>
 
 	<div id="cadp" align="center">
 

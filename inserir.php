@@ -51,7 +51,7 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 </head>
 <body>
-	<? require_once ("menu-principal.php"); ?>
+	<?php require_once ("menu-principal.php"); ?>
 
 	<div id="cadp" align="center">
 

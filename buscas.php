@@ -30,7 +30,7 @@
 	</head>
 	<body onload="preencheBusca()">
 
-	<? require_once ("menu-principal.php"); ?>
+	<?php require_once ("menu-principal.php"); ?>
 	<div class="">
 
 			<div class="">
