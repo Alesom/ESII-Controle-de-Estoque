@@ -57,7 +57,7 @@
 
 			function GeraPDF() {
 				var id = document.getElementById("idpd").innerHTML;
-    			var url = "http://localhost/testepdf.php?id="+id;
+    			var url = "http://localhost/ESII-Controle-de-Estoque/testepdf.php?id="+id;
     			window.location.href=url;
 			}
 

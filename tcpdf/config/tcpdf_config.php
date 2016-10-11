@@ -63,7 +63,7 @@
  * Default images directory.
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-define ('K_PATH_IMAGES', '/imagens/');
+define ('K_PATH_IMAGES', '/ESII-Controle-de-Estoque/imagens/');
 
 /**
  * Default image logo used be the default Header() method.
