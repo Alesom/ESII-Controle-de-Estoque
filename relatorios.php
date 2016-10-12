@@ -83,7 +83,7 @@
 		<a href="index.php?logout=1"><button>Logout</button></a>
 	</div>
 -->
-
+<label>Relatórios de Produtos</label>
 	<div class="">
 			<div class="">
 	      		<form name="fsearch" action="joao.php" method="get">

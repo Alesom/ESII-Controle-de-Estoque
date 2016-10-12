@@ -32,7 +32,7 @@
 
 	<?php require_once ("menu-principal.php"); ?>
 	<div class="">
-
+			<label>Busca de Produtos</label>
 			<div class="">
 	      		<form name="fsearch" action="" method="POST">
     				<div class="">
