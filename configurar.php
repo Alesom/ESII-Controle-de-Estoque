@@ -1,11 +1,11 @@
 <?php
-	require ("connect.php");
+	require ("connect.php"); // se não existe conexao conecta
 
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
 	}
 
-	if(isset($_POST['confirma'])){
+	if(isset($_POST['confirma'])){ // faz o update no banco de dados;
 		$codp = $_POST['codigo'];
 		$nome = $_POST['nome'];
 		$qtdmin = $_POST['qtdmin'];

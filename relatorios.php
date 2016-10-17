@@ -214,6 +214,8 @@
 						<td><center><b>Quantidade</b></center></td>
 						<td><center><b>Grupo</b></center></td>
 						<td><center><b>Local</b></center></td>
+						<td><center><b>Data de Entrada</b></center></td>
+						<td><center><b>Data de Saída</b></center></td>
 					</tr>
 				</thead>
 				<tbody id="idpd"></tbody>

@@ -12,3 +12,5 @@ O software vai ser desenvolvido em PHP e Java Script, a estruturação vai ser d
 O banco de dados utilizado será o MySQL.
 
 O projeto utilizará a metodologia ágil scrum, com o apoio da ferramenta Trello.
+
+No arquivo Passos.txt é possível encontrar todos os passos necessários para instalar e testas o software.
