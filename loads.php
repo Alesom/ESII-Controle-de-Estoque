@@ -8,9 +8,9 @@
 	$codl = $_GET['codl'];
 	$nomel = $_GET['nomel'];
 
-	$query = "SELECT p.cod AS codp, p.nome AS nomep, p.qtd AS qtd, g.nome AS nomeg, l.nome AS nomel 
+	$query = "SELECT p.cod AS codp, p.nome AS nomep, p.qtd AS qtd, g.nome AS nomeg, l.nome AS nomel
 				FROM produto AS p INNER JOIN grupo AS g on (p.codg = g.codg) INNER JOIN local AS l on (p.codl = l.codl)
-				WHERE p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%' 
+				WHERE p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%'
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'
 				ORDER BY p.cod";
 
@@ -20,11 +20,16 @@
 	if ($num>0) {
 		while ($row = mysqli_fetch_assoc($resultado)) {
 			echo "<tr>";
- 			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td> 
- 			<td><center>" . $row['qtd'] . "</center></td> <td><center>" . $row['nomeg'] . "</center></td> 
-			<td><center>" . $row['nomel'] . "</center></td><td><a href='retirar.php?prod=".$row['codp']."'><button>Retirar</button></a></td><td><a href='inserir.php?prod=".$row['codp']."'><button>Inserir</button></td><td><a href='configurar.php?prod=".$row['codp']."'><button>Configurar</button></td>
-			
- 			</tr> <br/>";
+ 			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td>
+ 			<td><center>" . $row['qtd'] . "</center></td> <td><center>" . $row['nomeg'] . "</center></td>
+			<td><center>" . $row['nomel'] . "</center></td>" .
+			"<td><a class='btn btn-primary' href='inserir.php?prod=" . $row['codp'] . "' role='button'>" .
+			"<span class='glyphicon glyphicon-plus' aria-hidden='true'></span></a></td>" .
+			"<td><a class='btn btn-primary' href='retirar.php?prod=" . $row['codp'] . "' role='button'>" .
+			"<span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a></td>" .
+			"<td><a class='btn btn-primary' href='configurar.php?prod=" . $row['codp'] . "' role='button'>" .
+			"<span class='glyphicon glyphicon-cog' aria-hidden='true'></span></a></td>";
+ 			echo "</tr>";
 		}
 	} else {
 		echo '<p>Nenhum produto encontrado.</p>';

@@ -19,30 +19,26 @@
 		$resultado = mysqli_query($conexao,$busca);
 		$dados = mysqli_fetch_array($resultado);
 		$new_qtd = $dados["qtd"] - $qtdade;
-		if($qtdade < 0){
-			$_SESSION['msg']="Não é possivel remover uma quantidade negativa";
-		}else if($new_qtd>=0){
 
-			$sql1 = "UPDATE produto SET qtd = '$new_qtd' WHERE cod = '$codp'";
-			$sql = "INSERT INTO remocao VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
+		$sql1 = "UPDATE produto SET qtd = '$new_qtd' WHERE cod = '$codp'";
+		$sql = "INSERT INTO remocao VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
+
+		if ($new_qtd >= 0) {
 			try{
-				$cons1 = mysqli_query($conexao ,$sql1);
-				$cons = mysqli_query($conexao ,$sql);
+				$cons1 = mysqli_query($conexao, $sql1);
+				$cons = mysqli_query($conexao, $sql);
 
 				if(!$cons1 || !$cons)
 					throw new Exception("Errrouuuu", 1);
 
 				if(!$cons)
-				$_SESSION['msg']=$qtdade.' de '.$nome.' não pode ser removidas.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+					$_SESSION['msg']=$qtdade.' de '.$nome.' não pode ser removidas.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 				else
 					$_SESSION['msg']=$qtdade." unidades de ".$nome." foram retiradas com sucesso.";
 
 				$a = mysqli_commit($conexao);
 				if(!$a)
 					throw new Exception("Não commitado no banco, tente novamente", 1);
-
-
-
 			}catch(Exception $e ){
 				echo "Deu erro nessa porra".$e->getMessage();
 				mysqli_rollback($conexao);
@@ -54,49 +50,88 @@
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Formulário Remoção</title>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-</head>
-<body>
-	<? require_once ("menu-principal.php"); ?>
+	<head>
+		<title>Formulário Remoção</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	</head>
+	<body>
 
-	<div id="cadp" align="center">
+		<div class="container">
 
-		<label><b>Remover unidades de Produto</b></label>
-		<form action=<?php echo '"retirar.php?prod='.$_GET['prod'].'"';?> method="post">
+			<?php require_once ("menu-principal.php"); ?>
 
-		    Código do produto:<input type="text" name="codigo" readonly="readonly" <?php if(isset($_GET['prod']))echo 'value="'.$_GET['prod'].'"';else echo'placeholder="Código do Produto"'?> /><br/>
-		    Nome do produto:<input type="text" name="nome" readonly="readonly"
-		    	<?php if(isset($_GET['prod'])){
-		    		$produto = $_GET['prod'];
-					$busca= "SELECT nome FROM produto WHERE cod = '$produto'";
-					$resultado = mysqli_query($conexao,$busca);
-					$dados = mysqli_fetch_array($resultado);
-					//echo $dados[0];
-					echo '	value="'.$dados["nome"].'"';
+			<div class="col-sm-12">
+				<h3><b>Remover unidades de Produto</b></h3>
+				<form action="retirar.php?prod=<?php echo $_GET['prod']; ?>" method="post" class="form-horizontal">
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idCodigo">Código do Produto:</label>
+							<input type="text" id="idCodigo" name="codigo" readonly="readonly"
+							<?php
+								if(isset($_GET['prod']))
+									echo 'value="' . $_GET['prod'] . '"';
+							?> class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idNome">Nome do Produto:</label>
+							<input type="text" id="idNome" name="nome" readonly="readonly"
+							<?php
+								if(isset($_GET['prod'])){
+									$produto = $_GET['prod'];
+									$busca = "SELECT nome FROM produto WHERE cod = '$produto'";
+									$resultado = mysqli_query($conexao, $busca);
+									$dados = mysqli_fetch_array($resultado);
+									echo '	value="' . $dados["nome"] . '"';
+								}
+							?> class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idQtd">Quantidade:</label>
+							<input id="idQtd" type="number" min="1" name="qtdade" class="form-control" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idData">Data:</label>
+							<input type="date" id="idData" name="data" value=
+								<?php
+									echo '"' . date('Y-m-d H:i') . '"';
+								?> class="form-control" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idDestino">Destino:</label>
+							<input id="idDestino" type="text" name="destino" class="form-control" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idChamado">Chamado:</label>
+							<input id="idChamado" type="text" name="chamado" class="form-control">
+						</div>
+					</div>
+					<input type="submit" name="retirarprod" value="Retirar" class="btn btn-primary">
+				</form>
+				<?php
+					if(isset($_SESSION['msg'])){
+						echo $_SESSION['msg'];
+						unset($_SESSION['msg']);
+					}
+				?>
+			</div>
+			<a href="buscas.php"><button><b>Nova Busca</b></button></a>
+		</div>
 
-		    	}?> /><br/>
-			Quantidade:<input type="text" name="qtdade" placeholder="00" />
-			<?php
-		    		$produto = $_GET['prod'];
-					$busca= "SELECT qtd FROM produto WHERE cod = '$produto'";
-					$resultado = mysqli_query($conexao,$busca);
-					$dados = mysqli_fetch_array($resultado);
-					echo '	<text><b>['.$dados["qtd"].'] </b>unidades disponiveis</text>';
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
 
-		    	?><br/>
-			Data: <input type="date" name="data" value=<?php echo'"'.date ("Y-m-d H:i").'"';?>/><br/>
-			Destino:<input type="text" name="destino"/><br/>
-			Chamado:<input type="text" name="chamado"/><br/>
-
-		 	<input type="submit" name="retirarprod" value="Retirar"/>
-
-		</form>
-		<?if(isset($_SESSION['msg'])){echo $_SESSION['msg'];unset($_SESSION['msg']);}?>
-	</div>
-	<a href="buscas.php"><button><b>Nova Busca</b></button></a>
-
-</body>
+	</body>
 </html>

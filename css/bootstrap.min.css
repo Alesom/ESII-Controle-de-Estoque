@@ -1,3 +1,26 @@
+.navbar {
+  min-height: 90px !important;
+}
+
+.navbar-nav li a {
+  line-height: 70px !important;
+}
+
+.navbar-header p {
+  line-height: 70px !important;
+  color: #00923f !important;
+}
+
+.red {
+  color: red;
+}
+
+.big-icon {
+  padding-top: 30px;
+  padding-left: 50px;
+  font-size: 35px;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.

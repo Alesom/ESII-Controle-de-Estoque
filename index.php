@@ -28,6 +28,7 @@
 		unset($_SESSION['senha']);
 		unset($_SESSION['funcao']);
 		unset($_SESSION['first']);
+		unset($_SESSION['falta']);
 		header("Location: index.php");
 	}else if(isset($_POST['newpeople'])){
 		if(isset($_POST['newpass1']) && isset($_POST['newpass2'])){
@@ -97,136 +98,229 @@
 ?>
 <html>
 	<head>
-	<title>Index</title>
-	<!-- Bloco de script para login-->
-	<script type="text/javascript">
+		<title>Index</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<!-- Bloco de script para login-->
+		<script type="text/javascript">
 			function check_login(){
 				/*Se estiver logado não há necessidade de pedir login, mas oferecer opção de logout*/
 				if(<?php if(isset($_SESSION['name'])) echo '1';else echo '0';?>){
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
-					document.getElementById("cad_user").style.display="none";
+					document.getElementById("cad_user").style.display='none';
+					document.getElementById("alarmes").style.display='block';
 				}else if(<?php if(!isset($_SESSION['first']))echo'1';else echo "0";?>){
 					document.getElementById('lin').style.display='block';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display="none";
+					document.getElementById("alarmes").style.display='none';
 				}else{//no caso de primeiro uso, permitir o admin se cadastrar sem problemas
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display="none";
+					document.getElementById("alarmes").style.display='none';
 				}
 				if(<?php if(isset($_GET['fp']))echo'1'; else echo'0';?>){//esqueceu a senha: desenvolver metodo de recuperação
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='block';
 					document.getElementById("cad_user").style.display="none";
+					document.getElementById("alarmes").style.display='none';
 				}if(<?if(isset($_GET['cad_user']))echo'1'; else echo'0';?>){
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display="block";
+					document.getElementById("alarmes").style.display='none';
 				}
 			}
 			function cad_user() {
 				document.getElementById("cad_user").style.display="block";
 			}
-	</script>
+		</script>
 
 	</head>
 	<body onload="check_login();"> <!-- A função também deverá definir em que #section da página está -->
-		<?php require_once ("menu-principal.php"); ?>
 
-	<!-- section login BEGIN-->
-		<section >
+		<div class="container">
 
-			<div id="lin" align="center" >
-				<form action="index.php" method="POST" >
-					<input type="text" name="user" <?php if(isset($usuario))echo'value="'.$usuario.'"'; else echo'placeholder="Login"';?> required /><br/>
-					<input type="password" name="pass" <?php if(isset($_POST['pass']))echo'value="'.$_POST['pass'].'"'; else echo'placeholder="Senha"';?> required /><br/>
-					<input type="submit" name="entrar" Value="Login"/>
-				</form>
-				<a href='index.php?fp=1'>Esqueci minha senha</a>
+			<!-- section login BEGIN-->
+			<section>
+
+				<?php require_once ("menu-principal.php"); ?>
+
+				<div id="lin" class="col-sm-12" align="center">
+					<form action="index.php" method="post" class="form-horizontal">
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="text" name="user" class="form-control" required="required"
+								<?php
+									if(isset($usuario))
+										echo 'value="' . $usuario . '"';
+									else
+										echo 'placeholder="Login"'; ?>>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="password" name="pass" class="form-control" required="required"
+								<?php
+									if(isset($_POST['pass']))
+										echo 'value="' . $_POST['pass'] . '"';
+									else
+										echo 'placeholder="Senha"'; ?>>
+							</div>
+						</div>
+						<input type="submit" name="entrar" value="Login" class="btn btn-primary">
+					</form>
+					<a href='index.php?fp=1'>Esqueci Minha Senha</a>
+				</div>
+
+				<div id="fp" class="col-sm-12" align="center">
+					<form action="index.php?fp=1" method="post" class="form-horizontal">
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="text" name="email" class="form-control" required="required" placeholder="Usuário">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="password" name="pass1" class="form-control" required="required" placeholder="Nova Senha">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="password" name="pass2" class="form-control" required="required" placeholder="Confirme Senha">
+							</div>
+						</div>
+						<input type="submit" name="changepass" value="Salvar" class="btn btn-primary">
+					</form>
+				</div>
+
+				<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
+				<div class="col-sm-12" align="center" id="cad_user_f" style='
+				<?php
+					if(isset($_SESSION['first']))
+						echo 'display:block;';
+					else echo 'display:none;'; ?>'>
+					<h3><b>Cadastrar Novo Usuário</b></h3>
+					<form action="index.php" method="post" class="form-horizontal">
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="text" name="newname" class="form-control" required="required" placeholder="Usuário">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="password" name="newpass1" class="form-control" required="required" placeholder="Nova Senha">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="password" name="newpass2" class="form-control" required="required" placeholder="Confirme Senha">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="text" name="newplace" class="form-control" required="required" placeholder="Código do Local">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="text" name="newplacen" class="form-control" required="required" placeholder="Nome do Local">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="text" name="newfunction" class="form-control" required="required" placeholder="Função">
+							</div>
+						</div>
+						<input type="submit" name="newpeople" value="Salvar" class="btn btn-primary">
+					</form>
+				</div>
+
+				<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
+				<div class="col-sm-12" align="center" id="cad_user" style="display:none;">
+					<h3><b>Cadastrar Novo Usuário</b></h3>
+					<form action="index.php" method="post" class="form-horizontal">
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="text" name="newname" class="form-control" required="required" placeholder="Usuário">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="password" name="newpass1" class="form-control" required="required" placeholder="Nova Senha">
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-xs-2 col-xs-offset-5">
+								<input type="password" name="newpass2" class="form-control" required="required" placeholder="Confirme Senha">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-2 col-xs-offset-5">
+						    <label for="local">Código do Local:</label>
+						    <select class="form-control" id="local" name="codlocal">
+									<?php
+										$busca = "SELECT * FROM local";
+										$resultado = mysqli_query($conexao, $busca);
+										while ($dados = mysqli_fetch_assoc($resultado))
+											echo '<option value = "' . $dados['codl'] . '">' . $dados['codl'] . '</option>';
+									?>
+						    </select>
+							</div>
+					  </div>
+						<div class="form-group">
+							<div class="col-xs-2 col-xs-offset-5">
+						    <label for="func">Função:</label>
+						    <select class="form-control" id="func" name="newfunction">
+									<option value="Supervisor">Supervisor</option>
+									<option value="Conferente">Conferente</option>
+									<option value="Estagiário">Estagiário</option>
+									<option value="Administrador">Administrador</option>
+						    </select>
+							</div>
+					  </div>
+						<input type="submit" name="newpeople" value="Salvar" class="btn btn-primary">
+					</form>
+				</div>
+			</section>
+
+			<div id="alarmes">
+				<?php
+				//percorrer todos os produtos e verificar se hÃ¡ algum com qtd menor ou igual a qtdmin.
+					if(isset($_SESSION['name'])){
+						$sql = "SELECT * FROM produto WHERE qtd<=qtdmin AND alarm=1";
+						$res = mysqli_query($conexao, $sql);
+						$count=0;
+						echo '<div align="center"><h1>Alarmes</h1></div>';
+						if($res) {
+							while ($resu = mysqli_fetch_assoc($res)){
+								$count++;
+								echo '<span class="label label-danger">Atenção</span>';
+								echo '<div class="alert alert-danger">
+												O produto <b>' . $resu['nome'] . '</b> conta com <b>' . $resu['qtd'] .
+												'</b> unidades, a quantidade mínima é de <b>' . $resu['qtdmin'] . '</b> unidades.
+											</div>';
+							}
+						}
+						if($count!=0) $_SESSION['falta'] = $count;
+						else unset($_SESSION['falta']);
+					}
+				?>
 			</div>
-			<div id='fp' align="center">
-				<form action="index.php?fp=1" method="POST">
-					<input type="text" name="email" placeholder="Usuário"/><br/>
-					<input type="password" name="pass1" placeholder="Nova Senha"><br/>
-					<input type="password" name="pass2" placeholder="Confirme Senha"><br/>
-
-					<input type="submit" name="changepass" value="Trocar"><br/>
-				</form>
-			</div>
-
-			<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
-			<div align="center" style='<?php if(isset($_SESSION['first']))echo'display:block;';else echo'display:none;'; ?>'>
-				<fieldset style="background-color:#009900;">
-				<label>Cadastre um novo usuário</label>
-				<form action="index.php" method="POST">
-					<input type="text" name="newname" placeholder="Usuário"/><br/>
-					<input type="password" name="newpass1" placeholder="Nova Senha"><br/>
-					<input type="password" name="newpass2" placeholder="Confirme Senha"><br/>
-					<input type="text" name="newplace" placeholder="Codigo do Local"><br/>
-					<input type="text" name="newplacen" placeholder="Nome do Local"><br/>
-					<input type="text" name="newfunction" placeholder="Função"><br/>
-					<input type="submit" name="newpeople" value="Registrar"><br/>
-				</form>
-				</fieldset>
-			</div>
-
-			<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
-			<div align="center" id="cad_user" style="display:none;">
-				<label>Cadastre um novo usuário</label>
-				<fieldset style="background-color:#009900;"><br/>
-				<form action="index.php" method="POST">
-					<input type="text" name="newname" placeholder="Usuário"/><br/>
-					<input type="password" name="newpass1" placeholder="Nova Senha"><br/>
-					<input type="password" name="newpass2" placeholder="Confirme Senha"><br/>
-					Código do Local:<br/>
-					<select name="codlocal">
-					<?$busca= "SELECT * FROM local";
-						$resultado = mysqli_query($conexao,$busca);
-						while ($dados = mysqli_fetch_assoc($resultado))
-							echo '<option value = "'.$dados['codl'].'">'.$dados['codl'].'</option>';
-					?>
-				</select><br/>
-				Função:<br/>
-					<select name="newfunction">
-						<option value="Supervisor">Supervisor</option>
-						<option value="Conferente">Conferente</option>
-						<option value="Estagiário">Estagiário</option>
-						<option value="Administrador">Administrador</option>
-					</select>
-					<br/>
-					<!--<input type="text" name="newfunction" placeholder="Função"><br/>-->
-					<input type="submit" name="newpeople" value="Registrar"><br/>
-				</form>
-				</fieldset>
-			</div>
-
-		</section>
-		<div><fieldset>
 			<?php
-	//percorrer todos os produtos e verificar se hÃ¡ algum com qtd menor ou igual a qtdmin.
-			if(isset($_SESSION['name'])){
-				$sql = "SELECT * FROM produto WHERE qtd<=qtdmin AND alarm=1";
-				$res = mysqli_query($conexao,$sql);
-				echo'<h1> Alarmes:</h1>';
-				$count=0;
-				if($res)
-				while ($resu = mysqli_fetch_assoc($res)){
-					$count++;
-					echo "<p>O produto <b>".$resu['nome']."</b> conta com <b>".$resu['qtd'].'</b> unidades, a quantidade mínima é de <b>'.$resu['qtdmin']."</b> unidades<br /></p>";
+				if(isset($_SESSION['newerror'])) {
+					echo $_SESSION['newerror'];
+					unset($_SESSION['newerror']);
 				}
-				if($count!=0) $_SESSION['falta']=$count;
-				else
-					unset($_SESSION['falta']);
-			}
 			?>
-		</fieldset>
 		</div>
-		<?php
-			if(isset($_SESSION['newerror'])) {
-				echo $_SESSION['newerror'];
-				unset($_SESSION['newerror']);
-			}
-		?>
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+
 	</body>
 </html>
