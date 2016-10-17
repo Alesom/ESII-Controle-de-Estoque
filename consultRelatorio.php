@@ -39,9 +39,10 @@
 	$EntradaRes = query($conexao, $Entrada);
 	$NEntradaRes = mysqli_num_rows($EntradaRes);
 
-	if (($NSaidaRes<=0 && $NEntradaRes<=0) || (!$saidaF && !$entradaF)) {
+	if (($NSaidaRes<=0 && $NEntradaRes<=0) || (!$saidaF && !$entradaF) ||
+			($saidaF && !$entradaF && $NSaidaRes == 0) || (!$saidaF && $entradaF && $NEntradaRes == 0)) {
 		echo '<p>Nenhum produto encontrado.</p>';
-	}else if (($NSaidaRes<=0 && $NEntradaRes > 0) && (!$saidaF && $entradaF) ){
+	}else if (!$saidaF && $entradaF){
 		while ($row = mysqli_fetch_assoc($EntradaRes)) {
 			echo "<tr>";
 			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td>
@@ -51,7 +52,7 @@
 			<td><center>---" ;
 			echo "</tr> <br/>";
 		}
-	}else if (($NSaidaRes > 0 && $NEntradaRes <= 0) && ($saidaF && !$entradaF )){
+	}else if ($saidaF && !$entradaF){
 		while ($row = mysqli_fetch_assoc($SaidaRes)) {
 			echo "<tr>";
 			echo "<td><center>". $row['codp'] . "</center></td> <td>". $row['nomep'] . "</td>

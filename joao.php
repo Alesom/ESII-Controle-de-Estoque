@@ -1,4 +1,5 @@
 <?php
+
   include('phplot/phplot.php');
   require('connect.php');
 
@@ -60,7 +61,7 @@
   $j=0;
   $x;
   $temp;
-  $data;
+  $data = array();
   $plot = new PHPlot(800,500);
 
   if($_GET['entrada'] == 1 && $_GET['saida'] == 1){
@@ -95,10 +96,14 @@
     $plot->SetLegend(array('Retirados'));
   }
 
-  $plot->SetPlotType('bars');
-  $plot->SetDataType('text-data');
-  $plot->SetDataValues($data);
-  $plot->SetYDataLabelPos('plotin');
-  $plot->DrawGraph();
-  $plot->SetFileFormat("png");
+  if (empty($data)) {
+    echo 'NENHUM DADO ENCONTRADO!';
+  } else {
+    $plot->SetPlotType('bars');
+    $plot->SetDataType('text-data');
+    $plot->SetDataValues($data);
+    $plot->SetYDataLabelPos('plotin');
+    $plot->DrawGraph();
+    $plot->SetFileFormat("png");
+  }
 ?>
