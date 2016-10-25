@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	session_start();
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
@@ -46,7 +46,7 @@
 				}
 
 				if (mode) {
-					var url = 'http://localhost/ESII-Controle-de-Estoque/joao.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg +
+					var url = 'http://localhost/ESII-Controle-de-Estoque/graficos.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg +
 								'&codl=' + codl + '&nomel=' + nomel +'&saida=' + saida + '&entrada=' + entrada + '&diai=' + dataini + '&diaf=' + datafim;
 					window.open(url);
 				} else {
