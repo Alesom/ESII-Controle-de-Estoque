@@ -51,6 +51,22 @@
 		else
 			$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
 	}
+	if(isset($_POST['cadforn'])){
+		
+		$razao = $_POST['razao'];
+		$nome = $_POST['nomef'];
+		$cnpj = $_POST['cnpj'];
+		$logra = $_POST['logra'];
+		$fone = $_POST['fone'];
+
+		$sql = "INSERT INTO fornecedor (`cnpj`,`razao_social`,`nome_fantasia`,`endereco`,`telefone`) VALUES ('$cnpj','$razao', '$nomef', '$logra', '$fone')";
+		$cons = mysqli_query($conexao ,$sql);
+		if(!$cons){
+			$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+		}
+		else
+			$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,19 +80,36 @@
 					document.getElementById('cadp').style.display='block';
 					document.getElementById('cadg').style.display='none';
 					document.getElementById('cadl').style.display='none';
+					document.getElementById('cadf').style.display='none';
 				}else if(<?php if(isset($_GET['cadg'])) echo '1';else echo '0';?>){
 					document.getElementById('cadp').style.display='none';
 					document.getElementById('cadg').style.display='block';
 					document.getElementById('cadl').style.display='none';
+					document.getElementById('cadf').style.display='none';
 				}else if(<?php if(isset($_GET['cadl'])) echo '1';else echo '0';?>){//no caso de primeiro uso, permitir o admin se cadastrar sem problemas
 					document.getElementById('cadp').style.display='none';
 					document.getElementById('cadg').style.display='none';
 					document.getElementById('cadl').style.display='block';
+					document.getElementById('cadf').style.display='none';
+				}else if(<?php if(isset($_GET['cadf'])) echo '1';else echo '0';?>){
+					document.getElementById('cadf').style.display='block';
+					document.getElementById('cadg').style.display='none';
+					document.getElementById('cadl').style.display='none';
+					document.getElementById('cadp').style.display='none';
 				}
 			}
 			function showalarm() {
 				document.getElementById("alarme").style.display="block;";
 			}
+			function formatar(mascara, documento){
+              var i = documento.value.length;
+              var saida = mascara.substring(0,1);
+              var texto = mascara.substring(i)
+              
+              if (texto.substring(0,1) != saida){
+                        documento.value += texto.substring(0,1);
+              }
+            }
 		</script>
 	</head>
 
@@ -162,6 +195,24 @@
 					<input type="submit" name="cadlocal" value="Cadastrar" class="btn btn-primary">
 				</form>
 			</div>
+
+			<div id="cadf" class="col-sm-12">
+				<h3><b>Cadastro de Fornecedor</b></h3>
+				<form action="produto.php?cadf=1" method="post" class="form-horizontal">
+					<div class="form-group row">
+						<div class="col-xs-3">
+							Nome: <input type="text" name="razao" class="form-control" required="required" placeholder="Razão Social"><br/>
+							Nome Fantasia: <input type="text" name="nomef" class="form-control"><br/>
+							CNPJ:<br/> <input type="text" name="cnpj" maxlength="18" OnKeyPress="formatar('##.###.###/####-##', this)"/><br/><br/>
+							Endereço: <input type="text" name="logra" class="form-control" required="required"><br/>
+							Telefone: <input type="text" name="fone" class="form-control" name="cnpj" maxlength="13" OnKeyPress="formatar('## #####-####', this)">
+							<br/>
+						</div>
+					</div>
+					<input type="submit" name="cadforn" value="Cadastrar" class="btn btn-primary">
+				</form>
+			</div>
+
 
 			<?php
 				if(isset($_SESSION['msg'])){
