@@ -26,6 +26,7 @@
                 <li><a href="produto.php?cadp=1">Cadastrar Produto</a></li>
                 <li><a href="produto.php?cadg=1">Cadastrar Grupo</a></li>
                 <li><a href="produto.php?cadl=1">Cadastrar Local</a></li>
+                <li><a href="produto.php?cadf=1">Cadastrar Fornecedor</a></li>
               </ul>
             </li>
             <li> <a href="buscas.php"><b>Buscar Produtos</b></a> </li>
