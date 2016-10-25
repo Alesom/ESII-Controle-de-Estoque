@@ -67,21 +67,35 @@
   if($_GET['entrada'] == 1 && $_GET['saida'] == 1){
     $i=0;
     $j=0;
-    while ($i < $NEntradaRes) {
-      $x=$vetEN[$i][0];
-      while ($j < $NSaidaRes) {
-        if($x == $vetSAI[$j][0]){
-          $temp = $vetSAI[$j][1];
-          break;
+    if($NEntradaRes > 0 && $NSaidaRes > 0){
+      while ($i < $NEntradaRes) {
+        $x=$vetEN[$i][0];
+        while ($j < $NSaidaRes) {
+          if($x == $vetSAI[$j][0]){
+            $temp = $vetSAI[$j][1];
+            break;
+          }
+          $j++;
         }
-        $j++;
+        $data[$i]=array($vetEN[$i][0], $vetEN[$i][1], $temp);
+        $j=0;
+        $temp=0;
+        $i++;
       }
-      $data[$i]=array($vetEN[$i][0], $vetEN[$i][1], $temp);
-      $j=0;
-      $temp=0;
-      $i++;
+      $plot->SetLegend(array('Inseridos','Retirados'));
+    }else if ($NEntradaRes > 0 && $NSaidaRes == 0) {
+      while ($i<$NEntradaRes) {
+        $data[$i]=array($vetEN[$i][0],$vetEN[$i][1]);
+        $i++;
+      }
+      $plot->SetLegend(array('Inseridos'));
+    }else if ($NEntradaRes == 0 && $NSaidaRes > 0) {
+      while ($i<$NSaidaRes) {
+        $data[$i]=array($vetSAI[$i][0],$vetSAI[$i][1]);
+        $i++;
+      }
+      $plot->SetLegend(array('Retirados'));
     }
-    $plot->SetLegend(array('Inseridos','Retirados'));
   }else if ($_GET['entrada'] == 1) {
     while ($i<$NEntradaRes) {
        $data[$i]=array($vetEN[$i][0],$vetEN[$i][1]);
