@@ -84,7 +84,7 @@
 					    <label for="grupo">Código do Grupo:</label>
 					    <select class="form-control" id="grupo" name="codgrupo">
 					      <option <?php echo 'value="' . $grupo . '"'; ?>> <?php echo $grupo; ?> </option>
-								<?p
+								<?php
 									$sql = "SELECT * FROM grupo";
 									$res = mysqli_query($conexao, $sql);
 									while ($resu = mysqli_fetch_assoc($res))
