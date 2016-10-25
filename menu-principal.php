@@ -29,7 +29,6 @@
                 <li><a href="produto.php?cadf=1">Cadastrar Fornecedor</a></li>
               </ul>
             </li>
-            <li> <a href="buscas.php"><b>Buscar Produtos</b></a> </li>
             <li> <a href="relatorios.php"><b>Relatórios</b></a> </li>';
             if($_SESSION['funcao']=='boss') {
               echo '<li> <a href="index.php?cad_user=1" onclick="cad_user();"><b>Cadastrar Novo Usuário</b></a> </li>';

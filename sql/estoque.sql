@@ -1,21 +1,14 @@
--- DROP DATABASE estoque;
--- CREATE DATABASE estoque;
-
 -- phpMyAdmin SQL Dump
 -- version 4.5.2
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 16, 2016 at 08:04 
+-- Generation Time: Oct 25, 2016 at 07:14 
 -- Server version: 10.1.11-MariaDB
 -- PHP Version: 7.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
--- alterando o formato da data de yyyy-mm-dd para dd-mm-yyyy [en_US]->[pt_br]
-SET GLOBAL lc_time_names=pt_BR;
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -30,11 +23,25 @@ SET GLOBAL lc_time_names=pt_BR;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `fornecedor`
+--
+
+CREATE TABLE `fornecedor` (
+  `cnpj` int(10) UNSIGNED NOT NULL,
+  `razao_social` varchar(30) NOT NULL,
+  `nome_fantasia` varchar(30) NOT NULL,
+  `endereco` varchar(40) NOT NULL,
+  `telefone` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `grupo`
 --
 
 CREATE TABLE `grupo` (
-  `codg` bigint(20) NOT NULL,
+  `codg` bigint(20) UNSIGNED NOT NULL,
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -57,7 +64,7 @@ CREATE TABLE `insercao` (
 --
 
 CREATE TABLE `local` (
-  `codl` bigint(20) NOT NULL,
+  `codl` bigint(20) UNSIGNED NOT NULL,
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -74,7 +81,7 @@ CREATE TABLE `produto` (
   `codg` varchar(3) DEFAULT NULL,
   `codl` varchar(3) DEFAULT NULL,
   `qtdmin` int(11) DEFAULT NULL,
-  `alarm` boolean DEFAULT 1
+  `alarm` tinyint(1) DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -109,33 +116,29 @@ CREATE TABLE `usuario` (
 -- Indexes for dumped tables
 --
 
-create table 'fornecedor'(
-	'cnpj' int unsigned not null,
-	'razao_social' varchar(30) not null,
-	'nome_fantasia' varchar(30) not null,
-	'endereco' varchar(40) not null,
-	'telefone' varchar(15)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Indexes for table `fornecedor`
+--
+ALTER TABLE `fornecedor`
+  ADD PRIMARY KEY (`cnpj`);
 
 --
 -- Indexes for table `grupo`
 --
 ALTER TABLE `grupo`
   ADD PRIMARY KEY (`codg`);
-  
-ALTER TABLE 'fornecedor'
-	ADD PRIMARY KEY ('cnpj');
 
 --
 -- Indexes for table `insercao`
 --
-ALTER TABLE `insercao` ADD PRIMARY KEY (`codp`,`data`);
-  
+ALTER TABLE `insercao`
+  ADD PRIMARY KEY (`codp`,`data`);
 
 --
 -- Indexes for table `local`
 --
-ALTER TABLE `local` ADD PRIMARY KEY (`codl`);
+ALTER TABLE `local`
+  ADD PRIMARY KEY (`codl`);
 
 --
 -- Indexes for table `produto`
@@ -149,7 +152,9 @@ ALTER TABLE `produto`
 --
 -- Indexes for table `remocao`
 --
-ALTER TABLE `remocao`ADD PRIMARY KEY (`data`,`codp`);
+ALTER TABLE `remocao`
+  ADD PRIMARY KEY (`data`,`codp`),
+  ADD KEY `remocao_ibfk_1` (`codp`);
 
 --
 -- Indexes for table `usuario`
@@ -164,18 +169,10 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT for table `insercao`
+-- AUTO_INCREMENT for table `grupo`
 --
-ALTER TABLE `insercao`
-  MODIFY `codp` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `produto`
---
-ALTER TABLE `produto`
-  MODIFY `cod` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `remocao`
---
+ALTER TABLE `grupo`
+  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
@@ -192,32 +189,11 @@ ALTER TABLE `insercao`
   ADD CONSTRAINT `insercao_ibfk_1` FOREIGN KEY (`codp`) REFERENCES `produto` (`cod`);
 
 --
--- Constraints for table `produto`
---
-ALTER TABLE `produto`
-  ADD CONSTRAINT `produto_ibfk_1` FOREIGN KEY (`codg`) REFERENCES `grupo` (`codg`),
-  ADD CONSTRAINT `produto_ibfk_2` FOREIGN KEY (`codl`) REFERENCES `local` (`codl`);
-
---
 -- Constraints for table `remocao`
 --
 ALTER TABLE `remocao`
   ADD CONSTRAINT `remocao_ibfk_1` FOREIGN KEY (`codp`) REFERENCES `produto` (`cod`);
 
---
--- Constraints for table `usuario`
---
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`codl`) REFERENCES `local` (`codl`);
-  
-  
- ALTER TABLE `grupo`
-  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
-
-ALTER TABLE `local`
-  MODIFY `codl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
