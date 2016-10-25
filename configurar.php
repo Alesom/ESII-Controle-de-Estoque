@@ -62,29 +62,29 @@
 				    <div class="col-xs-3">
 							<label for="idCodigo">Código do Produto:</label>
 							<input type="text" id="idCodigo" name="codigo" readonly="readonly"
-							<? echo 'value="' . $codp . '"'; ?> class="form-control">
+							<?php echo 'value="' . $codp . '"'; ?> class="form-control">
 						</div>
 					</div>
 					<div class="form-group row">
 				    <div class="col-xs-3">
 							<label for="idNome">Nome do Produto:</label>
 							<input type="text" id="idNome" name="nome"
-					    <? echo 'value="' . $nome . '"'; ?> class="form-control" required="required">
+					    <?php echo 'value="' . $nome . '"'; ?> class="form-control" required="required">
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
 							<label for="idQtd">Quantidade Mínima:</label>
 							<input id="idQtd" type="number" min="0" name="qtdmin"
-							<? echo 'value="' . $qtdademin . '"'; ?> class="form-control" required="required">
+							<?php  echo 'value="' . $qtdademin . '"'; ?> class="form-control" required="required"> 
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
 					    <label for="grupo">Código do Grupo:</label>
 					    <select class="form-control" id="grupo" name="codgrupo">
-					      <option <? echo 'value="' . $grupo . '"'; ?>> <? echo $grupo; ?> </option>
-								<?
+					      <option <?php echo 'value="' . $grupo . '"'; ?>> <?php echo $grupo; ?> </option>
+								<?php
 									$sql = "SELECT * FROM grupo";
 									$res = mysqli_query($conexao, $sql);
 									while ($resu = mysqli_fetch_assoc($res))
@@ -97,8 +97,8 @@
 						<div class="col-xs-3">
 					    <label for="local">Código do Local:</label>
 					    <select class="form-control" id="local" name="codlocal">
-					      <option <? echo 'value="' . $local . '"'; ?>> <? echo $local; ?> </option>
-								<?
+					      <option <?php echo 'value="' . $local . '"'; ?>> <?php echo $local; ?> </option>
+								<?php
 									$sql = "SELECT * FROM local";
 									$res = mysqli_query($conexao, $sql);
 									while ($resu = mysqli_fetch_assoc($res))
@@ -110,7 +110,7 @@
 					<div class="form-check">
 					  <label class="form-check-label">
 					    <input class="form-check-input" type="checkbox" value="TRUE" name="alarme"
-							<? if($alarme) echo 'checked'; ?>>
+							<?php if($alarme) echo 'checked'; ?>>
 					    Receber alarme quando a quantidade for menor ou igual à quantidade mínima
 					  </label>
 					</div>
