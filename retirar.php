@@ -117,6 +117,11 @@
 						</div>
 					</div>
 					<input type="submit" name="retirarprod" value="Retirar" class="btn btn-primary">
+					
+					<label class="checkbox-inline">
+					  <input type="checkbox" id="idtransferencia" value="t" checked="checked" onclick="ativatransferencia(0)"> Transferência
+					</label>
+					
 				</form>
 				<?php
 					if(isset($_SESSION['msg'])){
