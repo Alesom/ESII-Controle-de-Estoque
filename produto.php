@@ -5,7 +5,6 @@
 		header("Location:index.php");
 	}
 	if(isset($_POST['cadprod'])){
-		$cod = $_POST['codigo'];
 		$nome = $_POST['nome'];
 		$qtdade = $_POST['qtdade'];
 		$qtdademin = $_POST['qtdademin'];
@@ -29,9 +28,8 @@
 	}
 
 	if(isset($_POST['cadg'])){
-		$cod = $_POST['codigo'];
 		$nome = $_POST['nome'];
-		$sql = "INSERT INTO grupo VALUES ('$cod','$nome')";
+		$sql = "INSERT INTO grupo(`nome`) VALUES ('$nome')";
 		$cons = mysqli_query($conexao ,$sql);
 		if(!$cons){
 			$_SESSION['msg']="O Grupo ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
@@ -41,9 +39,8 @@
 
 	}
 	if(isset($_POST['cadlocal'])){
-		$cod = $_POST['codigo'];
 		$nome = $_POST['nome'];
-		$sql = "INSERT INTO local VALUES ('$cod','$nome')";
+		$sql = "INSERT INTO local(`nome`) VALUES ('$nome')";
 		$cons = mysqli_query($conexao ,$sql);
 		if(!$cons){
 			$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
@@ -124,11 +121,6 @@
 				<form action="produto.php?cadp=<?php echo $_GET['cadp']; ?>" method="post" class="form-horizontal">
 					<div class="form-group row">
 						<div class="col-xs-3">
-							<input type="text" name="codigo" class="form-control" required="required" placeholder="Código do Produto">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-xs-3">
 							<input type="text" name="nome" class="form-control" required="required" placeholder="Nome do Produto">
 						</div>
 					</div>
@@ -177,11 +169,6 @@
 				<form action="produto.php?cadg=1" method="post" class="form-horizontal">
 					<div class="form-group row">
 						<div class="col-xs-3">
-							<input type="text" name="codigo" class="form-control" required="required" placeholder="Código do Grupo">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-xs-3">
 							<input type="text" name="nome" class="form-control" required="required" placeholder="Nome do Grupo">
 						</div>
 					</div>
@@ -192,11 +179,6 @@
 			<div id="cadl" class="col-sm-12">
 				<h3><b>Cadastro de Local</b></h3>
 				<form action="produto.php?cadl=1" method="post" class="form-horizontal">
-					<div class="form-group row">
-						<div class="col-xs-3">
-							<input type="text" name="codigo" class="form-control" required="required" placeholder="Código do Local">
-						</div>
-					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
 							<input type="text" name="nome" class="form-control" required="required" placeholder="Nome do Local">
