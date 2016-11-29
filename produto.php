@@ -1,28 +1,30 @@
 ﻿<?php
 	require ("connect.php");
 
-	if(!isset($_SESSION['name'])){
+	if(!isset($_SESSION['name']))
 		header("Location:index.php");
-	}
+	
 	if(isset($_POST['cadprod'])){
 		$nome = $_POST['nome'];
-		$qtdade = $_POST['qtdade'];
+		$qtdade = 0;
 		$qtdademin = $_POST['qtdademin'];
 		$codlocal = $_POST['codlocal'];
 		$codgrupo = $_POST['codgrupo'];
 		$data= date ("Y-m-d H:i");
-		//echo $data;
-		$sql = "INSERT INTO produto VALUES ('$cod','$nome','$qtdade','$codgrupo','$codlocal','$qtdademin','1')";
-		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons){
-			$_SESSION['msg']='O produto'.$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		}
-		else{
-			$sql = "INSERT INTO insercao VALUES ('$cod','$qtdade','$data')";
+		$sql = "SELECT MAX(cod)as cod FROM produto";
 			$cons = mysqli_query($conexao ,$sql);
-				if(!$cons){
-					echo "putaquepariu". mysqli_error($conexao);
-				}
+			$cod = mysqli_fetch_assoc($cons);
+			$cod = $cod["cod"];	
+		
+		//$cod = $codlocal*100 - $codgrupo*100 - $cod;
+		$cod -= $codlocal*100 + $codgrupo*100;
+		$cod++;
+		$cod += $codlocal*100 + $codgrupo*100;
+		$sql = "INSERT INTO produto(`cod`,`nome`,`qtd`,`codg`,`codl`,`qtdmin`,`alarm`) VALUES ('$cod','$nome','$qtdade','$codgrupo','$codlocal','$qtdademin','1')";
+		$cons = mysqli_query($conexao ,$sql);
+		if(!$cons)
+			$_SESSION['msg']='O produto '.$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+		else{
 			$_SESSION['msg']="O produto ".$nome." foi cadastrado com sucesso.";
 		}
 	}
@@ -31,39 +33,36 @@
 		$nome = $_POST['nome'];
 		$sql = "INSERT INTO grupo(`nome`) VALUES ('$nome')";
 		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons){
+		if(!$cons)
 			$_SESSION['msg']="O Grupo ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		}
 		else
 			$_SESSION['msg']="O Grupo ".$nome." foi cadastrado com sucesso.";
-
 	}
+
 	if(isset($_POST['cadlocal'])){
 		$nome = $_POST['nome'];
 		$sql = "INSERT INTO local(`nome`) VALUES ('$nome')";
 		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons){
+		if(!$cons)
 			$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		}
 		else
 			$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
 	}
+
 	if(isset($_POST['cadforn'])){
-		
 		$razao = $_POST['razao'];
 		$nome = $_POST['nomef'];
 		$cnpj = $_POST['cnpj'];
 		$logra = $_POST['logra'];
 		$fone = $_POST['fone'];
-
-		$sql = "INSERT INTO fornecedor (`cnpj`,`razao_social`,`nome_fantasia`,`endereco`,`telefone`) VALUES ('$cnpj','$razao', '$nomef', '$logra', '$fone')";
+		$sql = "INSERT INTO fornecedor (`cnpj`,`razao_social`,`nome_fantasia`,`endereco`,`telefone`) VALUES ('$cnpj','$razao', '$nome', '$logra', '$fone')";
 		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons){
+		if(!$cons)
 			$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		}
 		else
 			$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
 	}
+	
 ?>
 <!DOCTYPE html>
 <html>
@@ -126,11 +125,6 @@
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
-							<input type="number" min="0" name="qtdade" class="form-control" required="required" placeholder="Quantidade">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-xs-3">
 							<input type="number" min="0" name="qtdademin" class="form-control" required="required" placeholder="Quantidade Mínima">
 						</div>
 					</div>
@@ -158,8 +152,22 @@
 										echo '<option value = "' . $dados['codl'] . '">' . $dados['codl'] . '</option>';
 								?>
 					    </select>
+
+
 						</div>
-				  </div>
+				  	</div>
+					<div class="form-group">
+						<div class="col-xs-3">
+					    <label for="local">Medida:</label>
+					    <select class="form-control" id="unidade" name="unidade">
+								<option>Metros</option>
+								<option>Kg</option>
+								<option>Unidades</option>
+					    </select>
+
+					    
+						</div>
+				  	</div>
 					<input type="submit" name="cadprod" value="Cadastrar" class="btn btn-primary">
 				</form>
 			</div>

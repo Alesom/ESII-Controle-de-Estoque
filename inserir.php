@@ -12,7 +12,12 @@
 		$nome = $_POST['nome'];
 		$qtdade = $_POST['qtdade'];
 		$data = $_POST['data'];
-		$sql = "INSERT INTO insercao VALUES ('$codp','$qtdade','$data')";
+		$cnpj = $_POST['cnpj'];
+		$valor = $_POST['valor'];
+		$nfe = $_POST['nfe'];
+		$tipo = $_POST['tipo_entrada'];
+		echo  '<p>'.$codp ." ". $nome ." ". $qtdade ." ". $data ." ". $cnpj ." ". $valor ." ". $nfe ." ". $tipo;
+		$sql = "INSERT INTO insercao VALUES ('$codp','$qtdade','$data','$cnpj', '$valor', '$nfe', '$tipo' )";
 
 		$busca = "SELECT qtd FROM produto WHERE cod = '$codp'";
 		$resultado = mysqli_query($conexao, $busca);
@@ -27,9 +32,9 @@
 		  	throw new Exception("na inserção", 1);
 		  }
 		  if(!$cons)
-				$_SESSION['msg']='O produto'.$nome.' não pode ser inserido.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+				$_SESSION['msg']='<p>O produto'.$nome.' não pode ser inserido.<br/></p><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 			else
-				$_SESSION['msg']=$qtdade." unidades de ".$nome." foram inseridas com sucesso.";
+				$_SESSION['msg']='<p>'.$qtdade." unidades de ".$nome." foram inseridas com sucesso.</p>";
 
 				$a = mysqli_commit($conexao);
 		    if(!$a)	throw new Exception("Não foi possivel efetivar a inserção, problema com o banco. Consulte Administrador", 1);
@@ -45,6 +50,18 @@
 		<title>Formulário Inserção</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<script type="text/javascript">
+			function formatar(mascara, documento){
+              var i = documento.value.length;
+              var saida = mascara.substring(0,1);
+              var texto = mascara.substring(i)
+              
+              if (texto.substring(0,1) != saida){
+                        documento.value += texto.substring(0,1);
+              }
+            }
+		</script>
+
 	</head>
 	<body>
 
@@ -84,6 +101,45 @@
 						<div class="col-xs-3">
 							<label for="idQtd">Quantidade:</label>
 							<input id="idQtd" type="number" min="1" name="qtdade" class="form-control" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idQtd">Valor da entrada:</label>
+							<input id="idQtd" type="number"  step="0.01" name="valor" class="form-control" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idQtd">Número da Nota Fiscal:</label>
+							<input id="idQtd" type="text" name="nfe" class="form-control" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idQtd">Fornecedor:</label><br />
+							<select name="cnpj">
+							<option>Selecione</option>
+								<?php 
+									$busca = "SELECT * FROM fornecimento NATURAL JOIN fornecedor WHERE cod = '$produto'"; 
+									$resultado = mysqli_query($conexao, $busca);
+									while($dados = mysqli_fetch_array($resultado)){
+									echo '<option value="' . $dados["cnpj"] . '"> '.$dados['razao_social'].': '.$dados['cnpj'].'</option>';
+									}
+								?>
+
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label for="idQtd">Tipo de Entrada:</label>
+							<select name="tipo_entrada">
+								<option>Selecione</option>
+								<option value="Compra">Compra</option>
+								<option value="Doação">Doação</option>
+								<option value="Transferencia">Transferencia</option>
+							</select>
 						</div>
 					</div>
 					<div class="form-group row">

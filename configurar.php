@@ -5,13 +5,12 @@
 		header("Location:index.php");
 	}
 
-	if(isset($_POST['confirma'])){ // faz o update no banco de dados;
+	if(isset($_POST['configura'])){ // faz o update no banco de dados;
 		$codp = $_POST['codigo'];
 		$nome = $_POST['nome'];
 		$qtdmin = $_POST['qtdmin'];
 		$codl = $_POST['codlocal'];
 		$codg = $_POST['codgrupo'];
-		echo $codp.' x '. $codg.' x '. $codl.' x '. $qtdmin;
 		if(isset($_POST['alarme']))
 			$alarme = '1';
 		else
@@ -20,9 +19,19 @@
 		$cons = mysqli_query($conexao ,$sql);
 		if(!$cons){
 		$_SESSION['msg']=$nome.' não pode ser configurado.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		}
-		else
+		}else
 			$_SESSION['msg']=$nome." configurado com sucesso.";
+
+		if(isset($_POST['cnpj'])){
+			echo "olár".$_POST['cnpj'];
+			$cnpj = $_POST['cnpj'];
+			$sql = "INSERT INTO fornecimento(cod, cnpj) VALUES('$codp','$cnpj')";
+			$cons = mysqli_query($conexao ,$sql);
+			if(!$cons){
+			$_SESSION['msg']=$nome.' Não foi possivel cadastrar CNPJ como fornecedor.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+			}else
+				$_SESSION['msg']=$nome." fornecedor Cadastrado com sucesso.";
+		}
 	}
 ?>
 <!DOCTYPE html>
@@ -107,6 +116,24 @@
 					    </select>
 						</div>
 				  </div>
+						<div class="form-group">
+						<div class="col-xs-3">
+					    <label for="local">Adicionar Fornecedor do Produto:</label>
+				  		<select name="cnpj">
+				  			<option>Selecione</option>
+					  		<?php 
+					  			$busca = "SELECT * FROM fornecedor"; 
+								$resultado = mysqli_query($conexao, $busca);
+								while($dados = mysqli_fetch_array($resultado)){
+								echo '<option value="' . $dados["cnpj"] . '"> '.$dados['razao_social'].': '.$dados['cnpj'].'</option>';
+								}
+							?>
+						</select>
+						</div>
+				  </div>
+							
+
+
 					<div class="form-check">
 					  <label class="form-check-label">
 					    <input class="form-check-input" type="checkbox" value="TRUE" name="alarme"
@@ -118,7 +145,8 @@
 		  	</form>
 				<?php
 					if(isset($_SESSION['msg'])){
-						echo $_SESSION['msg'];
+						echo "olá";
+						echo "<p>".$_SESSION['msg'];
 						unset($_SESSION['msg']);
 					}
 				?>

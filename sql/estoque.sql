@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `fornecedor` (
-  `cnpj` int(10) UNSIGNED NOT NULL,
+  `cnpj` varchar(18) NOT NULL,
   `razao_social` varchar(30) NOT NULL,
   `nome_fantasia` varchar(30) NOT NULL,
   `endereco` varchar(40) NOT NULL,
@@ -54,7 +54,11 @@ CREATE TABLE `grupo` (
 CREATE TABLE `insercao` (
   `codp` bigint(20) UNSIGNED NOT NULL,
   `qtd` int(11) NOT NULL,
-  `data` date NOT NULL
+  `data` date NOT NULL,
+  `cnpj` varchar(18) NOT NULL,
+  `vlr` numeric NOT NULL,
+  `nfe`  varchar(30) NOT NULL,
+  `tipo` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -81,8 +85,16 @@ CREATE TABLE `produto` (
   `codg` varchar(3) DEFAULT NULL,
   `codl` varchar(3) DEFAULT NULL,
   `qtdmin` int(11) DEFAULT NULL,
-  `alarm` tinyint(1) DEFAULT '1'
+  `alarm` tinyint(1) DEFAULT '1',
+  `medida` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `fornecimento` (
+  `cod` bigint(20) UNSIGNED NOT NULL,
+  `cnpj` varchar(18) NOT NULL  
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 
 -- --------------------------------------------------------
 
@@ -149,6 +161,10 @@ ALTER TABLE `produto`
   ADD KEY `codg` (`codg`),
   ADD KEY `codl` (`codl`);
 
+
+ALTER TABLE `fornecimento`
+  ADD PRIMARY KEY (`cod`,`cnpj`);
+
 --
 -- Indexes for table `remocao`
 --
@@ -181,13 +197,18 @@ ALTER TABLE `usuario`
 --
 -- Constraints for dumped tables
 --
+--
+-- AUTO_INCREMENT for table `local`
+--
+ALTER TABLE `local`
+  MODIFY `codl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=100;;
 
 --
 -- Constraints for table `insercao`
 --
 ALTER TABLE `insercao`
-  ADD CONSTRAINT `insercao_ibfk_1` FOREIGN KEY (`codp`) REFERENCES `produto` (`cod`);
-
+  ADD CONSTRAINT `insercao_ibfk_1` FOREIGN KEY (`codp`) REFERENCES `produto` (`cod`),
+  ADD CONSTRAINT `insercao_ibfk_2` FOREIGN KEY (`cnpj`) REFERENCES `fornecedor` (`cnpj`);
 --
 -- Constraints for table `remocao`
 --

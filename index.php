@@ -38,10 +38,13 @@
 				$pass1 = md5($pass2);
 				$nome  = $_POST['newname'];
 				$funcao= $_POST['newfunction'];
-				$codl  = $_POST['newplace'];
 				$placename = $_POST['newplacen'];
-				$sql = "INSERT INTO local VALUES ('$codl','$placename')";
+				$sql = "INSERT INTO local(nome) VALUES ('$placename')";
 				$cons = mysqli_query($conexao ,$sql);
+				$sql = "SELECT * FROM local WHERE nome ='$placename'";
+				$cons = mysqli_query($conexao ,$sql);
+				$codl = mysqli_fetch_assoc($cons);
+				$codl = $codl['codl'];
 				$sql = "INSERT INTO usuario (nome,funcao,senha,codl) VALUES ('$nome','$funcao','$pass1','$codl')";
 				$cons = mysqli_query($conexao ,$sql);
 				if(!$cons){
@@ -217,11 +220,6 @@
 						<div class="form-group row">
 							<div class="col-xs-2 col-xs-offset-5">
 								<input type="password" name="newpass2" class="form-control" required="required" placeholder="Confirme Senha">
-							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-xs-2 col-xs-offset-5">
-								<input type="text" name="newplace" class="form-control" required="required" placeholder="Código do Local">
 							</div>
 						</div>
 						<div class="form-group row">

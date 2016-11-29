@@ -1,4 +1,14 @@
-
+<?php
+	require ("connect.php");
+	$nome = "Jardel";
+	$sql = "SELECT cod FROM produto WHERE nome = '$nome'";
+			$cons = mysqli_query($conexao ,$sql);
+			$cod = mysqli_fetch_assoc($cons);
+				echo $cod["cod"];
+				$cod = $cod['cod'];
+				echo $cod;
+?>
+<!--
 <html>
 	<head>
 	<title>Gráfico</title>
@@ -6,7 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	</head>
 
-	<body onload="check_login();"> <!-- A função também deverá definir em que #section da página está -->
+	<body onload="check_login();"> 
 	<div id="top-bar" style='background-color:#009933;'>
 		<img src="imagens/IdentidadeVisual.png" style="height:80px;"/>
 		<a href="buscas.php"><button>Inserir Produtos</button></a>
