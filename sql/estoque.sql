@@ -52,7 +52,7 @@ CREATE TABLE `grupo` (
 --
 
 CREATE TABLE `insercao` (
-  `codp` bigint(20) UNSIGNED NOT NULL,
+  `codp` varchar(20) NOT NULL,
   `qtd` int(11) NOT NULL,
   `data` date NOT NULL,
   `cnpj` varchar(18) NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE `local` (
 --
 
 CREATE TABLE `produto` (
-  `cod` bigint(20) UNSIGNED NOT NULL,
+  `cod` varchar(20) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `qtd` int(11) DEFAULT NULL,
   `codg` varchar(3) DEFAULT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `fornecimento` (
 CREATE TABLE `remocao` (
   `data` date NOT NULL,
   `qtd` int(11) NOT NULL,
-  `codp` bigint(20) UNSIGNED NOT NULL,
+  `codp` varchar(20)  NOT NULL,
   `destino` varchar(100) NOT NULL,
   `chamado` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -188,7 +188,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `grupo`
 --
 ALTER TABLE `grupo`
-  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
@@ -201,7 +201,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `local`
 --
 ALTER TABLE `local`
-  MODIFY `codl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=100;;
+  MODIFY `codl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for table `insercao`

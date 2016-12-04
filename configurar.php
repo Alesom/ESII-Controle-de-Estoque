@@ -11,26 +11,28 @@
 		$qtdmin = $_POST['qtdmin'];
 		$codl = $_POST['codlocal'];
 		$codg = $_POST['codgrupo'];
+		$codpn = substr($codp, 3, 4);
+		$codpn = $codg . $codpn;
 		if(isset($_POST['alarme']))
 			$alarme = '1';
 		else
 			$alarme = '0';
-		$sql = "UPDATE produto SET nome='$nome',qtdmin='$qtdmin',codg = '$codg', codl='$codl', alarm ='$alarme'  WHERE cod= '$codp'";
+
+		$sql = "UPDATE produto SET cod='$codpn',nome='$nome',qtdmin='$qtdmin',codg = '$codg', codl='$codl', alarm ='$alarme'  WHERE cod= '$codp'";
 		$cons = mysqli_query($conexao ,$sql);
 		if(!$cons){
 		$_SESSION['msg']=$nome.' não pode ser configurado.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 		}else
 			$_SESSION['msg']=$nome." configurado com sucesso.";
 
-		if(isset($_POST['cnpj'])){
-			echo "olár".$_POST['cnpj'];
+		if(isset($_POST['cnpj']) && $_POST['cnpj']!="SELECIONE"){
 			$cnpj = $_POST['cnpj'];
 			$sql = "INSERT INTO fornecimento(cod, cnpj) VALUES('$codp','$cnpj')";
 			$cons = mysqli_query($conexao ,$sql);
 			if(!$cons){
-			$_SESSION['msg']=$nome.' Não foi possivel cadastrar CNPJ como fornecedor.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+			$_SESSION['msg']=$cnpj.' Não foi possivel cadastrar CNPJ como fornecedor.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 			}else
-				$_SESSION['msg']=$nome." fornecedor Cadastrado com sucesso.";
+				$_SESSION['msg']=$cnpj." fornecedor cadastrado com sucesso.";
 		}
 	}
 ?>
@@ -120,7 +122,7 @@
 						<div class="col-xs-3">
 					    <label for="local">Adicionar Fornecedor do Produto:</label>
 				  		<select name="cnpj">
-				  			<option>Selecione</option>
+				  			<option value="SELECIONE">Selecione</option>
 					  		<?php 
 					  			$busca = "SELECT * FROM fornecedor"; 
 								$resultado = mysqli_query($conexao, $busca);

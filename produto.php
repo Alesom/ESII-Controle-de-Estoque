@@ -15,11 +15,24 @@
 			$cons = mysqli_query($conexao ,$sql);
 			$cod = mysqli_fetch_assoc($cons);
 			$cod = $cod["cod"];	
-		
-		//$cod = $codlocal*100 - $codgrupo*100 - $cod;
-		$cod -= $codlocal*100 + $codgrupo*100;
+		$cod = substr($cod, 3, 4);
+		if($cod == 0)
+			$cod = "0001";
+		else{
 		$cod++;
-		$cod += $codlocal*100 + $codgrupo*100;
+		if($cod<1000){
+			if($cod<100){
+				if($cod<10){
+					$cod = "000" . $cod;
+				}else
+					$cod = "00" . $cod;
+			}else
+				$cod = $cod = "0" . $cod;
+		}else
+			$cod = "" . $cod;
+		}
+		$cod = $codlocal*100 . $cod;
+
 		$sql = "INSERT INTO produto(`cod`,`nome`,`qtd`,`codg`,`codl`,`qtdmin`,`alarm`) VALUES ('$cod','$nome','$qtdade','$codgrupo','$codlocal','$qtdademin','1')";
 		$cons = mysqli_query($conexao ,$sql);
 		if(!$cons)
@@ -37,6 +50,9 @@
 			$_SESSION['msg']="O Grupo ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 		else
 			$_SESSION['msg']="O Grupo ".$nome." foi cadastrado com sucesso.";
+
+		$sql = "UPDATE grupo SET codg=codg*100  WHERE nome= '$nome'";
+		$cons = mysqli_query($conexao ,$sql);
 	}
 
 	if(isset($_POST['cadlocal'])){
@@ -215,6 +231,7 @@
 
 
 			<?php
+			
 				if(isset($_SESSION['msg'])){
 					$mensagem = substr($_SESSION['msg'], -8);
 					if (strcmp($mensagem, "sucesso.") == 0) {
