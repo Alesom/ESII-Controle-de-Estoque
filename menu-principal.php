@@ -30,7 +30,7 @@
               </ul>
             </li>
             <li> <a href="relatorios.php"><b>Relatórios</b></a> </li>';
-            if($_SESSION['funcao']=='boss') {
+            if($_SESSION['funcao']=='Administrador') {
               echo '<li> <a href="index.php?cad_user=1" onclick="cad_user();"><b>Cadastrar Novo Usuário</b></a> </li>';
             }
             echo '<li> <a href="index.php?logout=1"><b>Logout</b></a> </li>';

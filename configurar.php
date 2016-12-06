@@ -6,6 +6,7 @@
 	}
 
 	if(isset($_POST['configura'])){ // faz o update no banco de dados;
+		mysqli_autocommit($conexao, FALSE);
 		$codp = $_POST['codigo'];
 		$nome = $_POST['nome'];
 		$qtdmin = $_POST['qtdmin'];
@@ -18,22 +19,56 @@
 		else
 			$alarme = '0';
 
-		$sql = "UPDATE produto SET cod='$codpn',nome='$nome',qtdmin='$qtdmin',codg = '$codg', codl='$codl', alarm ='$alarme'  WHERE cod= '$codp'";
-		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons){
-		$_SESSION['msg']=$nome.' não pode ser configurado.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		}else
-			$_SESSION['msg']=$nome." configurado com sucesso.";
+		$sql = "UPDATE produto SET cod='$codpn',nome='$nome' WHERE cod= '$codp'";
 
-		if(isset($_POST['cnpj']) && $_POST['cnpj']!="SELECIONE"){
-			$cnpj = $_POST['cnpj'];
-			$sql = "INSERT INTO fornecimento(cod, cnpj) VALUES('$codp','$cnpj')";
-			$cons = mysqli_query($conexao ,$sql);
-			if(!$cons){
-			$_SESSION['msg']=$cnpj.' Não foi possivel cadastrar CNPJ como fornecedor.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-			}else
-				$_SESSION['msg']=$cnpj." fornecedor cadastrado com sucesso.";
+
+		$busca = "SELECT * FROM localizacao WHERE codp = '$codp' AND codl = '$codl'"; 
+		$resultado = mysqli_query($conexao, $busca);
+		$sql1 = "Insert";
+		while($dados = mysqli_fetch_assoc($resultado))
+			if($dados['codl'] == $codl){
+				$sql1 = "Update";
+				break;
+			}
+		if($sql1!="Update")
+			$sql1 = "INSERT INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`) VALUES ('$codpn', '$codl',0, '$qtdmin',1)";
+		else{
+			$sql1 = " UPDATE localizacao SET qtdmin='$qtdmin',alarm='$alarme' WHERE codp= '$codp' AND codl = '$codl'";
 		}
+		try{
+			$cons = mysqli_query($conexao ,$sql);
+			$cons1 = mysqli_query($conexao ,$sql1);
+
+			if(!$cons){
+				$_SESSION['msg']=$nome.' não pode ser configurado.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+			}else
+				$_SESSION['msg']=$nome." configurado com sucesso.";
+
+			if(!$cons1){
+				$_SESSION['msg']=$nome.' não pode ser Inserido no local.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+			}else
+				$_SESSION['msg']=$nome." configurado com sucesso.";
+
+			if(isset($_POST['cnpj']) && $_POST['cnpj']!="SELECIONE"){
+				$cnpj = $_POST['cnpj'];
+				$sql = "INSERT INTO fornecimento(cod, cnpj) VALUES('$codp','$cnpj')";
+				$cons = mysqli_query($conexao ,$sql);
+				if(!$cons){
+				$_SESSION['msg']=$cnpj.' Não foi possivel cadastrar CNPJ como fornecedor.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+				}else
+					$_SESSION['msg']=$cnpj." fornecedor cadastrado com sucesso.";
+			}
+			$a = mysqli_commit($conexao);
+			
+			if(!$a){
+				throw new Exception("Não foi possivel efetivar a configuração, problema com o banco. Consulte Administrador", 1);
+				
+			}
+		}catch (Exception $e) {
+			mysqli_rollback($conexao);
+			$_SESSION['msg'] = $e->message(); 
+		}
+		mysqli_autocommit($conexao, TRUE);
 	}
 ?>
 <!DOCTYPE html>
@@ -56,15 +91,15 @@
 					<?php
 						if(isset($_GET['prod'])){
 							mysqli_next_result($conexao);
-				    	$produto = $_GET['prod'];
-							$busca = "SELECT * FROM produto WHERE cod = '$produto'";
+				    		$produto = $_GET['prod'];
+							$busca = "SELECT p.cod as codp, p.nome as nome, lz.qtdmin as qtdmin, l.codl as codl, lz.alarm as alarm FROM produto p JOIN localizacao lz on p.cod = lz.codp join local l on l.codl=lz.codl WHERE p.cod = '$produto'";
 							$resultado = mysqli_query($conexao, $busca);
 							$dados = mysqli_fetch_array($resultado);
-							$codp = $dados['cod'];
+							$codp = $dados['codp'];
 							$nome = $dados['nome'];
 							$qtdademin = $dados['qtdmin'];
 							$local = $dados['codl'];
-							$grupo = $dados['codg'];
+							$grupo = substr($produto,0,3);
 							$alarme = $dados['alarm'];
 						}
 					?>
@@ -108,7 +143,7 @@
 						<div class="col-xs-3">
 					    <label for="local">Código do Local:</label>
 					    <select class="form-control" id="local" name="codlocal">
-					      <option <?php echo 'value="' . $local . '"'; ?>> <?php echo $local; ?> </option>
+					      <option>Selecione</option>
 								<?php
 									$sql = "SELECT * FROM local";
 									$res = mysqli_query($conexao, $sql);
@@ -129,8 +164,13 @@
 								while($dados = mysqli_fetch_array($resultado)){
 								echo '<option value="' . $dados["cnpj"] . '"> '.$dados['razao_social'].': '.$dados['cnpj'].'</option>';
 								}
+								echo "</select>";
+								if(!$dados){
+									echo '<br /><a href="produto.php?cadf=1">Cadastrar Novo Fornecedor</a>';
+								}
+
 							?>
-						</select>
+						
 						</div>
 				  </div>
 							
@@ -147,7 +187,6 @@
 		  	</form>
 				<?php
 					if(isset($_SESSION['msg'])){
-						echo "olá";
 						echo "<p>".$_SESSION['msg'];
 						unset($_SESSION['msg']);
 					}

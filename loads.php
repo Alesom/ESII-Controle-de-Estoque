@@ -8,8 +8,8 @@
 	$codl = $_GET['codl'];
 	$nomel = $_GET['nomel'];
 
-	$query = "SELECT p.cod AS codp, p.nome AS nomep, p.qtd AS qtd, g.nome AS nomeg, l.nome AS nomel
-				FROM produto AS p INNER JOIN grupo AS g on (p.codg = g.codg) INNER JOIN local AS l on (p.codl = l.codl)
+	$query = "SELECT p.cod AS codp, p.nome AS nomep, lz.qtd AS qtd, g.nome AS nomeg, l.nome AS nomel
+				FROM produto AS p INNER JOIN localizacao AS lz ON(p.cod = lz.codp) INNER JOIN local AS l on (lz.codl = l.codl) left JOIN grupo AS g  ON 1
 				WHERE p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%'
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'
 				ORDER BY p.cod";

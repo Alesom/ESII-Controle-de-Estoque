@@ -19,6 +19,7 @@
 			$_SESSION['name'] = $usuario;
 			$_SESSION['password'] = $_POST['pass'];
 			$_SESSION['funcao'] = $row['funcao'];
+			$_SESSION['local'] = $row['codl'];
 			header("Location: index.php");
 		}else{
 			$_SESSION['newerror'] = "Usuário ou senha não conferem";

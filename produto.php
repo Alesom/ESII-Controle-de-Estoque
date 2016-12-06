@@ -5,12 +5,14 @@
 		header("Location:index.php");
 	
 	if(isset($_POST['cadprod'])){
+		mysqli_autocommit($conexao, FALSE);
 		$nome = $_POST['nome'];
 		$qtdade = 0;
 		$qtdademin = $_POST['qtdademin'];
 		$codlocal = $_POST['codlocal'];
 		$codgrupo = $_POST['codgrupo'];
 		$data= date ("Y-m-d H:i");
+		$medida = $_POST['unidade'];
 		$sql = "SELECT MAX(cod)as cod FROM produto";
 			$cons = mysqli_query($conexao ,$sql);
 			$cod = mysqli_fetch_assoc($cons);
@@ -33,13 +35,23 @@
 		}
 		$cod = $codlocal*100 . $cod;
 
-		$sql = "INSERT INTO produto(`cod`,`nome`,`qtd`,`codg`,`codl`,`qtdmin`,`alarm`) VALUES ('$cod','$nome','$qtdade','$codgrupo','$codlocal','$qtdademin','1')";
-		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons)
-			$_SESSION['msg']='O produto '.$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		else{
-			$_SESSION['msg']="O produto ".$nome." foi cadastrado com sucesso.";
+		$sql = "INSERT INTO produto(`cod`,`nome`,`medida`) VALUES ('$cod','$nome', '$medida')";
+		$sql1 = "INSERT INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`) VALUES ('$cod', '$codlocal','$qtdade', '$qtdademin',1)";
+		try {
+			$cons = mysqli_query($conexao ,$sql);
+			$cons1 = mysqli_query($conexao ,$sql1);
+			if(!$cons || !$cons1){
+				throw new Exception("Dados inconsistentes.", 1);
+			}
+
+			$a = mysqli_commit($conexao);
+			if(!$a)	
+				throw new Exception("Não foi possivel efetivar o cadastro, problema com o banco. Consulte Administrador", 1);
+		}catch (Exception $e) {
+			mysqli_rollback($conexao);
+			$_SESSION['msg'] = $e->getMessage();
 		}
+		mysqli_autocommit($conexao, TRUE);
 	}
 
 	if(isset($_POST['cadg'])){
@@ -71,12 +83,25 @@
 		$cnpj = $_POST['cnpj'];
 		$logra = $_POST['logra'];
 		$fone = $_POST['fone'];
-		$sql = "INSERT INTO fornecedor (`cnpj`,`razao_social`,`nome_fantasia`,`endereco`,`telefone`) VALUES ('$cnpj','$razao', '$nome', '$logra', '$fone')";
-		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons)
-			$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		else
-			$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
+		$busca = "SELECT * FROM fornecedor WHERE cnpj = '$cnpj'"; 
+		$resultado = mysqli_query($conexao, $busca);
+		$dados = mysqli_fetch_assoc($resultado);
+		if($dados['cnpj']){
+			$sql = "UPDATE fornecedor SET `razao_social` = '$razao' ,`nome_fantasia`= '$nome',`endereco` = '$logra',`telefone`='$fone' WHERE cnpj = '$cnpj'";
+			$cons = mysqli_query($conexao ,$sql);
+			if(!$cons)
+				$_SESSION['msg']="O Local ".$nome.' não pode ser atualizado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+			else
+				$_SESSION['msg']="O Local ".$nome." foi atualizado com sucesso.";			
+		}else{
+
+			$sql = "INSERT INTO fornecedor (`cnpj`,`razao_social`,`nome_fantasia`,`endereco`,`telefone`) VALUES ('$cnpj','$razao', '$nome', '$logra', '$fone')";
+			$cons = mysqli_query($conexao ,$sql);
+			if(!$cons)
+				$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+			else
+				$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
+		}
 	}
 	
 ?>
@@ -160,16 +185,25 @@
 					<div class="form-group">
 						<div class="col-xs-3">
 					    <label for="local">Código do Local:</label>
-					    <select class="form-control" id="local" name="codlocal">
-								<?php
-									$busca = "SELECT * FROM local";
-									$resultado = mysqli_query($conexao, $busca);
-									while ($dados = mysqli_fetch_assoc($resultado))
-										echo '<option value = "' . $dados['codl'] . '">' . $dados['codl'] . '</option>';
-								?>
-					    </select>
-
-
+					    <?php 
+							$local = $_SESSION['local'];
+							if($_SESSION['funcao']=="Administrador"){
+								$busca = "SELECT * FROM local"; 
+								$resultado = mysqli_query($conexao, $busca);
+								echo'<select name="codlocal">';
+								while($dados = mysqli_fetch_array($resultado)){										
+									echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
+								}
+								echo'</select><br/>';
+							}else{
+								$busca = "SELECT * FROM local"; 
+								$resultado = mysqli_query($conexao, $busca);
+								$dados = mysqli_fetch_assoc($resultado);
+									echo '<input type="text" value="'.$dados['nome'].'" readonly/>';
+									echo '<input type="text" name="codlocal" value="'.$dados['codl'].'" style="display:none"/>';
+								
+							}
+						?>
 						</div>
 				  	</div>
 					<div class="form-group">
@@ -219,13 +253,15 @@
 						<div class="col-xs-3">
 							Nome: <input type="text" name="razao" class="form-control" required="required" placeholder="Razão Social"><br/>
 							Nome Fantasia: <input type="text" name="nomef" class="form-control"><br/>
-							CNPJ:<br/> <input type="text" name="cnpj" maxlength="18" OnKeyPress="formatar('##.###.###/####-##', this)"/><br/><br/>
+							CNPJ*:<br/> <input type="text" name="cnpj" maxlength="18" OnKeyPress="formatar('##.###.###/####-##', this)"/><br/><br/>
 							Endereço: <input type="text" name="logra" class="form-control" required="required"><br/>
 							Telefone: <input type="text" name="fone" class="form-control" name="cnpj" maxlength="13" OnKeyPress="formatar('## #####-####', this)">
 							<br/>
+
 						</div>
 					</div>
-					<input type="submit" name="cadforn" value="Cadastrar" class="btn btn-primary">
+					<input type="submit" name="cadforn" value="Cadastrar" class="btn btn-primary"><br/>
+					<span>*<i>Se CNPJ já estiver cadastrado o fornecedor será atualizado</i></span>
 				</form>
 			</div>
 

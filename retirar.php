@@ -13,38 +13,78 @@
 		$data = $_POST['data'];
 		$destino = $_POST['destino'];
 		$chamado = $_POST['chamado'];
+		$origem = $_POST['codl'];
+		if(isset($_POST['trans']) && isset($_POST['transferencia'])){
+			$trans = $_POST['trans'];//codl
+			$valor = $_POST['valor'];
+			$busca = "SELECT * FROM localizacao WHERE codp = '$codp' AND codl = '$trans'";
+			$busca1= "SELECT * FROM localizacao WHERE codp = '$codp' AND codl ='$origem'";
 
+			$resultado = mysqli_query($conexao,$busca);
+			$resultado1 = mysqli_query($conexao,$busca1);
 
-		$busca= "SELECT qtd FROM produto WHERE cod = '$codp'";
-		$resultado = mysqli_query($conexao,$busca);
-		$dados = mysqli_fetch_array($resultado);
-		$new_qtd = $dados["qtd"] - $qtdade;
+			$dados = mysqli_fetch_array($resultado);
+			$dados1 = mysqli_fetch_array($resultado1);
 
-		$sql1 = "UPDATE produto SET qtd = '$new_qtd' WHERE cod = '$codp'";
-		$sql = "INSERT INTO remocao VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
+			$qtdade1 = $dados['qtd'] + $qtdade;
+			$qtdade2 = $dados1['qtd'] - $qtdade;
 
-		if ($new_qtd >= 0) {
-			try{
-				$cons1 = mysqli_query($conexao, $sql1);
-				$cons = mysqli_query($conexao, $sql);
+			$sql  = "UPDATE localizacao SET qtd = '$qtdade1' WHERE codp ='$codp' AND codl = '$trans'";
+			$sql1 = "UPDATE localizacao SET qtd = '$qtdade2' WHERE codp ='$codp' AND codl = '$origem'";
 
-				if(!$cons1 || !$cons)
-					throw new Exception("Errrouuuu", 1);
+			$resultado = mysqli_query($conexao,$sql);
+			$resultado1 = mysqli_query($conexao,$sql1);
 
-				if(!$cons)
-					$_SESSION['msg']=$qtdade.' de '.$nome.' não pode ser removidas.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-				else
-					$_SESSION['msg']=$qtdade." unidades de ".$nome." foram retiradas com sucesso.";
-
+			$sql = "INSERT INTO remocao(data,qtd,codp,destino,chamado) VALUES ('$data', '$qtdade' ,'$codp','$trans','Transferência')";
+			$sql1 = "INSERT INTO insercao(codp,qtd,data,vlr,tipo) VALUES ('$codp','$qtdade','$data', '$valor', 'Transferência')";
+			try {
 				$a = mysqli_commit($conexao);
 				if(!$a)
 					throw new Exception("Não commitado no banco, tente novamente", 1);
-			}catch(Exception $e ){
-				echo "Deu erro nessa porra".$e->getMessage();
-				mysqli_rollback($conexao);
+			} catch (Exception $e) {
+				$_SESSION['msg'] = $e->getMessage();
+					mysqli_rollback($conexao);
 			}
-		}else
-				$_SESSION['msg']="Preste atenção na quantidade disponível. Você está retirando mais produtos do que há.";
+			
+		}else{
+			$busca = "SELECT * FROM localizacao WHERE codp = '$codp' AND codl = '$origem'";
+			$resultado = mysqli_query($conexao,$busca);
+			$dados = mysqli_fetch_array($resultado);			
+			$qtdade1 = $dados['qtd'] - $qtdade;
+			
+			if ($qtdade1 >= 0) {
+				try{
+					$sql = "INSERT INTO remocao(data,qtd,codp,destino,chamado) VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
+
+					$cons = mysqli_query($conexao, $sql);					
+
+					$sql1 = "UPDATE localizacao SET qtd = '$qtdade1' WHERE codp ='$codp' AND codl = '$origem'";
+					$cons1 = mysqli_query($conexao, $sql1);
+
+					if(!$cons){
+						$_SESSION['msg']=$qtdade.' de '.$nome.' não pode ser removidas.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+						throw new Exception($_SESSION['msg'], 1);
+					}
+					else
+						$_SESSION['msg']=$qtdade." unidades de ".$nome." foram retiradas com sucesso.";
+
+
+					$a = mysqli_commit($conexao);
+					if(!$a)
+						throw new Exception("Não commitado no banco, tente novamente", 1);
+
+					$a = mysqli_commit($conexao);
+					if(!$a)
+						throw new Exception("Não commitado no banco, tente novamente", 1);
+
+				}catch(Exception $e ){
+					$_SESSION['msg'] = $e->getMessage();
+					mysqli_rollback($conexao);
+				}
+			}else
+
+					$_SESSION['msg']="Preste atenção na quantidade disponível. Você está retirando mais produtos do que há.";
+		}
 	}
 	mysqli_autocommit($conexao,True);
 ?>
@@ -54,6 +94,17 @@
 		<title>Formulário Remoção</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+
+		<script type="text/javascript">					
+			function ativatransferencia(){
+				if(document.getElementById("idtransferencia").checked){
+					document.getElementById("trans").style.display= "block";
+				}else
+					document.getElementById("trans").style.display= "none";
+			}	
+
+            
+		</script>
 	</head>
 	<body>
 
@@ -89,6 +140,30 @@
 							?> class="form-control">
 						</div>
 					</div>
+
+					<div class="form-group row">
+				    <div class="col-xs-3">
+							<label>Origem</label>
+								<?php 
+									$local = $_SESSION['local'];
+									if($_SESSION['funcao']=="Administrador"){
+										$busca = "SELECT * FROM local"; 
+										$resultado = mysqli_query($conexao, $busca);
+										echo'<select name="codl">';
+										while($dados = mysqli_fetch_array($resultado)){										
+											echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
+										}
+										echo'</select><br/>';
+									}else{
+										$busca = "SELECT * FROM local"; 
+										$resultado = mysqli_query($conexao, $busca);
+										$dados = mysqli_fetch_assoc($resultado);
+											echo '<input type="text" value="'.$dados['nome'].'" readonly/>';
+											echo '<input type="text" name="codl" value="'.$dados['codl'].'" style="display:none"/>';
+									}
+								?>
+						</div>
+					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
 							<label for="idQtd">Quantidade:</label>
@@ -116,12 +191,30 @@
 							<input id="idChamado" type="text" name="chamado" class="form-control">
 						</div>
 					</div>
-					<input type="submit" name="retirarprod" value="Retirar" class="btn btn-primary">
-					
+							
 					<label class="checkbox-inline">
-					  <input type="checkbox" id="idtransferencia" value="t" checked="checked" onclick="ativatransferencia(0)"> Transferência
+					  <input type="checkbox" id="idtransferencia" name ="transferencia" value="t" onchange="ativatransferencia();"> Transferência
 					</label>
-					
+					<div class="form-group row" id="trans" style="display:none;">
+				    <div class="col-xs-3">
+							<label>Destino2:</label>
+							<select name="trans">
+								<?php 
+									$busca = "SELECT * FROM local"; 
+									$resultado = mysqli_query($conexao, $busca);
+									$i=0;
+									while($dados = mysqli_fetch_array($resultado)){
+										$i++;
+										echo '<option value="' . $dados["codl"] . '"> '.$dados['codl'].': '.$dados['nome'].'</option>';
+									}
+
+								?>
+							</select>
+							<br />Valor: <input type="number" name="valor"/>
+						</div>
+					</div>
+					<br /><br />
+					<input type="submit" name="retirarprod" value="Retirar" class="btn btn-primary">
 				</form>
 				<?php
 					if(isset($_SESSION['msg'])){

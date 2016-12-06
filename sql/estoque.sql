@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 25, 2016 at 07:14 
--- Server version: 10.1.11-MariaDB
--- PHP Version: 7.0.3
+-- Generation Time: 06-Dez-2016 às 08:54
+-- Versão do servidor: 10.1.13-MariaDB
+-- PHP Version: 7.0.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fornecedor`
+-- Estrutura da tabela `fornecedor`
 --
 
 CREATE TABLE `fornecedor` (
@@ -37,7 +37,18 @@ CREATE TABLE `fornecedor` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grupo`
+-- Estrutura da tabela `fornecimento`
+--
+
+CREATE TABLE `fornecimento` (
+  `cod` bigint(20) UNSIGNED NOT NULL,
+  `cnpj` varchar(18) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `grupo`
 --
 
 CREATE TABLE `grupo` (
@@ -45,26 +56,35 @@ CREATE TABLE `grupo` (
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `grupo`
+--
+
+INSERT INTO `grupo` (`codg`, `nome`) VALUES
+(100, '12'),
+(200, '123'),
+(300, '14');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `insercao`
+-- Estrutura da tabela `insercao`
 --
 
 CREATE TABLE `insercao` (
   `codp` varchar(20) NOT NULL,
   `qtd` int(11) NOT NULL,
   `data` date NOT NULL,
-  `cnpj` varchar(18) NOT NULL,
-  `vlr` numeric NOT NULL,
-  `nfe`  varchar(30) NOT NULL,
+  `cnpj` varchar(18) DEFAULT NULL,
+  `vlr` decimal(10,0) NOT NULL,
+  `nfe` varchar(30) DEFAULT NULL,
   `tipo` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `local`
+-- Estrutura da tabela `local`
 --
 
 CREATE TABLE `local` (
@@ -75,37 +95,39 @@ CREATE TABLE `local` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produto`
+-- Estrutura da tabela `localizacao`
+--
+
+CREATE TABLE `localizacao` (
+  `codl` bigint(20) UNSIGNED NOT NULL,
+  `codp` varchar(20) NOT NULL,
+  `qtd` int(11) DEFAULT NULL,
+  `qtdmin` int(11) DEFAULT NULL,
+  `alarm` tinyint(1) DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `produto`
 --
 
 CREATE TABLE `produto` (
   `cod` varchar(20) NOT NULL,
   `nome` varchar(50) NOT NULL,
-  `qtd` int(11) DEFAULT NULL,
-  `codg` varchar(3) DEFAULT NULL,
-  `codl` varchar(3) DEFAULT NULL,
-  `qtdmin` int(11) DEFAULT NULL,
-  `alarm` tinyint(1) DEFAULT '1',
   `medida` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE `fornecimento` (
-  `cod` bigint(20) UNSIGNED NOT NULL,
-  `cnpj` varchar(18) NOT NULL  
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `remocao`
+-- Estrutura da tabela `remocao`
 --
 
 CREATE TABLE `remocao` (
   `data` date NOT NULL,
   `qtd` int(11) NOT NULL,
-  `codp` varchar(20)  NOT NULL,
+  `codp` varchar(20) NOT NULL,
   `destino` varchar(100) NOT NULL,
   `chamado` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -113,7 +135,7 @@ CREATE TABLE `remocao` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estrutura da tabela `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -135,6 +157,12 @@ ALTER TABLE `fornecedor`
   ADD PRIMARY KEY (`cnpj`);
 
 --
+-- Indexes for table `fornecimento`
+--
+ALTER TABLE `fornecimento`
+  ADD PRIMARY KEY (`cod`,`cnpj`);
+
+--
 -- Indexes for table `grupo`
 --
 ALTER TABLE `grupo`
@@ -144,7 +172,8 @@ ALTER TABLE `grupo`
 -- Indexes for table `insercao`
 --
 ALTER TABLE `insercao`
-  ADD PRIMARY KEY (`codp`,`data`);
+  ADD PRIMARY KEY (`codp`,`data`),
+  ADD KEY `insercao_ibfk_2` (`cnpj`);
 
 --
 -- Indexes for table `local`
@@ -153,17 +182,18 @@ ALTER TABLE `local`
   ADD PRIMARY KEY (`codl`);
 
 --
+-- Indexes for table `localizacao`
+--
+ALTER TABLE `localizacao`
+  ADD PRIMARY KEY (`codp`,`codl`),
+  ADD KEY `localizacao_ibfk_2` (`codl`);
+
+--
 -- Indexes for table `produto`
 --
 ALTER TABLE `produto`
   ADD PRIMARY KEY (`cod`),
-  ADD UNIQUE KEY `cod` (`cod`),
-  ADD KEY `codg` (`codg`),
-  ADD KEY `codl` (`codl`);
-
-
-ALTER TABLE `fornecimento`
-  ADD PRIMARY KEY (`cod`,`cnpj`);
+  ADD UNIQUE KEY `cod` (`cod`);
 
 --
 -- Indexes for table `remocao`
@@ -188,7 +218,12 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `grupo`
 --
 ALTER TABLE `grupo`
-  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `local`
+--
+ALTER TABLE `local`
+  MODIFY `codl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
@@ -197,20 +232,23 @@ ALTER TABLE `usuario`
 --
 -- Constraints for dumped tables
 --
---
--- AUTO_INCREMENT for table `local`
---
-ALTER TABLE `local`
-  MODIFY `codl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for table `insercao`
+-- Limitadores para a tabela `insercao`
 --
 ALTER TABLE `insercao`
   ADD CONSTRAINT `insercao_ibfk_1` FOREIGN KEY (`codp`) REFERENCES `produto` (`cod`),
   ADD CONSTRAINT `insercao_ibfk_2` FOREIGN KEY (`cnpj`) REFERENCES `fornecedor` (`cnpj`);
+
 --
--- Constraints for table `remocao`
+-- Limitadores para a tabela `localizacao`
+--
+ALTER TABLE `localizacao`
+  ADD CONSTRAINT `localizacao_ibfk_1` FOREIGN KEY (`codp`) REFERENCES `produto` (`cod`),
+  ADD CONSTRAINT `localizacao_ibfk_2` FOREIGN KEY (`codl`) REFERENCES `local` (`codl`);
+
+--
+-- Limitadores para a tabela `remocao`
 --
 ALTER TABLE `remocao`
   ADD CONSTRAINT `remocao_ibfk_1` FOREIGN KEY (`codp`) REFERENCES `produto` (`cod`);
