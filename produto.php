@@ -33,7 +33,7 @@
 		}else
 			$cod = "" . $cod;
 		}
-		$cod = $codlocal*100 . $cod;
+		$cod = $codgrupo*100 . $cod;
 
 		$sql = "INSERT INTO produto(`cod`,`nome`,`medida`) VALUES ('$cod','$nome', '$medida')";
 		$sql1 = "INSERT INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`) VALUES ('$cod', '$codlocal','$qtdade', '$qtdademin',1)";
@@ -56,25 +56,46 @@
 
 	if(isset($_POST['cadg'])){
 		$nome = $_POST['nome'];
-		$sql = "INSERT INTO grupo(`nome`) VALUES ('$nome')";
-		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons)
-			$_SESSION['msg']="O Grupo ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		else
-			$_SESSION['msg']="O Grupo ".$nome." foi cadastrado com sucesso.";
+		$busca = "SELECT * FROM grupo WHERE nome = '$nome'";
+		$cons = mysqli_query($conexao ,$busca);
+		while($res = mysqli_fetch_array($cons)){
+			if($res['nome']== $nome){
+				$_SESSION['msg']="O Grupo ".$nome." já existe.";
+				break;
+			}
+		}
+		if($res['nome']!= $nome){
+			$sql = "INSERT INTO grupo(`nome`) VALUES ('$nome')";
+			$cons = mysqli_query($conexao ,$sql);
+			if(!$cons)
+				$_SESSION['msg']="O Grupo ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+			else
+				$_SESSION['msg']="O Grupo ".$nome." foi cadastrado com sucesso.";
 
-		$sql = "UPDATE grupo SET codg=codg*100  WHERE nome= '$nome'";
-		$cons = mysqli_query($conexao ,$sql);
+			$sql = "UPDATE grupo SET codg=codg  WHERE nome= '$nome'";
+			$cons = mysqli_query($conexao ,$sql);
+		}
 	}
 
 	if(isset($_POST['cadlocal'])){
 		$nome = $_POST['nome'];
-		$sql = "INSERT INTO local(`nome`) VALUES ('$nome')";
-		$cons = mysqli_query($conexao ,$sql);
-		if(!$cons)
-			$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-		else
-			$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
+
+		$busca = "SELECT * FROM local WHERE nome = '$nome'";
+		$cons = mysqli_query($conexao ,$busca);
+		while($res = mysqli_fetch_array($cons)){
+			if($res['nome']== $nome){
+				$_SESSION['msg']="O Local ".$nome." já existe.";
+				break;
+			}
+		}
+		if($res['nome']!= $nome){
+			$sql = "INSERT INTO local(`nome`) VALUES ('$nome')";
+			$cons = mysqli_query($conexao ,$sql);
+			if(!$cons)
+				$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+			else
+				$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
+		}
 	}
 
 	if(isset($_POST['cadforn'])){
@@ -177,7 +198,7 @@
 									$busca = "SELECT * FROM grupo";
 									$resultado = mysqli_query($conexao, $busca);
 									while ($dados = mysqli_fetch_assoc($resultado))
-										echo '<option value = "' . $dados['codg'] . '">' . $dados['codg'] . '</option>';
+										echo '<option value = "' . $dados['codg'] . '">' . $dados['nome'] . '</option>';
 								?>
 					    </select>
 						</div>
@@ -187,22 +208,13 @@
 					    <label for="local">Código do Local:</label>
 					    <?php 
 							$local = $_SESSION['local'];
-							if($_SESSION['funcao']=="Administrador"){
-								$busca = "SELECT * FROM local"; 
-								$resultado = mysqli_query($conexao, $busca);
-								echo'<select name="codlocal">';
-								while($dados = mysqli_fetch_array($resultado)){										
-									echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
-								}
-								echo'</select><br/>';
-							}else{
-								$busca = "SELECT * FROM local"; 
-								$resultado = mysqli_query($conexao, $busca);
-								$dados = mysqli_fetch_assoc($resultado);
-									echo '<input type="text" value="'.$dados['nome'].'" readonly/>';
-									echo '<input type="text" name="codlocal" value="'.$dados['codl'].'" style="display:none"/>';
-								
+							$busca = "SELECT * FROM local"; 
+							$resultado = mysqli_query($conexao, $busca);
+							echo'<select name="codlocal">';
+							while($dados = mysqli_fetch_array($resultado)){										
+								echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
 							}
+							echo'</select><br/>';
 						?>
 						</div>
 				  	</div>

@@ -5,7 +5,6 @@
 	if (isset($_SESSION["sessiontime"])) {
 	 	if ($_SESSION["sessiontime"] < (time() - $temposessao)) {
 	 		session_unset();
-//	 		echo "Seu tempo Expirou!";	
 	 	} 
 	}else{
 		session_unset();

@@ -15,26 +15,30 @@
     <div class="collapse navbar-collapse" id="menuprincipal">
       <ul class="nav navbar-nav">
         <?php
-          if(isset($_SESSION['name'])) {
+          if(isset($_SESSION['name'])){
+            if(($_SESSION['funcao']=="Administrador"|| $_SESSION['funcao']=="Servidor")){
             echo '
-            <li> <a href="buscas.php"><b>Movimentar Produtos</b></a> </li>
-            <li class="dropdown">
-              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
-              aria-haspopup="true" aria-expanded="false"><b>Cadastrar</b>
-              <span class="caret"></span></a>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="produto.php?cadp=1">Cadastrar Produto</a></li>
-                <li><a href="produto.php?cadg=1">Cadastrar Grupo</a></li>
-                <li><a href="produto.php?cadl=1">Cadastrar Local</a></li>
-                <li><a href="produto.php?cadf=1">Cadastrar Fornecedor</a></li>
-              </ul>
-            </li>
-            <li> <a href="relatorios.php"><b>Relatórios</b></a> </li>';
+              <li> <a href="buscas.php"><b>Movimentar Produtos</b></a> </li>
+              <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                aria-haspopup="true" aria-expanded="false"><b>Cadastrar</b>
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li><a href="produto.php?cadp=1">Cadastrar Produto</a></li>
+                  <li><a href="produto.php?cadg=1">Cadastrar Grupo</a></li>
+                  <li><a href="produto.php?cadl=1">Cadastrar Local</a></li>
+                  <li><a href="produto.php?cadf=1">Cadastrar Fornecedor</a></li>
+                </ul>
+              </li>
+              <li> <a href="relatorios.php"><b>Relatórios</b></a> </li>
+              ';
+            }else
+              echo '<li> <a href="relatorios.php"><b>Relatórios</b></a> </li>';
             if($_SESSION['funcao']=='Administrador') {
               echo '<li> <a href="index.php?cad_user=1" onclick="cad_user();"><b>Cadastrar Novo Usuário</b></a> </li>';
             }
             echo '<li> <a href="index.php?logout=1"><b>Logout</b></a> </li>';
-          } else {
+          }else{
             echo '<li> <a href="index.php"><b>Login</b></a> </li>';
           }
         ?>

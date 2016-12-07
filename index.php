@@ -7,6 +7,7 @@
 	if($teste_row_count==0){
 		$_SESSION['first'] = "begin";
 	}
+
 	if(isset($_POST['entrar'])){
 		$usuario = $_POST["user"];
 		$senha = md5($_POST["pass"]);
@@ -25,12 +26,14 @@
 			$_SESSION['newerror'] = "Usuário ou senha não conferem";
 		}
 	}else if(isset($_POST['logout']) || isset($_GET['logout'])){
+
 		unset($_SESSION['name']);
 		unset($_SESSION['senha']);
 		unset($_SESSION['funcao']);
 		unset($_SESSION['first']);
 		unset($_SESSION['falta']);
 		header("Location: index.php");
+
 	}else if(isset($_POST['newpeople'])){
 		if(isset($_POST['newpass1']) && isset($_POST['newpass2'])){
 			$pass1 = $_POST['newpass1'];
@@ -230,7 +233,7 @@
 						</div>
 						<div class="form-group row">
 							<div class="col-xs-2 col-xs-offset-5">
-								<input type="text" name="newfunction" class="form-control" required="required" placeholder="Função">
+								<input type="text" name="newfunction" class="form-control" required="required" value="Administrador" readonly>
 							</div>
 						</div>
 						<input type="submit" name="newpeople" value="Salvar" class="btn btn-primary">
@@ -273,10 +276,9 @@
 							<div class="col-xs-2 col-xs-offset-5">
 						    <label for="func">Função:</label>
 						    <select class="form-control" id="func" name="newfunction">
-									<option value="Supervisor">Supervisor</option>
-									<option value="Conferente">Conferente</option>
-									<option value="Estagiário">Estagiário</option>
-									<option value="Administrador">Administrador</option>
+						    	<option value="Administrador">Administrador</option>
+								<option value="Servidor">Servidor</option>
+								<option value="Estagiário">Estagiário</option>									
 						    </select>
 							</div>
 					  </div>
@@ -289,7 +291,7 @@
 				<?php
 				//percorrer todos os produtos e verificar se hÃ¡ algum com qtd menor ou igual a qtdmin.
 					if(isset($_SESSION['name'])){
-						$sql = "SELECT * FROM produto WHERE qtd<=qtdmin AND alarm=1";
+						$sql = "SELECT * FROM localizacao JOIN produto ON codp = cod WHERE qtd<=qtdmin AND alarm=1";
 						$res = mysqli_query($conexao, $sql);
 						$count=0;
 						echo '<div align="center"><h1>Alarmes</h1></div>';

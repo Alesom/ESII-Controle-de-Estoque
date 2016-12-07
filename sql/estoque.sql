@@ -56,15 +56,6 @@ CREATE TABLE `grupo` (
   `nome` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Extraindo dados da tabela `grupo`
---
-
-INSERT INTO `grupo` (`codg`, `nome`) VALUES
-(100, '12'),
-(200, '123'),
-(300, '14');
-
 -- --------------------------------------------------------
 
 --
@@ -218,7 +209,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `grupo`
 --
 ALTER TABLE `grupo`
-  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `codg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `local`
 --
