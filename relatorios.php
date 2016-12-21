@@ -46,8 +46,7 @@
 				}
 
 				if (mode) {
-					var url = 'http://localhost/ESII-Controle-de-Estoque/graficos.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg +
-								'&codl=' + codl + '&nomel=' + nomel +'&saida=' + saida + '&entrada=' + entrada + '&diai=' + dataini + '&diaf=' + datafim;
+					var url = 'graficos.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg +'&codl=' + codl + '&nomel=' + nomel +'&saida=' + saida + '&entrada=' + entrada + '&diai=' + dataini + '&diaf=' + datafim;
 					window.open(url);
 				} else {
 					var url = 'consultRelatorio.php?codp=' + codp + '&nomep=' + nomep + '&codg=' + codg + '&nomeg=' + nomeg +
@@ -60,7 +59,7 @@
 
 			function GeraPDF() {
 				var id = document.getElementById("idpd").innerHTML;
-    		var url = "http://localhost/ESII-Controle-de-Estoque/testepdf.php?id="+id;
+    		var url = "testepdf.php?id="+id;
     		window.open(url);
 			}
 
