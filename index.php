@@ -261,13 +261,13 @@
 						</div>
 						<div class="form-group">
 							<div class="col-xs-2 col-xs-offset-5">
-						    <label for="local">Código do Local:</label>
+						    <label for="local">Local:</label>
 						    <select class="form-control" id="local" name="codlocal">
 									<?php
 										$busca = "SELECT * FROM local";
 										$resultado = mysqli_query($conexao, $busca);
 										while ($dados = mysqli_fetch_assoc($resultado))
-											echo '<option value = "' . $dados['codl'] . '">' . $dados['codl'] . '</option>';
+											echo '<option value = "' . $dados['nome'] . '">' . $dados['nome'] . '</option>';
 									?>
 						    </select>
 							</div>
@@ -278,7 +278,7 @@
 						    <select class="form-control" id="func" name="newfunction">
 						    	<option value="Administrador">Administrador</option>
 								<option value="Servidor">Servidor</option>
-								<option value="Estagiário">Estagiário</option>									
+								<option value="Estagiário">Estagiário</option>
 						    </select>
 							</div>
 					  </div>

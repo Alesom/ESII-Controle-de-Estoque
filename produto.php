@@ -3,7 +3,7 @@
 
 	if(!isset($_SESSION['name']))
 		header("Location:index.php");
-	
+
 	if(isset($_POST['cadprod'])){
 		mysqli_autocommit($conexao, FALSE);
 		$nome = $_POST['nome'];
@@ -16,7 +16,7 @@
 		$sql = "SELECT MAX(cod)as cod FROM produto";
 			$cons = mysqli_query($conexao ,$sql);
 			$cod = mysqli_fetch_assoc($cons);
-			$cod = $cod["cod"];	
+			$cod = $cod["cod"];
 		$cod = substr($cod, 3, 4);
 		if($cod == 0)
 			$cod = "0001";
@@ -43,10 +43,10 @@
 			if(!$cons || !$cons1){
 				throw new Exception("Dados inconsistentes.", 1);
 			}
-
 			$a = mysqli_commit($conexao);
-			if(!$a)	
+			if(!$a)
 				throw new Exception("Não foi possivel efetivar o cadastro, problema com o banco. Consulte Administrador", 1);
+			$_SESSION['msg'] = "O Produto ".$nome." foi cadastrado com sucesso.";
 		}catch (Exception $e) {
 			mysqli_rollback($conexao);
 			$_SESSION['msg'] = $e->getMessage();
@@ -104,27 +104,27 @@
 		$cnpj = $_POST['cnpj'];
 		$logra = $_POST['logra'];
 		$fone = $_POST['fone'];
-		$busca = "SELECT * FROM fornecedor WHERE cnpj = '$cnpj'"; 
+		$busca = "SELECT * FROM fornecedor WHERE cnpj = '$cnpj'";
 		$resultado = mysqli_query($conexao, $busca);
 		$dados = mysqli_fetch_assoc($resultado);
 		if($dados['cnpj']){
 			$sql = "UPDATE fornecedor SET `razao_social` = '$razao' ,`nome_fantasia`= '$nome',`endereco` = '$logra',`telefone`='$fone' WHERE cnpj = '$cnpj'";
 			$cons = mysqli_query($conexao ,$sql);
 			if(!$cons)
-				$_SESSION['msg']="O Local ".$nome.' não pode ser atualizado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+				$_SESSION['msg']="O fornecedor ".$nome.' não pode ser atualizado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 			else
-				$_SESSION['msg']="O Local ".$nome." foi atualizado com sucesso.";			
+				$_SESSION['msg']="O fornecedor ".$nome." foi atualizado com sucesso.";
 		}else{
 
 			$sql = "INSERT INTO fornecedor (`cnpj`,`razao_social`,`nome_fantasia`,`endereco`,`telefone`) VALUES ('$cnpj','$razao', '$nome', '$logra', '$fone')";
 			$cons = mysqli_query($conexao ,$sql);
 			if(!$cons)
-				$_SESSION['msg']="O Local ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+				$_SESSION['msg']="O fornecedor ".$nome.' não pode ser cadastrado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 			else
-				$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
+				$_SESSION['msg']="O fornecedor ".$nome." foi cadastrado com sucesso.";
 		}
 	}
-	
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -163,7 +163,7 @@
               var i = documento.value.length;
               var saida = mascara.substring(0,1);
               var texto = mascara.substring(i)
-              
+
               if (texto.substring(0,1) != saida){
                         documento.value += texto.substring(0,1);
               }
@@ -192,7 +192,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-xs-3">
-					    <label for="grupo">Código do Grupo:</label>
+					    <label for="grupo">Grupo:</label>
 					    <select class="form-control" id="grupo" name="codgrupo">
 								<?php
 									$busca = "SELECT * FROM grupo";
@@ -205,31 +205,29 @@
 				  </div>
 					<div class="form-group">
 						<div class="col-xs-3">
-					    <label for="local">Código do Local:</label>
-					    <?php 
-							$local = $_SESSION['local'];
-							$busca = "SELECT * FROM local"; 
-							$resultado = mysqli_query($conexao, $busca);
-							echo'<select name="codlocal">';
-							while($dados = mysqli_fetch_array($resultado)){										
-								echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
-							}
-							echo'</select><br/>';
-						?>
+					    <label for="local">Local:</label>
+							<select class="form-control" id="local" name="codlocal">
+					    	<?php
+									$busca = "SELECT * FROM local";
+									$resultado = mysqli_query($conexao, $busca);
+									while ($dados = mysqli_fetch_array($resultado))
+										echo '<option value = "' . $dados['codl'] . '">' . $dados['nome'] . '</option>';
+								?>
+							</select>
 						</div>
 				  	</div>
 					<div class="form-group">
 						<div class="col-xs-3">
-					    <label for="local">Medida:</label>
+					    <label for="local">Unidade de Medida:</label>
 					    <select class="form-control" id="unidade" name="unidade">
-								<option>Metros</option>
-								<option>Kg</option>
-								<option>Unidades</option>
+								<option>Litro</option>
+								<option>Metro</option>
+								<option>Metro Cúbico</option>
+								<option>Quilograma</option>
+								<option>Unidade</option>
 					    </select>
-
-					    
 						</div>
-				  	</div>
+				  </div>
 					<input type="submit" name="cadprod" value="Cadastrar" class="btn btn-primary">
 				</form>
 			</div>
@@ -263,23 +261,37 @@
 				<form action="produto.php?cadf=1" method="post" class="form-horizontal">
 					<div class="form-group row">
 						<div class="col-xs-3">
-							Nome: <input type="text" name="razao" class="form-control" required="required" placeholder="Razão Social"><br/>
-							Nome Fantasia: <input type="text" name="nomef" class="form-control"><br/>
-							CNPJ*:<br/> <input type="text" name="cnpj" maxlength="18" OnKeyPress="formatar('##.###.###/####-##', this)"/><br/><br/>
-							Endereço: <input type="text" name="logra" class="form-control" required="required"><br/>
-							Telefone: <input type="text" name="fone" class="form-control" name="cnpj" maxlength="13" OnKeyPress="formatar('## #####-####', this)">
-							<br/>
-
+							<input type="text" name="razao" class="form-control" required="required" placeholder="Razão Social">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<input type="text" name="nomef" class="form-control" placeholder="Nome Fantasia">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<input type="text" name="cnpj" maxlength="18" class="form-control" placeholder="CNPJ"
+								OnKeyPress="formatar('##.###.###/####-##', this)" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<input type="text" name="logra" class="form-control" placeholder="Endereço" required="required">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<input type="text" name="fone" class="form-control" placeholder="Telefone" maxlength="13"
+								maxlength="13" OnKeyPress="formatar('## #####-####', this)">
 						</div>
 					</div>
 					<input type="submit" name="cadforn" value="Cadastrar" class="btn btn-primary"><br/>
-					<span>*<i>Se CNPJ já estiver cadastrado o fornecedor será atualizado</i></span>
+					<br/><span>*<i>Se CNPJ já estiver cadastrado o fornecedor será atualizado</i></span><br/>
 				</form>
 			</div>
 
-
 			<?php
-			
 				if(isset($_SESSION['msg'])){
 					$mensagem = substr($_SESSION['msg'], -8);
 					if (strcmp($mensagem, "sucesso.") == 0) {
