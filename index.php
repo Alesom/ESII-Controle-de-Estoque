@@ -226,7 +226,7 @@
 				</div>
 
 				<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
-				<div class="col-sm-12" align="center" id="cad_user_f" style='
+				<div class="col-sm-12" id="cad_user_f" style='
 				<?php
 					if(isset($_SESSION['first']))
 						echo 'display:block;';
