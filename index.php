@@ -95,7 +95,8 @@
 				$result = mysqli_query($conexao,$sql);
 
 				if($result){
-					$_SESSION['newerror'] = "Senha Alterada";
+					$_SESSION['newerror'] = "Senha alterada com sucesso";
+					header('refresh:3;index.php');
 				}
 			}else{
 				$_SESSION['newerror'] = "As senhas não conferem";
@@ -278,7 +279,7 @@
 						    <select class="form-control" id="func" name="newfunction">
 						    	<option value="Administrador">Administrador</option>
 								<option value="Servidor">Servidor</option>
-								<option value="Estagiário">Estagiário</option>									
+								<option value="Estagiário">Estagiário</option>
 						    </select>
 							</div>
 					  </div>
