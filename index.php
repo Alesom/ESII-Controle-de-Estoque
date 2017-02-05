@@ -55,8 +55,8 @@
 					$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);
 				}else{
 					unset($_SESSION['first']);
-					$_SESSION['newerror']="Usuário Cadastrado.";
-					header("Location:index.php");
+					$_SESSION['newerror']="Usuário cadastrado com sucesso.";
+					header('index.php');
 				}
 			}else if($pass1==$pass2){
 				if(isset($_SESSION['name'])){
@@ -76,8 +76,10 @@
 						$cons = mysqli_query($conexao ,$sql);
 						if(!$cons)
 							$_SESSION['newerror']="Não foi possivel cadastrar usuário. Erro: ".mysqli_error($conexao);
-						else
-							$_SESSION['newerror']="Usuário Cadastrado.";
+						else {
+							$_SESSION['newerror']="Usuário cadastrado com sucesso.";
+							header('index.php');
+						}
 					}else
 						$_SESSION['newerror']="you have no power here";
 				}
@@ -140,6 +142,10 @@
 					document.getElementById("cad_user").style.display="block";
 					document.getElementById("alarmes").style.display='none';
 				}
+				if (<?php if(isset($_SESSION['newerror']) AND isset($_SESSION['name'])) echo '1';else echo '0';?>) {
+					document.getElementById('alarmes').style.display='none';
+					document.getElementById('cad_user').style.display='block';
+				}
 			}
 			function cad_user() {
 				document.getElementById("cad_user").style.display="block";
@@ -158,6 +164,7 @@
 
 				<div id="lin" class="col-sm-12" align="center">
 					<form action="index.php" method="post" class="form-horizontal">
+						<br/><br/>
 						<div class="form-group row">
 							<div class="col-xs-2 col-xs-offset-5">
 								<input type="text" name="user" class="form-control" required="required"
@@ -184,17 +191,8 @@
 				</div>
 
 				<div id="fp" class="col-sm-12" align="center">
-					<?php
-						if(isset($_SESSION['newerror'])){
-							$mensagem = substr($_SESSION['newerror'], -8);
-							if (strcmp($mensagem, "sucesso.") == 0) {
-								echo '<div class="alert alert-success">';
-							} else {
-								echo '<div class="alert alert-danger">';
-							}
-						}
-					?>
 					<form action="index.php?fp=1" method="post" class="form-horizontal">
+						<br/><br/>
 						<div class="form-group row">
 							<div class="col-xs-2 col-xs-offset-5">
 								<input type="text" name="email" class="form-control" required="required" placeholder="Usuário">
@@ -212,21 +210,10 @@
 						</div>
 						<input type="submit" name="changepass" value="Salvar" class="btn btn-primary">
 					</form>
-					<?php
-						if(isset($_SESSION['newerror'])){
-							$mensagem = substr($_SESSION['newerror'], -8);
-							if (strcmp($mensagem, "sucesso.") == 0) {
-								echo $_SESSION['newerror'].'</div>';;
-							} else {
-								echo $_SESSION['newerror'].'</div>';;
-							}
-							unset($_SESSION['newerror']);
-						}
-					?>
 				</div>
 
-				<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
-				<div class="col-sm-12" id="cad_user_f" style='
+				<!-- a div seguinte é somente exibida no cadastro do primeiro usuário do sistema -->
+				<div class="col-sm-12" id="cad_user_f" align="center" style='
 				<?php
 					if(isset($_SESSION['first']))
 						echo 'display:block;';
@@ -332,6 +319,19 @@
 					}
 				?>
 			</div>
+
+			<?php
+				if(isset($_SESSION['newerror'])){
+					$mensagem = substr($_SESSION['newerror'], -8);
+					if (strcmp($mensagem, "sucesso.") == 0) {
+						echo '<div class="alert alert-success" align="center">' . $_SESSION['newerror'] . '</div>';
+					} else {
+						echo '<div class="alert alert-danger" align="center">' . $_SESSION['newerror']. '</div>';
+					}
+					unset($_SESSION['newerror']);
+				}
+			?>
+
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
