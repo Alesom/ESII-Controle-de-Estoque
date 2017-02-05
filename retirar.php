@@ -71,7 +71,6 @@
 					else
 						$_SESSION['msg']="As ". $qtdade." unidades de ".$nome." foram retiradas com sucesso.";
 
-
 					$a = mysqli_commit($conexao);
 					if(!$a)
 						throw new Exception("Não commitado no banco, tente novamente", 1);
