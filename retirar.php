@@ -41,6 +41,9 @@
 				$a = mysqli_commit($conexao);
 				if(!$a)
 					throw new Exception("Não commitado no banco, tente novamente", 1);
+				else {
+    			$_SESSION['msg']='O produto foi inserido com sucesso.';
+    		}
 			} catch (Exception $e) {
 				$_SESSION['msg'] = $e->getMessage();
 					mysqli_rollback($conexao);
@@ -62,11 +65,11 @@
 					$cons1 = mysqli_query($conexao, $sql1);
 
 					if(!$cons){
-						$_SESSION['msg']=$qtdade.' de '.$nome.' não pode ser removidas.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+						$_SESSION['msg']='Erro ao remover as unidades do produto solicitado';
 						throw new Exception($_SESSION['msg'], 1);
 					}
 					else
-						$_SESSION['msg']=$qtdade." unidades de ".$nome." foram retiradas com sucesso.";
+						$_SESSION['msg']="As ". $qtdade." unidades de ".$nome." foram retiradas com sucesso.";
 
 
 					$a = mysqli_commit($conexao);
@@ -216,17 +219,22 @@
 							<input type="number" min="0" name="valor" class="form-control" required="required" placeholder="Valor">
 						</div>
 					</div>
-					
+
 					<input type="submit" name="retirarprod" value="Retirar" class="btn btn-primary">
 					<br/><br/>
 				</form>
-				<?php
-					if(isset($_SESSION['msg'])){
-						echo $_SESSION['msg'];
-						unset($_SESSION['msg']);
-					}
-				?>
 			</div>
+			<?php
+			if(isset($_SESSION['msg'])){
+				$mensagem = substr($_SESSION['msg'], -8);
+				if (strcmp($mensagem, "sucesso.") == 0) {
+					echo '<div class="alert alert-success">' . $_SESSION['msg'] . '</div>';
+				} else {
+					echo '<div class="alert alert-danger">' . $_SESSION['msg'] . '</div>';
+				}
+				unset($_SESSION['msg']);
+			}
+			?>
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
