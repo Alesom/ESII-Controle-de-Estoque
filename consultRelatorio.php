@@ -43,7 +43,7 @@
 
 	if (($NSaidaRes<=0 && $NEntradaRes<=0) || (!$saidaF && !$entradaF) ||
 			($saidaF && !$entradaF && $NSaidaRes == 0) || (!$saidaF && $entradaF && $NEntradaRes == 0)) {
-		echo '<p>Nenhum produto encontrado.</p>';
+		echo '<p>Nenhuma movimentação encontrada para os parâmetros fornecidos.</p>';
 	}else if (!$saidaF && $entradaF){
 		while ($row = mysqli_fetch_assoc($EntradaRes)) {
 			echo "<tr>";
