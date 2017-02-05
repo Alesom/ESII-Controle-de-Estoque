@@ -90,40 +90,41 @@
 
 			<?php require_once ("menu-principal.php"); ?>
 
-			<div class="col-md-12" align="center">
+			<div class="col-md-12">
+				<h3><b>Geração de Relatório</b></h3>
 				<form name="options" action="" method="get" class="form-horizontal">
 					<div class="form-group row">
-				    <div class="col-xs-4 col-xs-offset-4">
+				    <div class="col-xs-3">
 							<input id="IdCodP" type="search" name="codp" class="form-control"
 							placeholder="Código do Produto" oninput="preencheBusca(0)">
 						</div>
 					</div>
 					<div class="form-group row">
-				    <div class="col-xs-4 col-xs-offset-4">
+				    <div class="col-xs-3">
 			    		<input id="IdNomeP" type="search" name="nomep" class="form-control"
 			      		placeholder="Nome do Produto" oninput="preencheBusca(0)">
 						</div>
 					</div>
 					<div class="form-group row">
-						<div class="col-xs-4 col-xs-offset-4">
+						<div class="col-xs-3">
 							<input id="IdCodG" type="search" name="codg" class="form-control"
 								placeholder="Código do Grupo" oninput="preencheBusca(0)">
 						</div>
 					</div>
 					<div class="form-group row">
-				    <div class="col-xs-4 col-xs-offset-4">
+				    <div class="col-xs-3">
 							<input id="IdNomeG" type="search" name="nomeg" class="form-control"
 								placeholder="Nome do Grupo" oninput="preencheBusca(0)">
 						</div>
 					</div>
 					<div class="form-group row">
-						<div class="col-xs-4 col-xs-offset-4">
+						<div class="col-xs-3">
 							<input id="IdCodL" type="search" name="codl" class="form-control"
 								placeholder="Código do Local" oninput="preencheBusca(0)">
 						</div>
 					</div>
 					<div class="form-group row">
-				    <div class="col-xs-4 col-xs-offset-4">
+				    <div class="col-xs-3">
 							<input id="IdNomeL" type="search" name="nomel" class="form-control"
 								placeholder="Nome do Local" oninput="preencheBusca(0)">
 						</div>
@@ -138,6 +139,7 @@
 					</label>
 
 					<br/><br/>
+					<h4>Tipo de Relatório:</h4>
 				  <label class="radio-inline">
 				    <input type="radio" name="op_rel" id="IdRelInt" value="intervalo" onclick="showFormInt()">
 				    Relatório por Intervalo
@@ -152,8 +154,8 @@
 				  </label>
 
 					<br/><br/>
-					<div class="form-group row col-xs-12" id="intervaloF" style="display:none;">
-				    <div class="col-xs-6 col-xs-offset-3 form-inline">
+					<div class="form-group row" id="intervaloF" style="display:none;">
+				    <div class="col-xs-6 form-inline">
 							<label for="idData">Data Inicial:</label>
 							<input type="date" id="idDataI" name="datai" value=
 								<?php
@@ -162,8 +164,8 @@
 						</div>
 						<br/>
 					</div>
-					<div class="form-group row col-xs-12" id="intervaloI" style="display:none;">
-						<div class="col-xs-6 col-xs-offset-3 form-inline">
+					<div class="form-group row" id="intervaloI" style="display:none;">
+						<div class="col-xs-6 form-inline">
 							<label for="idData">Data Final:</label>
 							<input type="date" id="idDataF" name="dataf" value=
 								<?php
@@ -172,7 +174,7 @@
 						</div>
 					</div>
 					<div class="form-group row" id="mensal" style="display:none;">
-						<div class="col-xs-4 col-xs-offset-4 form-inline">
+						<div class="col-xs-4 form-inline">
 					    <label for="idMes">Mês:</label>
 					    <select class="form-control" id="idMes" name="seleciona_mes">
 								<option value="01" >Janeiro</option>
@@ -191,7 +193,7 @@
 						</div>
 				  </div>
 					<div class="form-group row" id="anual" style="display:none;">
-						<div class="col-xs-4 col-xs-offset-4 form-inline">
+						<div class="col-xs-4 form-inline">
 							<label for="idAno">Ano:</label>
 							<input id="idAno" type="number" min="1900" max="3000" name="seleciona_ano" class="form-control" required="required" oninput="preencheBusca(0)">
 						</div>

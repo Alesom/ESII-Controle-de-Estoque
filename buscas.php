@@ -35,6 +35,7 @@
 			<?php require_once ("menu-principal.php"); ?>
 
 			<div class="col-sm-12">
+				<h3><b>Movimentação de Produtos</b></h3>
 				<form name="fsearch" action="" method="POST">
 					<div class="form-group row">
 				    <div class="col-xs-3">
