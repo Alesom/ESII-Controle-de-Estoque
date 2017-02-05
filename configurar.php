@@ -22,7 +22,7 @@
 		$sql = "UPDATE produto SET cod='$codpn',nome='$nome' WHERE cod= '$codp'";
 
 
-		$busca = "SELECT * FROM localizacao WHERE codp = '$codp' AND codl = '$codl'"; 
+		$busca = "SELECT * FROM localizacao WHERE codp = '$codp' AND codl = '$codl'";
 		$resultado = mysqli_query($conexao, $busca);
 		$sql1 = "Insert";
 		while($dados = mysqli_fetch_assoc($resultado))
@@ -59,14 +59,14 @@
 					$_SESSION['msg']=$cnpj." fornecedor cadastrado com sucesso.";
 			}
 			$a = mysqli_commit($conexao);
-			
+
 			if(!$a){
 				throw new Exception("Não foi possivel efetivar a configuração, problema com o banco. Consulte Administrador", 1);
-				
+
 			}
 		}catch (Exception $e) {
 			mysqli_rollback($conexao);
-			$_SESSION['msg'] = $e->message(); 
+			$_SESSION['msg'] = $e->message();
 		}
 		mysqli_autocommit($conexao, TRUE);
 	}
@@ -122,7 +122,7 @@
 						<div class="col-xs-3">
 							<label for="idQtd">Quantidade Mínima:</label>
 							<input id="idQtd" type="number" min="0" name="qtdmin"
-							<?php  echo 'value="' . $qtdademin . '"'; ?> class="form-control" required="required"> 
+							<?php  echo 'value="' . $qtdademin . '"'; ?> class="form-control" required="required">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -139,27 +139,36 @@
 					    </select>
 						</div>
 				  </div>
-					<div class="form-group">
-						<div class="col-xs-3">
-					    <label for="local">Código do Local:</label>
-					    <select class="form-control" id="local" name="codlocal">
-					      <option>Selecione</option>
+					<div class="form-group row">
+				    <div class="col-xs-3">
+							<label>Local:</label>
 								<?php
-									$sql = "SELECT * FROM local";
-									$res = mysqli_query($conexao, $sql);
-									while ($resu = mysqli_fetch_assoc($res))
-										echo '<option value = "' . $resu['codl'] . '">' . $resu['codl'] . '</option>';
+									$local = $_SESSION['local'];
+									$busca = "SELECT * FROM local";
+									$resultado = mysqli_query($conexao, $busca);
+
+									if($_SESSION['funcao']=="Administrador"){
+										echo'<select class="form-control" name="codl">';
+										while($dados = mysqli_fetch_array($resultado)){
+											echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
+										}
+									}else{
+										$dados = mysqli_fetch_assoc($resultado);
+										echo'<select class="form-control" name="codl">';
+										echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
+									}
+									echo'</select>';
 								?>
-					    </select>
 						</div>
-				  </div>
+					</div>
+
 						<div class="form-group">
 						<div class="col-xs-3">
 					    <label for="local">Adicionar Fornecedor do Produto:</label>
-				  		<select name="cnpj">
+				  		<select name="cnpj" class="form-control">
 				  			<option value="SELECIONE">Selecione</option>
-					  		<?php 
-					  			$busca = "SELECT * FROM fornecedor"; 
+					  		<?php
+					  			$busca = "SELECT * FROM fornecedor";
 								$resultado = mysqli_query($conexao, $busca);
 								while($dados = mysqli_fetch_array($resultado)){
 								echo '<option value="' . $dados["cnpj"] . '"> '.$dados['razao_social'].': '.$dados['cnpj'].'</option>';
@@ -170,10 +179,10 @@
 								}
 
 							?>
-						
+
 						</div>
 				  </div>
-							
+
 
 
 					<div class="form-check">
@@ -192,7 +201,6 @@
 					}
 				?>
 			</div>
-			<a href="buscas.php"><button><b>Nova Busca</b></button></a>
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
