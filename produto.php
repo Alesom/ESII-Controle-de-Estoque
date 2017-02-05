@@ -3,7 +3,7 @@
 
 	if(!isset($_SESSION['name']))
 		header("Location:index.php");
-	
+
 	if(isset($_POST['cadprod'])){
 		mysqli_autocommit($conexao, FALSE);
 		$nome = $_POST['nome'];
@@ -16,7 +16,7 @@
 		$sql = "SELECT MAX(cod)as cod FROM produto";
 			$cons = mysqli_query($conexao ,$sql);
 			$cod = mysqli_fetch_assoc($cons);
-			$cod = $cod["cod"];	
+			$cod = $cod["cod"];
 		$cod = substr($cod, 3, 4);
 		if($cod == 0)
 			$cod = "0001";
@@ -35,17 +35,23 @@
 		}
 		$cod = $codgrupo*100 . $cod;
 
+
 		$sql = "INSERT INTO produto(`cod`,`nome`,`medida`) VALUES ('$cod','$nome', '$medida')";
 		$sql1 = "INSERT INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`) VALUES ('$cod', '$codlocal','$qtdade', '$qtdademin',1)";
+
 		try {
-			$cons = mysqli_query($conexao ,$sql);
-			$cons1 = mysqli_query($conexao ,$sql1);
-			if(!$cons || !$cons1){
+			$cons = mysqli_query($conexao , $sql);
+			if(!$cons){
+				throw new Exception("Dados inconsistentes.", 1);
+			}
+
+			$cons = mysqli_query($conexao , $sql1);
+			if(!$cons){
 				throw new Exception("Dados inconsistentes.", 1);
 			}
 
 			$a = mysqli_commit($conexao);
-			if(!$a)	
+			if(!$a)
 				throw new Exception("Não foi possivel efetivar o cadastro, problema com o banco. Consulte Administrador", 1);
 		}catch (Exception $e) {
 			mysqli_rollback($conexao);
@@ -104,7 +110,7 @@
 		$cnpj = $_POST['cnpj'];
 		$logra = $_POST['logra'];
 		$fone = $_POST['fone'];
-		$busca = "SELECT * FROM fornecedor WHERE cnpj = '$cnpj'"; 
+		$busca = "SELECT * FROM fornecedor WHERE cnpj = '$cnpj'";
 		$resultado = mysqli_query($conexao, $busca);
 		$dados = mysqli_fetch_assoc($resultado);
 		if($dados['cnpj']){
@@ -113,7 +119,7 @@
 			if(!$cons)
 				$_SESSION['msg']="O Local ".$nome.' não pode ser atualizado.<br/> <p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
 			else
-				$_SESSION['msg']="O Local ".$nome." foi atualizado com sucesso.";			
+				$_SESSION['msg']="O Local ".$nome." foi atualizado com sucesso.";
 		}else{
 
 			$sql = "INSERT INTO fornecedor (`cnpj`,`razao_social`,`nome_fantasia`,`endereco`,`telefone`) VALUES ('$cnpj','$razao', '$nome', '$logra', '$fone')";
@@ -124,7 +130,7 @@
 				$_SESSION['msg']="O Local ".$nome." foi cadastrado com sucesso.";
 		}
 	}
-	
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -163,7 +169,7 @@
               var i = documento.value.length;
               var saida = mascara.substring(0,1);
               var texto = mascara.substring(i)
-              
+
               if (texto.substring(0,1) != saida){
                         documento.value += texto.substring(0,1);
               }
@@ -206,12 +212,12 @@
 					<div class="form-group">
 						<div class="col-xs-3">
 					    <label for="local">Código do Local:</label>
-					    <?php 
+					    <?php
 							$local = $_SESSION['local'];
-							$busca = "SELECT * FROM local"; 
+							$busca = "SELECT * FROM local";
 							$resultado = mysqli_query($conexao, $busca);
 							echo'<select name="codlocal">';
-							while($dados = mysqli_fetch_array($resultado)){										
+							while($dados = mysqli_fetch_array($resultado)){
 								echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
 							}
 							echo'</select><br/>';
@@ -227,7 +233,7 @@
 								<option>Unidades</option>
 					    </select>
 
-					    
+
 						</div>
 				  	</div>
 					<input type="submit" name="cadprod" value="Cadastrar" class="btn btn-primary">
@@ -279,7 +285,7 @@
 
 
 			<?php
-			
+
 				if(isset($_SESSION['msg'])){
 					$mensagem = substr($_SESSION['msg'], -8);
 					if (strcmp($mensagem, "sucesso.") == 0) {
