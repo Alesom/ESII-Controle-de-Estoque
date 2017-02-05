@@ -10,7 +10,7 @@
 		$codp = $_POST['codigo'];
 		$nome = $_POST['nome'];
 		$qtdmin = $_POST['qtdmin'];
-		$codl = $_POST['codlocal'];
+		$codl = $_POST['codl'];
 		$codg = $_POST['codgrupo'];
 		$codpn = substr($codp, 3, 4);
 		$codpn = $codg . $codpn;
@@ -41,28 +41,26 @@
 
 			if(!$cons){
 				$_SESSION['msg']=$nome.' não pode ser configurado.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-			}else
-				$_SESSION['msg']=$nome." configurado com sucesso.";
+			}
 
 			if(!$cons1){
 				$_SESSION['msg']=$nome.' não pode ser Inserido no local.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-			}else
-				$_SESSION['msg']=$nome." configurado com sucesso.";
+			}
 
 			if(isset($_POST['cnpj']) && $_POST['cnpj']!="SELECIONE"){
 				$cnpj = $_POST['cnpj'];
 				$sql = "INSERT INTO fornecimento(cod, cnpj) VALUES('$codp','$cnpj')";
 				$cons = mysqli_query($conexao ,$sql);
 				if(!$cons){
-				$_SESSION['msg']=$cnpj.' Não foi possivel cadastrar CNPJ como fornecedor.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
-				}else
-					$_SESSION['msg']=$cnpj." fornecedor cadastrado com sucesso.";
+					$_SESSION['msg']=' Não foi possivel cadastrar o CNPJ '.$cnpj.' como fornecedor.<br/><p style="color:red;">Erro: '.mysqli_error($conexao).'</p>';
+				}
 			}
 			$a = mysqli_commit($conexao);
 
 			if(!$a){
 				throw new Exception("Não foi possivel efetivar a configuração, problema com o banco. Consulte Administrador", 1);
-
+			}else{
+				$_SESSION['msg']=$nome." configurado com sucesso.";
 			}
 		}catch (Exception $e) {
 			mysqli_rollback($conexao);
@@ -193,14 +191,20 @@
 					  </label>
 					</div>
 					<input type="submit" name="configura" value="Salvar" class="btn btn-primary">
+				</br></br>
 		  	</form>
-				<?php
-					if(isset($_SESSION['msg'])){
-						echo "<p>".$_SESSION['msg'];
-						unset($_SESSION['msg']);
-					}
-				?>
 			</div>
+			<?php
+				if(isset($_SESSION['msg'])){
+					$mensagem = substr($_SESSION['msg'], -8);
+					if (strcmp($mensagem, "sucesso.") == 0) {
+						echo '<div class="alert alert-success">' . $_SESSION['msg'] . '</div>';
+					} else {
+						echo '<div class="alert alert-danger">' . $_SESSION['msg'] . '</div>';
+					}
+					unset($_SESSION['msg']);
+				}
+			?>
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
