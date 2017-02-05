@@ -95,11 +95,11 @@
 				$result = mysqli_query($conexao,$sql);
 
 				if($result){
-					$_SESSION['newerror'] = "Senha alterada com sucesso";
+					$_SESSION['newerror'] = "Senha alterada com sucesso.";
 					header('refresh:3;index.php');
 				}
 			}else{
-				$_SESSION['newerror'] = "As senhas não conferem";
+				$_SESSION['newerror'] = "As senhas não conferem!";
 			}
 		}
 	}
@@ -184,6 +184,16 @@
 				</div>
 
 				<div id="fp" class="col-sm-12" align="center">
+					<?php
+						if(isset($_SESSION['newerror'])){
+							$mensagem = substr($_SESSION['newerror'], -8);
+							if (strcmp($mensagem, "sucesso.") == 0) {
+								echo '<div class="alert alert-success">';
+							} else {
+								echo '<div class="alert alert-danger">';
+							}
+						}
+					?>
 					<form action="index.php?fp=1" method="post" class="form-horizontal">
 						<div class="form-group row">
 							<div class="col-xs-2 col-xs-offset-5">
@@ -202,6 +212,17 @@
 						</div>
 						<input type="submit" name="changepass" value="Salvar" class="btn btn-primary">
 					</form>
+					<?php
+						if(isset($_SESSION['newerror'])){
+							$mensagem = substr($_SESSION['newerror'], -8);
+							if (strcmp($mensagem, "sucesso.") == 0) {
+								echo $_SESSION['newerror'].'</div>';;
+							} else {
+								echo $_SESSION['newerror'].'</div>';;
+							}
+							unset($_SESSION['newerror']);
+						}
+					?>
 				</div>
 
 				<!-- a div seguinte é somente exibida no caso de o usuário logado ser um administrador -->
@@ -311,12 +332,6 @@
 					}
 				?>
 			</div>
-			<?php
-				if(isset($_SESSION['newerror'])) {
-					echo $_SESSION['newerror'];
-					unset($_SESSION['newerror']);
-				}
-			?>
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
