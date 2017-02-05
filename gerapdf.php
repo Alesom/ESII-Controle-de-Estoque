@@ -4,7 +4,7 @@ require_once( 'tcpdf/config/tcpdf_config.php' );
 
 // Extend the TCPDF class to create custom Header and Footer
 class MYPDF extends TCPDF {
-
+ 
 	private $data;
 	private $tamanhoHeaderFonte = 15;
 	private $nomeImagemHeader = 'IdentidadeVisual.png';	
@@ -36,6 +36,7 @@ class MYPDF extends TCPDF {
     }
 }
 
+// Cria um PDF invocando o construtor
 $pdf = new MYPDF( date( 'd/m/Y', time() ) );
 
 // **************************************** CONFIGURAÇÃO INICIAL ************************************************* //
@@ -81,9 +82,9 @@ $pdf->AddPage();
 // **************************************************************************************************************** //
 
 if( isset( $_GET['id'] ) ) {
-	$teste = $_GET['id'];
+	$dados = $_GET['id'];
 } else {
-	$teste = "erro";
+	$dados = "";
 }
 
 $table = '<table border="1" cellpadding="2" cellspacing="2" align="center">
@@ -97,10 +98,19 @@ $table = '<table border="1" cellpadding="2" cellspacing="2" align="center">
 			<td><center><b>Data de Entrada</b></center></td>
 			<td><center><b>Data de Saída</b></center></td>
 		</tr>
-	</thead>'.$teste.'</table>';
+	</thead>'.$dados.'</table>';
 
 $pdf->writeHTML( $table, true, false, false, false, '' );
 
-$pdf->Output( 'teste.pdf', 'I' );
+// Define o nome do arquivo quando salvo ( "Relatorio" + "data_atual" )
+$nome_pdf = 'Relatorio_'.date( 'd_m_Y', time());
+
+// Exibe o PDF
+// Opções comumente utilizadas: 
+//      I : Exibe o PDF no navegador normalmente
+//      D : Força a exibição do diálogo para salvar o PDF imediatamente após sua criação
+//      Outras opções: https://tcpdf.org/docs/source_docs/classTCPDF/#a3d6dcb62298ec9d42e9125ee2f5b23a1
+
+$pdf->Output( $nome_pdf.'.pdf', 'I' );
 
 ?>

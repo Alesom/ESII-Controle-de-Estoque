@@ -59,8 +59,8 @@
 
 			function GeraPDF() {
 				var id = document.getElementById("idpd").innerHTML;
-    		var url = "testepdf.php?id="+id;
-    		window.open(url);
+    			var url = "gerapdf.php?id="+id;
+    			window.open(url);
 			}
 
 			function showFormInt() {
