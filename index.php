@@ -95,7 +95,8 @@
 				$result = mysqli_query($conexao,$sql);
 
 				if($result){
-					$_SESSION['newerror'] = "Senha Alterada";
+					$_SESSION['newerror'] = "Senha alterada com sucesso";
+					header('refresh:3;index.php');
 				}
 			}else{
 				$_SESSION['newerror'] = "As senhas não conferem";
