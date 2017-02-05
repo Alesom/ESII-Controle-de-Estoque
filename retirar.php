@@ -45,18 +45,18 @@
 				$_SESSION['msg'] = $e->getMessage();
 					mysqli_rollback($conexao);
 			}
-			
+
 		}else{
 			$busca = "SELECT * FROM localizacao WHERE codp = '$codp' AND codl = '$origem'";
 			$resultado = mysqli_query($conexao,$busca);
-			$dados = mysqli_fetch_array($resultado);			
+			$dados = mysqli_fetch_array($resultado);
 			$qtdade1 = $dados['qtd'] - $qtdade;
-			
+
 			if ($qtdade1 >= 0) {
 				try{
 					$sql = "INSERT INTO remocao(data,qtd,codp,destino,chamado) VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
 
-					$cons = mysqli_query($conexao, $sql);					
+					$cons = mysqli_query($conexao, $sql);
 
 					$sql1 = "UPDATE localizacao SET qtd = '$qtdade1' WHERE codp ='$codp' AND codl = '$origem'";
 					$cons1 = mysqli_query($conexao, $sql1);
@@ -95,15 +95,15 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 
-		<script type="text/javascript">					
+		<script type="text/javascript">
 			function ativatransferencia(){
 				if(document.getElementById("idtransferencia").checked){
 					document.getElementById("trans").style.display= "block";
 				}else
 					document.getElementById("trans").style.display= "none";
-			}	
+			}
 
-            
+
 		</script>
 	</head>
 	<body>
@@ -142,34 +142,43 @@
 					</div>
 
 					<div class="form-group row">
-				    <div class="col-xs-3">
-							<label>Origem</label>
-								<?php 
-									$local = $_SESSION['local'];
-									if($_SESSION['funcao']=="Administrador"){
-										$busca = "SELECT * FROM local"; 
-										$resultado = mysqli_query($conexao, $busca);
-										echo'<select name="codl">';
-										while($dados = mysqli_fetch_array($resultado)){										
-											echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
-										}
-										echo'</select><br/>';
-									}else{
-										$busca = "SELECT * FROM local"; 
-										$resultado = mysqli_query($conexao, $busca);
-										$dados = mysqli_fetch_assoc($resultado);
-											echo '<input type="text" value="'.$dados['nome'].'" readonly/>';
-											echo '<input type="text" name="codl" value="'.$dados['codl'].'" style="display:none"/>';
-									}
-								?>
+						<div class="col-xs-3">
+							<input id="idQtd" type="number" min="1" name="qtdade" class="form-control" required="required" placeholder="Quantidade">
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
-							<label for="idQtd">Quantidade:</label>
-							<input id="idQtd" type="number" min="1" name="qtdade" class="form-control" required="required">
+							<input id="idDestino" type="text" name="destino" class="form-control" required="required" placeholder="Destino">
 						</div>
 					</div>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<input id="idChamado" type="text" name="chamado" class="form-control" placeholder="Chamado" >
+						</div>
+					</div>
+					<div class="form-group row">
+				    <div class="col-xs-3">
+							<label>Origem</label>
+								<?php
+									$local = $_SESSION['local'];
+									$busca = "SELECT * FROM local";
+									$resultado = mysqli_query($conexao, $busca);
+
+									if($_SESSION['funcao']=="Administrador"){
+										echo'<select class="form-control" name="codl">';
+										while($dados = mysqli_fetch_array($resultado)){
+											echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
+										}
+									}else{
+										$dados = mysqli_fetch_assoc($resultado);
+										echo'<select class="form-control" name="codl">';
+										echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
+									}
+									echo'</select>';
+								?>
+						</div>
+					</div>
+
 					<div class="form-group row">
 						<div class="col-xs-3">
 							<label for="idData">Data:</label>
@@ -179,19 +188,7 @@
 								?> class="form-control" required="required">
 						</div>
 					</div>
-					<div class="form-group row">
-						<div class="col-xs-3">
-							<label for="idDestino">Destino:</label>
-							<input id="idDestino" type="text" name="destino" class="form-control" required="required">
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-xs-3">
-							<label for="idChamado">Chamado:</label>
-							<input id="idChamado" type="text" name="chamado" class="form-control">
-						</div>
-					</div>
-							
+
 					<label class="checkbox-inline">
 					  <input type="checkbox" id="idtransferencia" name ="transferencia" value="t" onchange="ativatransferencia();"> Transferência
 					</label>
@@ -199,8 +196,8 @@
 				    <div class="col-xs-3">
 							<label>Destino2:</label>
 							<select name="trans">
-								<?php 
-									$busca = "SELECT * FROM local"; 
+								<?php
+									$busca = "SELECT * FROM local";
 									$resultado = mysqli_query($conexao, $busca);
 									$i=0;
 									while($dados = mysqli_fetch_array($resultado)){
@@ -223,7 +220,6 @@
 					}
 				?>
 			</div>
-			<a href="buscas.php"><button><b>Nova Busca</b></button></a>
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

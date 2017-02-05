@@ -61,7 +61,7 @@
 			<?php require_once ("menu-principal.php"); ?>
 
 			<div class="col-sm-12">
-				<h3><b>Dar Entrada em Unidades do Produto</b></h3>
+				<h3><b>Dar entrada em unidades do produto</b></h3>
 				<form action="inserir.php?prod=<?php echo $_GET['prod']; ?>" method="post" class="form-horizontal">
 					<div class="form-group row">
 				    <div class="col-xs-3">
@@ -105,8 +105,8 @@
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
-							<label for="idQtd">Fornecedor:</label><br />
-							<select name="cnpj">
+							<label for="idQtd">Fornecedor:</label>
+							<select name="cnpj" class="form-control" id="fornecedor">
 							<option>Selecione</option>
 								<?php
 									$busca = "SELECT * FROM fornecimento NATURAL JOIN fornecedor WHERE cod = '$produto'";
@@ -140,24 +140,23 @@
 
 					<div class="form-group row">
 				    <div class="col-xs-3">
-							<label>Local</label>
+							<label>Local:</label>
 								<?php
 									$local = $_SESSION['local'];
+									$busca = "SELECT * FROM local";
+									$resultado = mysqli_query($conexao, $busca);
+
 									if($_SESSION['funcao']=="Administrador"){
-										$busca = "SELECT * FROM local";
-										$resultado = mysqli_query($conexao, $busca);
-										echo'<select name="codl">';
+										echo'<select class="form-control" name="codl">';
 										while($dados = mysqli_fetch_array($resultado)){
 											echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
 										}
-										echo'</select><br/>';
 									}else{
-										$busca = "SELECT * FROM local";
-										$resultado = mysqli_query($conexao, $busca);
 										$dados = mysqli_fetch_assoc($resultado);
-											echo '<input type="text" value="'.$dados['nome'].'" readonly/>';
-											echo '<input type="text" name="codl" value="'.$dados['codl'].'" style="display:none"/>';
+										echo'<select class="form-control" name="codl">';
+										echo '<option value="'.$dados['codl'].'">'.$dados['nome'].'</option>';
 									}
+									echo'</select>';
 								?>
 						</div>
 					</div>
