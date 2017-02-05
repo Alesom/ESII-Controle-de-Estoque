@@ -14,9 +14,9 @@
 		$data= date ("Y-m-d H:i");
 		$medida = $_POST['unidade'];
 		$sql = "SELECT MAX(cod)as cod FROM produto";
-			$cons = mysqli_query($conexao ,$sql);
-			$cod = mysqli_fetch_assoc($cons);
-			$cod = $cod["cod"];
+		$cons = mysqli_query($conexao ,$sql);
+		$cod = mysqli_fetch_assoc($cons);
+		$cod = $cod["cod"];
 		$cod = substr($cod, 3, 4);
 		if($cod == 0)
 			$cod = "0001";
@@ -41,6 +41,8 @@
 
 		try {
 			$cons = mysqli_query($conexao , $sql);
+			#echo $cons . " " . $sql;
+
 			if(!$cons){
 				throw new Exception("Dados inconsistentes.", 1);
 			}
