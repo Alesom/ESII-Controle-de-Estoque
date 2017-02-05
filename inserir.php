@@ -29,17 +29,19 @@
 			$cons1 = mysqli_query($conexao ,$sql1);
 			if(!$cons || !$cons1){
 				if(!$cons)
-				$_SESSION['msg']='<p>O produto '.$nome.' não pode ser inserido na tabela inserção.<br/></p><p style="color:red;">'.mysqli_error($conexao).'</p>';
-			if(!$cons1)
-				$_SESSION['msg']='<p>O produto 	'.$nome.' não pode ser inserido na tabela local.<br/></p><p style="color:red;">'.mysqli_error($conexao).'</p>';
+					$_SESSION['msg']='<p>O produto '.$nome.' não pode ser inserido na tabela inserção.<br/></p><p style="color:red;">'.mysqli_error($conexao).'</p>';
+				if(!$cons1)
+					$_SESSION['msg']='<p>O produto 	'.$nome.' não pode ser inserido na tabela local.<br/></p><p style="color:red;">'.mysqli_error($conexao).'</p>';
 
-			throw new Exception("Erro: ".$_SESSION['msg'], 1);
-
+				throw new Exception("Erro: ".$_SESSION['msg'], 1);
 			}else{
 				$a = mysqli_commit($conexao);
-    			if(!$a)
-    				throw new Exception("Não foi possivel efetivar a inserção, problema com o banco. Consulte Administrador", 1);
+    		if(!$a)
+    			throw new Exception("Não foi possivel efetivar a inserção, problema com o banco. Consulte Administrador", 1);
+    		else {
+    			$_SESSION['msg']='O produto foi inserido com sucesso.';
     		}
+			}
 		} catch (Exception $e) {
 			mysqli_rollback($conexao);
 		    $_SESSION['msg'] = $e->getMessage();
@@ -171,15 +173,21 @@
 						</div>
 					</div>
 					<input type="submit" name="insertprod" value="Inserir" class="btn btn-primary">
-					</br></br></br></br>
+					</br></br>
 		  	</form>
-				<?php
-					if(isset($_SESSION['msg'])){
-						echo $_SESSION['msg'];
-						unset($_SESSION['msg']);
-					}
-				?>
+
 			</div>
+			<?php
+				if(isset($_SESSION['msg'])){
+					$mensagem = substr($_SESSION['msg'], -8);
+					if (strcmp($mensagem, "sucesso.") == 0) {
+						echo '<div class="alert alert-success">' . $_SESSION['msg'] . '</div>';
+					} else {
+						echo '<div class="alert alert-danger">' . $_SESSION['msg'] . '</div>';
+					}
+					unset($_SESSION['msg']);
+				}
+			?>
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
