@@ -216,7 +216,7 @@
 				  </div>
 					<div class="form-group row" id="valor_trans" style="display:none;">
 						<div class="col-xs-3">
-							<input type="number" min="0" name="valor" class="form-control" required="required" placeholder="Valor">
+							<input type="number" min="0" name="valor" class="form-control" placeholder="Valor">
 						</div>
 					</div>
 

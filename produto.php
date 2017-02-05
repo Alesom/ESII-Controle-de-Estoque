@@ -237,6 +237,7 @@
 						</div>
 				  </div>
 					<input type="submit" name="cadprod" value="Cadastrar" class="btn btn-primary">
+					<br/><br/>
 				</form>
 			</div>
 
@@ -249,6 +250,7 @@
 						</div>
 					</div>
 					<input type="submit" name="cadg" value="Cadastrar" class="btn btn-primary">
+					<br/><br/>
 				</form>
 			</div>
 
@@ -261,6 +263,7 @@
 						</div>
 					</div>
 					<input type="submit" name="cadlocal" value="Cadastrar" class="btn btn-primary">
+					<br/><br/>
 				</form>
 			</div>
 
@@ -296,6 +299,7 @@
 					</div>
 					<input type="submit" name="cadforn" value="Cadastrar" class="btn btn-primary"><br/>
 					<br/><span>*<i>Se CNPJ já estiver cadastrado o fornecedor será atualizado</i></span><br/>
+					<br/><br/>
 				</form>
 			</div>
 
