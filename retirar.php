@@ -99,11 +99,12 @@
 			function ativatransferencia(){
 				if(document.getElementById("idtransferencia").checked){
 					document.getElementById("trans").style.display= "block";
-				}else
+					document.getElementById("valor_trans").style.display= "block";
+				}else {
 					document.getElementById("trans").style.display= "none";
+					document.getElementById("valor_trans").style.display= "none";
+				}
 			}
-
-
 		</script>
 	</head>
 	<body>
@@ -148,7 +149,7 @@
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
-							<input id="idDestino" type="text" name="destino" class="form-control" required="required" placeholder="Destino">
+							<input id="idDestino" type="text" name="destino" class="form-control" required="required" placeholder="Motivo">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -189,29 +190,35 @@
 						</div>
 					</div>
 
-					<label class="checkbox-inline">
-					  <input type="checkbox" id="idtransferencia" name ="transferencia" value="t" onchange="ativatransferencia();"> Transferência
-					</label>
-					<div class="form-group row" id="trans" style="display:none;">
-				    <div class="col-xs-3">
-							<label>Destino2:</label>
-							<select name="trans">
-								<?php
-									$busca = "SELECT * FROM local";
-									$resultado = mysqli_query($conexao, $busca);
-									$i=0;
-									while($dados = mysqli_fetch_array($resultado)){
-										$i++;
-										echo '<option value="' . $dados["codl"] . '"> '.$dados['codl'].': '.$dados['nome'].'</option>';
-									}
-
-								?>
-							</select>
-							<br />Valor: <input type="number" name="valor"/>
+					<div class="form-group row">
+						<div class="col-xs-3">
+							<label class="checkbox-inline">
+						  	<input type="checkbox" id="idtransferencia" name ="transferencia" value="t" onchange="ativatransferencia();"> Transferência
+							</label>
 						</div>
 					</div>
-					<br /><br />
+
+					<div class="form-group row" id="trans" style="display:none;">
+						<div class="col-xs-3">
+							<label for="destino">Destino:</label>
+							<select class="form-control" id="destino" name="trans">
+					    	<?php
+									$busca = "SELECT * FROM local";
+									$resultado = mysqli_query($conexao, $busca);
+									while ($dados = mysqli_fetch_array($resultado))
+										echo '<option value = "' . $dados['codl'] . '">' . $dados['nome'] . '</option>';
+								?>
+							</select>
+						</div>
+				  </div>
+					<div class="form-group row" id="valor_trans" style="display:none;">
+						<div class="col-xs-3">
+							<input type="number" min="0" name="valor" class="form-control" required="required" placeholder="Valor">
+						</div>
+					</div>
+					
 					<input type="submit" name="retirarprod" value="Retirar" class="btn btn-primary">
+					<br/><br/>
 				</form>
 				<?php
 					if(isset($_SESSION['msg'])){
