@@ -56,10 +56,44 @@
 					});
 				}
 			};
+		
+			function getMonthName( monthNumber ) {					
+				var nomes = [ 	'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 
+								'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+							];	
+				var d = new Date( monthNumber );
+				return nomes[d.getMonth( monthNumber )];
+			}
+
+			function convertDate( data ) {
+				var d = new Date( data );				
+				var result = d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+				return result;
+			}
 
 			function GeraPDF() {
 				var id = document.getElementById("idpd").innerHTML;
-    			var url = "gerapdf.php?id="+id;
+
+				var check = 'none';
+				var ano = '';
+				var mes = '';
+				var dataInicio = '';
+				var dataFim = '';
+
+				if( document.getElementById('IdRelInt').checked ) {					
+					check = 'intervalo';
+					dataInicio = convertDate( document.getElementById('idDataI').value );
+					dataFim = convertDate( document.getElementById('idDataF').value );
+				} else if( document.getElementById('IdRelMensal').checked ) {
+					check = 'mensal';
+					mes = getMonthName( document.getElementById('idMes').value );
+					ano = document.getElementById('idAno').value;
+				} else if( document.getElementById('IdRelAnual').checked ) {
+					check = 'anual';
+					ano = document.getElementById('idAno').value;
+				}
+
+    			var url = "gerapdf.php?id="+id+'&check='+check+'&ano='+ano+'&mes='+mes+'&dataInicio='+dataInicio+'&dataFim='+dataFim;
     			window.open(url);
 			}
 
