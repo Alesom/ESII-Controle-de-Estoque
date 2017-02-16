@@ -13,25 +13,22 @@
 		$codgrupo = $_POST['codgrupo'];
 		$data= date ("Y-m-d H:i");
 		$medida = $_POST['unidade'];
-		$sql = "SELECT MAX(cod)as cod FROM produto";
+		$sql = "SELECT MAX(p.cod) AS cod FROM produto AS p WHERE SUBSTRING(p.cod,1,1) = '" . $_POST['codgrupo'] . "';";
 		$cons = mysqli_query($conexao ,$sql);
 		$cod = mysqli_fetch_assoc($cons);
 		$cod = $cod["cod"];
 		$cod = substr($cod, 3, 4);
-		if($cod == 0)
+		if ($cod == 0) {
 			$cod = "0001";
-		else{
-		$cod++;
-		if($cod<1000){
-			if($cod<100){
-				if($cod<10){
-					$cod = "000" . $cod;
-				}else
-					$cod = "00" . $cod;
-			}else
+		} else {
+			$cod++;
+			if($cod<10){
+				$cod = "000" . $cod;
+			} else if($cod<100){
+				$cod = "00" . $cod;
+			} else if($cod<1000){
 				$cod = $cod = "0" . $cod;
-		}else
-			$cod = "" . $cod;
+			} else $cod = "" . $cod;
 		}
 		$cod = $codgrupo*100 . $cod;
 
