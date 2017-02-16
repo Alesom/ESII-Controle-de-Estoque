@@ -201,7 +201,7 @@
 					<div class="form-group">
 						<div class="col-xs-3">
 					    <label for="grupo">Grupo:</label>
-					    <select class="form-control" id="grupo" name="codgrupo">
+					    <select required="required" class="form-control" id="grupo" name="codgrupo">
 								<?php
 									$busca = "SELECT * FROM grupo";
 									$resultado = mysqli_query($conexao, $busca);
@@ -214,7 +214,7 @@
 					<div class="form-group">
 						<div class="col-xs-3">
 							<label for="local">Local:</label>
-							<select class="form-control" id="local" name="codlocal">
+							<select required="required" class="form-control" id="local" name="codlocal">
 					    	<?php
 									$busca = "SELECT * FROM local";
 									$resultado = mysqli_query($conexao, $busca);
