@@ -69,7 +69,8 @@ CREATE TABLE `insercao` (
   `cnpj` varchar(18) DEFAULT NULL,
   `vlr` decimal(10,0) NOT NULL,
   `nfe` varchar(30) DEFAULT NULL,
-  `tipo` varchar(10) NOT NULL
+  `tipo` varchar(10) NOT NULL,
+  `local` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -120,7 +121,8 @@ CREATE TABLE `remocao` (
   `qtd` int(11) NOT NULL,
   `codp` varchar(20) NOT NULL,
   `destino` varchar(100) NOT NULL,
-  `chamado` varchar(100) DEFAULT NULL
+  `chamado` varchar(100) DEFAULT NULL,
+  `local` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

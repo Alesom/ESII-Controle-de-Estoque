@@ -17,6 +17,15 @@
 		if(isset($_POST['trans']) && isset($_POST['transferencia'])){
 			$trans = $_POST['trans'];//codl
 			$valor = $_POST['valor'];
+
+			$insercao = "INSERT IGNORE INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`)
+									VALUES ('" . $codp . "', " . $trans . ", 0, 0, 1);";
+			$insere = mysqli_query($conexao,$insercao);
+
+			$insercao2 = "INSERT IGNORE INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`)
+									VALUES ('" . $codp . "', " . $origem . ", 0, 0, 1);";
+			$insere2 = mysqli_query($conexao,$insercao);
+
 			$busca = "SELECT * FROM localizacao WHERE codp = '$codp' AND codl = '$trans'";
 			$busca1= "SELECT * FROM localizacao WHERE codp = '$codp' AND codl ='$origem'";
 
@@ -26,27 +35,36 @@
 			$dados = mysqli_fetch_array($resultado);
 			$dados1 = mysqli_fetch_array($resultado1);
 
-			$qtdade1 = $dados['qtd'] + $qtdade;
-			$qtdade2 = $dados1['qtd'] - $qtdade;
+			if ($dados1['qtd'] < $qtdade) {
+				$_SESSION['msg']="Preste atenção na quantidade disponível. Você está retirando mais produtos do que há.";
+			} else {
 
-			$sql  = "UPDATE localizacao SET qtd = '$qtdade1' WHERE codp ='$codp' AND codl = '$trans'";
-			$sql1 = "UPDATE localizacao SET qtd = '$qtdade2' WHERE codp ='$codp' AND codl = '$origem'";
+				$qtdade1 = $dados['qtd'] + $qtdade;
+				$qtdade2 = $dados1['qtd'] - $qtdade;
 
-			$resultado = mysqli_query($conexao,$sql);
-			$resultado1 = mysqli_query($conexao,$sql1);
+				$sql  = "UPDATE localizacao SET qtd = '$qtdade1' WHERE codp ='$codp' AND codl = '$trans'";
+				$sql1 = "UPDATE localizacao SET qtd = '$qtdade2' WHERE codp ='$codp' AND codl = '$origem'";
 
-			$sql = "INSERT INTO remocao(data,qtd,codp,destino,chamado) VALUES ('$data', '$qtdade' ,'$codp','$trans','Transferência')";
-			$sql1 = "INSERT INTO insercao(codp,qtd,data,vlr,tipo) VALUES ('$codp','$qtdade','$data', '$valor', 'Transferência')";
-			try {
-				$a = mysqli_commit($conexao);
-				if(!$a)
-					throw new Exception("Não commitado no banco, tente novamente", 1);
-				else {
-    			$_SESSION['msg']='O produto foi inserido com sucesso.';
-    		}
-			} catch (Exception $e) {
-				$_SESSION['msg'] = $e->getMessage();
-					mysqli_rollback($conexao);
+				$resultado = mysqli_query($conexao,$sql);
+				$resultado1 = mysqli_query($conexao,$sql1);
+
+				$log1 = "INSERT INTO remocao(data,qtd,codp,destino,chamado,local) VALUES ('$data', '$qtdade' ,'$codp','Transferência','$chamado', $origem)";
+				$log2 = "INSERT INTO insercao(codp,qtd,data,vlr,tipo,local) VALUES ('$codp','$qtdade','$data', '$valor', 'Transferência', $trans)";
+
+				$l1 = mysqli_query($conexao,$log1);
+				$l2 = mysqli_query($conexao,$log2);
+
+				try {
+					$a = mysqli_commit($conexao);
+					if(!$a)
+						throw new Exception("Não commitado no banco, tente novamente", 1);
+					else {
+	    			$_SESSION['msg']='Transferido com sucesso.';
+	    		}
+				} catch (Exception $e) {
+					$_SESSION['msg'] = $e->getMessage();
+						mysqli_rollback($conexao);
+				}
 			}
 
 		}else{
@@ -57,7 +75,7 @@
 
 			if ($qtdade1 >= 0) {
 				try{
-					$sql = "INSERT INTO remocao(data,qtd,codp,destino,chamado) VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
+					$sql = "INSERT INTO remocao(data,qtd,codp,destino,chamado,local) VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado', $origem)";
 
 					$cons = mysqli_query($conexao, $sql);
 

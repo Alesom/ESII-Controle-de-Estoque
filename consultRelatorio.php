@@ -15,9 +15,8 @@
 	$Saida = "SELECT p.cod AS codp, p.nome AS nomep, s.qtd AS qtd, g.nome
 							AS nomeg, l.nome AS nomel, s.data AS datas, s.codp AS scodp
 							FROM produto AS p INNER JOIN remocao AS s on (p.cod = s.codp)
-							INNER JOIN localizacao AS lz on (p.cod = lz.codp)
 							INNER JOIN grupo AS g on (CAST(SUBSTRING(p.cod,1,4) AS UNSIGNED) = g.codg)
-							INNER JOIN local AS l on (l.codl = lz.codl)
+							INNER JOIN local AS l on (l.codl = s.local)
 							WHERE s.data between '$dataI' AND '$dataF' AND
 							p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%'
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'
@@ -26,9 +25,8 @@
 	$Entrada = "SELECT p.cod AS codp, p.nome AS nomep, e.qtd AS qtd, g.nome
 							AS nomeg, l.nome AS nomel, e.data AS datae, e.codp AS ecodp
 							FROM produto AS p INNER JOIN insercao AS e on (p.cod = e.codp)
-							INNER JOIN localizacao AS lz on (p.cod = lz.codp)
 							INNER JOIN grupo AS g on (CAST(SUBSTRING(p.cod,1,4) AS UNSIGNED) = g.codg)
-							INNER JOIN local AS l on (l.codl = lz.codl)
+							INNER JOIN local AS l on (l.codl = e.local)
 							WHERE e.data between '$dataI' AND '$dataF' AND
 							p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%'
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'

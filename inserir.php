@@ -17,7 +17,12 @@
 		$nfe = $_POST['nfe'];
 		$codl = $_POST['codl'];
 		$tipo = $_POST['tipo_entrada'];
-		$sql = "INSERT INTO insercao VALUES ('$codp','$qtdade','$data','$cnpj', '$valor', '$nfe', '$tipo')";
+		$sql = "INSERT INTO insercao VALUES ('$codp','$qtdade','$data','$cnpj', '$valor', '$nfe', '$tipo', '$codl')";
+
+		$insercao = "INSERT IGNORE INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`)
+								VALUES ('" . $codp . "', " . $codl . ", 0, 0, 1);";
+		$insere = mysqli_query($conexao,$insercao);
+
 		$busca = "SELECT * FROM localizacao WHERE codp = '$codp' AND codl ='$codl' ";
 		$resultado = mysqli_query($conexao, $busca);
 		$dados = mysqli_fetch_array($resultado);
