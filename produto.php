@@ -13,11 +13,20 @@
 		$codgrupo = $_POST['codgrupo'];
 		$data= date ("Y-m-d H:i");
 		$medida = $_POST['unidade'];
-		$sql = "SELECT MAX(p.cod) AS cod FROM produto AS p WHERE SUBSTRING(p.cod,1,1) = '" . $_POST['codgrupo'] . "';";
+		if ($codgrupo < 10) {
+			$grupo = "000" . $codgrupo;
+		} else if ($codgrupo < 100) {
+			$grupo = "00" . $codgrupo;
+		} else if ($codgrupo < 1000) {
+			$grupo = "0" . $codgrupo;
+		} else {
+			$grupo = "" . $codgrupo;
+		}
+		$sql = "SELECT MAX(p.cod) AS cod FROM produto AS p WHERE SUBSTRING(p.cod,1,4) = '" . $grupo . "';";
 		$cons = mysqli_query($conexao ,$sql);
 		$cod = mysqli_fetch_assoc($cons);
 		$cod = $cod["cod"];
-		$cod = substr($cod, 3, 4);
+		$cod = substr($cod, 4, 4);
 		if ($cod == 0) {
 			$cod = "0001";
 		} else {
@@ -30,8 +39,7 @@
 				$cod = $cod = "0" . $cod;
 			} else $cod = "" . $cod;
 		}
-		$cod = $codgrupo*100 . $cod;
-
+		$cod = $grupo . $cod;
 
 		$sql = "INSERT INTO produto(`cod`,`nome`,`medida`) VALUES ('$cod','$nome', '$medida')";
 		$sql1 = "INSERT INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`) VALUES ('$cod', '$codlocal','$qtdade', '$qtdademin',1)";

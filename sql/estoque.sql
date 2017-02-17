@@ -105,7 +105,7 @@ CREATE TABLE `localizacao` (
 
 CREATE TABLE `produto` (
   `cod` varchar(20) NOT NULL,
-  `nome` varchar(50) NOT NULL,
+  `nome` varchar(100) NOT NULL,
   `medida` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
