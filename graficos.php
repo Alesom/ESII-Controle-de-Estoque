@@ -24,7 +24,7 @@
 							FROM produto AS p
               INNER JOIN remocao AS s on (p.cod = s.codp)
 							INNER JOIN localizacao AS lz on (p.cod = lz.codp)
-							INNER JOIN grupo AS g on (SUBSTRING(p.cod,1,1) = g.codg)
+							INNER JOIN grupo AS g on (CAST(SUBSTRING(p.cod,1,4) AS UNSIGNED) = g.codg)
 							INNER JOIN local AS l on (l.codl = lz.codl)
 							WHERE s.data between '$dataI' AND '$dataF' AND
 							p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%'
@@ -45,7 +45,7 @@
 							FROM produto AS p
               INNER JOIN insercao AS e on (p.cod = e.codp)
 							INNER JOIN localizacao AS lz on (p.cod = lz.codp)
-							INNER JOIN grupo AS g on (SUBSTRING(p.cod,1,1) = g.codg)
+							INNER JOIN grupo AS g on (CAST(SUBSTRING(p.cod,1,4) AS UNSIGNED) = g.codg)
 							INNER JOIN local AS l on (l.codl = lz.codl)
 							WHERE e.data between '$dataI' AND '$dataF' AND
 							p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%'

@@ -48,8 +48,8 @@
 				$resultado = mysqli_query($conexao,$sql);
 				$resultado1 = mysqli_query($conexao,$sql1);
 
-				$log1 = "INSERT INTO remocao(data,qtd,codp,destino,chamado) VALUES ('$data', '$qtdade' ,'$codp','Transferência','$chamado')";
-				$log2 = "INSERT INTO insercao(codp,qtd,data,vlr,tipo) VALUES ('$codp','$qtdade','$data', '$valor', 'Transferência')";
+				$log1 = "INSERT INTO remocao(data,qtd,codp,destino,chamado,local) VALUES ('$data', '$qtdade' ,'$codp','Transferência','$chamado', $origem)";
+				$log2 = "INSERT INTO insercao(codp,qtd,data,vlr,tipo,local) VALUES ('$codp','$qtdade','$data', '$valor', 'Transferência', $trans)";
 
 				$l1 = mysqli_query($conexao,$log1);
 				$l2 = mysqli_query($conexao,$log2);
@@ -75,7 +75,7 @@
 
 			if ($qtdade1 >= 0) {
 				try{
-					$sql = "INSERT INTO remocao(data,qtd,codp,destino,chamado) VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado')";
+					$sql = "INSERT INTO remocao(data,qtd,codp,destino,chamado,local) VALUES ('$data', '$qtdade' ,'$codp','$destino','$chamado', $origem)";
 
 					$cons = mysqli_query($conexao, $sql);
 
