@@ -4,14 +4,14 @@ require_once( 'tcpdf/config/tcpdf_config.php' );
 
 // Extend the TCPDF class to create custom Header and Footer
 class MYPDF extends TCPDF {
- 
+
 	private $data;
 	private $tamanhoHeaderFonte = 15;
-	private $nomeImagemHeader = 'IdentidadeVisual.png';	
+	private $nomeImagemHeader = 'IdentidadeVisual.png';
 
    function __construct( $data ) {
-       parent::__construct( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false, true );  
-	   $this->data = $data;     
+       parent::__construct( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false, true );
+	   $this->data = $data;
    }
 
     //Page header
@@ -22,7 +22,7 @@ class MYPDF extends TCPDF {
         // Set font
         $this->SetFont('helvetica', 'B', $this->tamanhoHeaderFonte);
         // Title
-        $this->Cell(0, 15, '    Relatório  ('.$this->data.')', 0, false, '', 0, '', 0, false, '', '');		
+        $this->Cell(0, 15, '    Relatório  ('.$this->data.')', 0, false, '', 0, '', 0, false, '', '');
     }
 
     // Page footer
@@ -106,7 +106,7 @@ $pdf->writeHTML( $table, true, false, false, false, '' );
 $nome_pdf = 'Relatorio_'.date( 'd_m_Y', time());
 
 // Exibe o PDF
-// Opções comumente utilizadas: 
+// Opções comumente utilizadas:
 //      I : Exibe o PDF no navegador normalmente
 //      D : Força a exibição do diálogo para salvar o PDF imediatamente após sua criação
 //      Outras opções: https://tcpdf.org/docs/source_docs/classTCPDF/#a3d6dcb62298ec9d42e9125ee2f5b23a1
