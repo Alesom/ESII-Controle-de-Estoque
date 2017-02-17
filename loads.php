@@ -9,7 +9,7 @@
 	$nomel = $_GET['nomel'];
 
 	$query = "SELECT p.cod AS codp, p.nome AS nomep, lz.qtd AS qtd, g.nome AS nomeg, l.nome AS nomel
-				FROM produto AS p INNER JOIN localizacao AS lz ON(p.cod = lz.codp) INNER JOIN local AS l on (lz.codl = l.codl) left JOIN grupo AS g  ON SUBSTRING(p.cod,1,1) = g.codg
+				FROM produto AS p INNER JOIN localizacao AS lz ON(p.cod = lz.codp) INNER JOIN local AS l on (lz.codl = l.codl) left JOIN grupo AS g ON CAST(SUBSTRING(p.cod,1,4) AS UNSIGNED) = g.codg
 				WHERE p.cod LIKE '%" . $codp . "%' AND p.nome LIKE '%" . $nomep . "%' AND g.codg LIKE '%" . $codg . "%'
 				AND g.nome LIKE '%" . $nomeg . "%' AND l.codl LIKE '%" . $codl . "%' AND l.nome LIKE '%" . $nomel . "%'
 				ORDER BY p.cod";

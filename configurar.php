@@ -89,15 +89,15 @@
 					<?php
 						if(isset($_GET['prod'])){
 							mysqli_next_result($conexao);
-				    		$produto = $_GET['prod'];
+				    	$produto = $_GET['prod'];
 							$busca = "SELECT p.cod as codp, p.nome as nome, lz.qtdmin as qtdmin, l.codl as codl, lz.alarm as alarm FROM produto p JOIN localizacao lz on p.cod = lz.codp join local l on l.codl=lz.codl WHERE p.cod = '$produto'";
 							$resultado = mysqli_query($conexao, $busca);
 							$dados = mysqli_fetch_array($resultado);
 							$codp = $dados['codp'];
 							$nome = $dados['nome'];
 							$qtdademin = $dados['qtdmin'];
+							$grupo = substr($codp, 0, 4);
 							$local = $dados['codl'];
-							$grupo = substr($produto,0,3);
 							$alarme = $dados['alarm'];
 						}
 					?>
@@ -125,14 +125,20 @@
 					</div>
 					<div class="form-group row">
 						<div class="col-xs-3">
-					    <label for="grupo">Código do Grupo:</label>
-					    <select class="form-control" id="grupo" name="codgrupo">
-					      <option <?php echo 'value="' . $grupo . '"'; ?>> <?php echo $grupo; ?> </option>
+					    <label for="grupo">Grupo:</label>
+					    <select required="required" class="form-control" id="grupo" name="codgrupo">
 								<?php
-									$sql = "SELECT * FROM grupo";
+									$sql = "SELECT g.nome AS nome, g.codg AS codg
+												FROM grupo AS g
+												WHERE g.codg = " . $grupo . ";";
 									$res = mysqli_query($conexao, $sql);
 									while ($resu = mysqli_fetch_assoc($res))
-										echo '<option value = "' . $resu['codg'] . '">' . $resu['codg'] . '</option>';
+										echo '<option value = "' . $resu['codg'] . '">' . $resu['nome'] . '</option>';
+
+									$sql = "SELECT * FROM grupo WHERE codg != " . $grupo . ";";
+									$res = mysqli_query($conexao, $sql);
+									while ($resu = mysqli_fetch_assoc($res))
+										echo '<option value = "' . $resu['codg'] . '">' . $resu['nome'] . '</option>';
 								?>
 					    </select>
 						</div>
@@ -169,7 +175,7 @@
 					  			$busca = "SELECT * FROM fornecedor";
 								$resultado = mysqli_query($conexao, $busca);
 								while($dados = mysqli_fetch_array($resultado)){
-								echo '<option value="' . $dados["cnpj"] . '"> '.$dados['razao_social'].': '.$dados['cnpj'].'</option>';
+								echo '<option value="' . $dados["cnpj"] . '"> '.$dados['razao_social'].'</option>';
 								}
 								echo "</select>";
 								if(!$dados){
@@ -190,6 +196,7 @@
 					    Receber alarme quando a quantidade for menor ou igual à quantidade mínima
 					  </label>
 					</div>
+					</br>
 					<input type="submit" name="configura" value="Salvar" class="btn btn-primary">
 				</br></br>
 		  	</form>

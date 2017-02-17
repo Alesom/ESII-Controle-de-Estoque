@@ -13,28 +13,33 @@
 		$codgrupo = $_POST['codgrupo'];
 		$data= date ("Y-m-d H:i");
 		$medida = $_POST['unidade'];
-		$sql = "SELECT MAX(cod)as cod FROM produto";
+		if ($codgrupo < 10) {
+			$grupo = "000" . $codgrupo;
+		} else if ($codgrupo < 100) {
+			$grupo = "00" . $codgrupo;
+		} else if ($codgrupo < 1000) {
+			$grupo = "0" . $codgrupo;
+		} else {
+			$grupo = "" . $codgrupo;
+		}
+		$sql = "SELECT MAX(p.cod) AS cod FROM produto AS p WHERE SUBSTRING(p.cod,1,4) = '" . $grupo . "';";
 		$cons = mysqli_query($conexao ,$sql);
 		$cod = mysqli_fetch_assoc($cons);
 		$cod = $cod["cod"];
-		$cod = substr($cod, 3, 4);
-		if($cod == 0)
+		$cod = substr($cod, 4, 4);
+		if ($cod == 0) {
 			$cod = "0001";
-		else{
-		$cod++;
-		if($cod<1000){
-			if($cod<100){
-				if($cod<10){
-					$cod = "000" . $cod;
-				}else
-					$cod = "00" . $cod;
-			}else
+		} else {
+			$cod++;
+			if($cod<10){
+				$cod = "000" . $cod;
+			} else if($cod<100){
+				$cod = "00" . $cod;
+			} else if($cod<1000){
 				$cod = $cod = "0" . $cod;
-		}else
-			$cod = "" . $cod;
+			} else $cod = "" . $cod;
 		}
-		$cod = $codgrupo*100 . $cod;
-
+		$cod = $grupo . $cod;
 
 		$sql = "INSERT INTO produto(`cod`,`nome`,`medida`) VALUES ('$cod','$nome', '$medida')";
 		$sql1 = "INSERT INTO localizacao(`codp`,`codl`,`qtd`, `qtdmin`, `alarm`) VALUES ('$cod', '$codlocal','$qtdade', '$qtdademin',1)";
@@ -201,7 +206,7 @@
 					<div class="form-group">
 						<div class="col-xs-3">
 					    <label for="grupo">Grupo:</label>
-					    <select class="form-control" id="grupo" name="codgrupo">
+					    <select required="required" class="form-control" id="grupo" name="codgrupo">
 								<?php
 									$busca = "SELECT * FROM grupo";
 									$resultado = mysqli_query($conexao, $busca);
@@ -214,7 +219,7 @@
 					<div class="form-group">
 						<div class="col-xs-3">
 							<label for="local">Local:</label>
-							<select class="form-control" id="local" name="codlocal">
+							<select required="required" class="form-control" id="local" name="codlocal">
 					    	<?php
 									$busca = "SELECT * FROM local";
 									$resultado = mysqli_query($conexao, $busca);

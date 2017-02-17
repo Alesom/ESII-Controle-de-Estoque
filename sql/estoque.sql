@@ -28,9 +28,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `fornecedor` (
   `cnpj` varchar(18) NOT NULL,
-  `razao_social` varchar(30) NOT NULL,
-  `nome_fantasia` varchar(30) NOT NULL,
-  `endereco` varchar(40) NOT NULL,
+  `razao_social` varchar(100) NOT NULL,
+  `nome_fantasia` varchar(100) NOT NULL,
+  `endereco` varchar(100) NOT NULL,
   `telefone` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -105,7 +105,7 @@ CREATE TABLE `localizacao` (
 
 CREATE TABLE `produto` (
   `cod` varchar(20) NOT NULL,
-  `nome` varchar(50) NOT NULL,
+  `nome` varchar(100) NOT NULL,
   `medida` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

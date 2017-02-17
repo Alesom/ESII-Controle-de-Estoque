@@ -63,13 +63,13 @@
  * Default images directory.
  * By default it is automatically set but you can also set it as a fixed string to improve performances.
  */
-define ('K_PATH_IMAGES', '/imagens/');
+define ('K_PATH_IMAGES', 'imagens/');
 
 /**
  * Default image logo used be the default Header() method.
  * Please set here your own logo or an empty string to disable it.
  */
-define ('PDF_HEADER_LOGO', 'IdentidadeVisual.png');
+define ('PDF_HEADER_LOGO', '');
 
 /**
  * Header logo image width in user units.
@@ -144,12 +144,12 @@ define ('PDF_MARGIN_BOTTOM', 25);
 /**
  * Left margin.
  */
-define ('PDF_MARGIN_LEFT', 15);
+define ('PDF_MARGIN_LEFT', 10);
 
 /**
  * Right margin.
  */
-define ('PDF_MARGIN_RIGHT', 15);
+define ('PDF_MARGIN_RIGHT', 10);
 
 /**
  * Default main font name.
