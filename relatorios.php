@@ -56,17 +56,17 @@
 					});
 				}
 			};
-		
-			function getMonthName( monthNumber ) {					
-				var nomes = [ 	'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 
+
+			function getMonthName( monthNumber ) {
+				var nomes = [ 	'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
 								'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-							];	
+							];
 				var d = new Date( monthNumber );
 				return nomes[d.getMonth( monthNumber )];
 			}
 
 			function convertDate( data ) {
-				var d = new Date( data );				
+				var d = new Date( data );
 				var result = d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
 				return result;
 			}
@@ -80,7 +80,7 @@
 				var dataInicio = '';
 				var dataFim = '';
 
-				if( document.getElementById('IdRelInt').checked ) {					
+				if( document.getElementById('IdRelInt').checked ) {
 					check = 'intervalo';
 					dataInicio = convertDate( document.getElementById('idDataI').value );
 					dataFim = convertDate( document.getElementById('idDataF').value );
@@ -194,7 +194,7 @@
 							<input type="date" id="idDataI" name="datai" value=
 								<?php
 									echo '"' . date('Y-m-d H:i') . '"';
-								?> class="form-control" required="required">
+								?> class="form-control" required="required" oninput="preencheBusca(0)">
 						</div>
 						<br/>
 					</div>
@@ -210,7 +210,7 @@
 					<div class="form-group row" id="mensal" style="display:none;">
 						<div class="col-xs-4 form-inline">
 					    <label for="idMes">Mês:</label>
-					    <select class="form-control" id="idMes" name="seleciona_mes">
+					    <select class="form-control" id="idMes" name="seleciona_mes" oninput="preencheBusca(0)">
 								<option value="01" >Janeiro</option>
 								<option value="02" >Fevereiro</option>
 								<option value="03" >Março</option>
