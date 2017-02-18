@@ -1,4 +1,12 @@
 <?php
+	/*
+	Licença: MIT
+	Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+	Disciplina: Engenharia de Software II
+
+	Arquivo ConsultaRelatorio:
+	é responsável por fazer a consulta para gerar o relatório de produtos
+	*/
 	require ("connect.php");
 
 	$codp = $_GET['codp'];

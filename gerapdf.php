@@ -1,4 +1,12 @@
 <?php
+/*
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo geraPDF:
+é responsável gerar o relatório em PDF a partir do código html
+*/
 require_once( 'tcpdf/tcpdf.php' );
 require_once( 'tcpdf/config/tcpdf_config.php' );
 $ano = '';

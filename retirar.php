@@ -1,4 +1,12 @@
 <?php
+/*
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo retirar:
+é responsável pela parte de remoção de unidades de um produto
+*/
 	require ("connect.php");
 
 	if(!isset($_SESSION['name'])){

@@ -1,4 +1,14 @@
 <?php //sessão
+	/*
+	Licença: MIT
+	Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+	Disciplina: Engenharia de Software II
+
+	Arquivo buscas:
+	é responsável por fazer a busca dos produtos no banco de dados e mostrar resultado no front-end;
+	Todas as buscas são feitas por "onchange" para que fique mais interativo para que a experiencia do usuário
+	seja melhorada
+	*/
 	session_start();
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");
@@ -76,16 +86,6 @@
 					<button type="submit" class="hide" disabled></button>
 		  	</form>
 			</div>
-
-			<!--<select>
-				<option><b>Ordenar por:</b></option>
-				<option>Nome Produto A-Z</option>
-				<option>Nome Produto Z-A</option>
-				<option>Grupo A-Z</option>
-				<option>Grupo Z-A</option>
-				<option>Local A-Z</option>
-				<option>Grupo Z-A</option>
-			</select>-->
 
 			<table class="table">
 				<thead>

@@ -1,4 +1,12 @@
 ﻿<?php
+/*
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo produto:
+é responsável por cadastrar um novo produto
+*/
 	require ("connect.php");
 
 	if(!isset($_SESSION['name']))

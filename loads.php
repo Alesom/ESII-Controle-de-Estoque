@@ -1,4 +1,12 @@
 <?php
+/*
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo loads:
+é responsável por carregar os arquivos solicitados para as consultas em "onchange"
+*/
 	require ("connect.php");
 
 	$codp = $_GET['codp'];

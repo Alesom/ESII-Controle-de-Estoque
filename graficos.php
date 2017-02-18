@@ -1,5 +1,12 @@
 <?php
+  /*
+  Licença: MIT
+  Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+  Disciplina: Engenharia de Software II
 
+  Arquivo graficos:
+  é responsável gerar os graficos dos produtos
+  */
   include('phplot/phplot.php');
   require('connect.php');
 

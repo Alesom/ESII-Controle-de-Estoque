@@ -1,4 +1,13 @@
 <?php
+/*
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo imagem:
+é responsável por auxiliar o relatório em PDF
+*/
+
 #incluindo a classe. verifique se diretorio e versao sao iguais, altere se precisar
 include('phplot/phplot.php');
 require('connect.php');
@@ -65,7 +74,7 @@ require('connect.php');
 	echo $codp. "<br/>".$datai. "<br/>".$dataf;
 	//$res1 = mysqli_query($conexao,$query1);
 	//if($res1)
-	echo	 "ola";
+
 	$res1= query($conexao, $query1);
 	while ($resu = mysqli_fetch_assoc($res1)){
 		$data1[$a]= array($resu['qtd'],$resu['data']);

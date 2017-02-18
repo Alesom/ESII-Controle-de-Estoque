@@ -1,11 +1,18 @@
 <?php
+	/*
+	Licença: MIT
+	Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+	Disciplina: Engenharia de Software II
 
+	Arquivo connect:
+	É responsável pela coneção com o banco de dados
+	*/
 	$temposessao = 3600; //em segundos
-	session_start(); 
+	session_start();
 	if (isset($_SESSION["sessiontime"])) {
 	 	if ($_SESSION["sessiontime"] < (time() - $temposessao)) {
 	 		session_unset();
-	 	} 
+	 	}
 	}else{
 		session_unset();
 	}

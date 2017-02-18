@@ -1,4 +1,12 @@
 ﻿<?php
+/*
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo relatório:
+é responsável pela parte dos relatórios
+*/
 	session_start();
 	if(!isset($_SESSION['name'])){
 		header("Location:index.php");

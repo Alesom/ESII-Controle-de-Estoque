@@ -1,4 +1,13 @@
 ﻿<?php
+/*
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo index:
+é responsável por toda a parte inicial do software, desde a criação de um novo
+usuário até a página de alarmes.
+*/
 	require ("connect.php");
 	$teste_sql= "SELECT * FROM usuario ";
 	$teste_result = mysqli_query($conexao,$teste_sql);

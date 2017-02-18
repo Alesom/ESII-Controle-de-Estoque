@@ -1,3 +1,11 @@
+<!--
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo index:
+é responsável pelo injeção do código do menu principal
+-->
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
   <div class="container-fluid">
     <div class="navbar-header">

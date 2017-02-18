@@ -1,4 +1,12 @@
 <?php
+/*
+Licença: MIT
+Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+Disciplina: Engenharia de Software II
+
+Arquivo inserir:
+é responsável por realizar a inserção de unidades
+*/
 	require ("connect.php");
 
 	if(!isset($_SESSION['name'])){

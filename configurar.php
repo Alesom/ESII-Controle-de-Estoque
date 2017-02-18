@@ -1,4 +1,13 @@
 <?php
+	/*
+	Licença: MIT
+	Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+	Disciplina: Engenharia de Software II
+
+	Arquivo configurar:
+	é responsável por fazer configurar um produto, ou seja, depois do produto cadastrado é responsável por
+	alterar as configurações do produto.
+	*/
 	require ("connect.php"); // se não existe conexao conecta
 
 	if(!isset($_SESSION['name'])){

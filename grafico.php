@@ -1,4 +1,12 @@
 <?php
+	/*
+	Licença: MIT
+	Alunos: Alesom, André, Eduardo, Jardel, João Barp, Jovani e Kétly
+	Disciplina: Engenharia de Software II
+
+	Arquivo grafico:
+	é responsável por auxiliar o arquivo gráficos a gerar os gráficos
+	*/
 	require ("connect.php");
 	$nome = "Jardel";
 	$sql = "SELECT cod FROM produto WHERE nome = '$nome'";
@@ -16,7 +24,7 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	</head>
 
-	<body onload="check_login();"> 
+	<body onload="check_login();">
 	<div id="top-bar" style='background-color:#009933;'>
 		<img src="imagens/IdentidadeVisual.png" style="height:80px;"/>
 		<a href="buscas.php"><button>Inserir Produtos</button></a>
