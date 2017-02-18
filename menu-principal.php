@@ -18,7 +18,6 @@
           if(isset($_SESSION['name'])){
             if(($_SESSION['funcao']=="Administrador"|| $_SESSION['funcao']=="Servidor")){
             echo '
-              <li> <a href="buscas.php"><b>Movimentar Produtos</b></a> </li>
               <li class="dropdown">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button"
                 aria-haspopup="true" aria-expanded="false"><b>Cadastrar</b>
@@ -30,6 +29,7 @@
                   <li><a href="produto.php?cadf=1">Cadastrar Fornecedor</a></li>
                 </ul>
               </li>
+              <li> <a href="buscas.php"><b>Movimentar Produtos</b></a> </li>
               <li> <a href="relatorios.php"><b>Relatórios</b></a> </li>
               ';
             }else

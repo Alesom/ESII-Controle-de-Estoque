@@ -68,7 +68,7 @@
 			<?php require_once ("menu-principal.php"); ?>
 
 			<div class="col-sm-12">
-				<h3><b>Dar entrada em unidades do produto</b></h3>
+				<h3><b>Lançamento de entrada</b></h3>
 				<form action="inserir.php?prod=<?php echo $_GET['prod']; ?>" method="post" class="form-horizontal">
 					<div class="form-group row">
 				    <div class="col-xs-3">

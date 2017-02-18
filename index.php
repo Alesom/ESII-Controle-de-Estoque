@@ -119,31 +119,31 @@
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display='none';
-					document.getElementById("alarmes").style.display='block';
+					document.getElementById("notificações").style.display='block';
 				}else if(<?php if(!isset($_SESSION['first']))echo'1';else echo "0";?>){
 					document.getElementById('lin').style.display='block';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display="none";
-					document.getElementById("alarmes").style.display='none';
+					document.getElementById("notificações").style.display='none';
 				}else{//no caso de primeiro uso, permitir o admin se cadastrar sem problemas
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display="none";
-					document.getElementById("alarmes").style.display='none';
+					document.getElementById("notificações").style.display='none';
 				}
 				if(<?php if(isset($_GET['fp']))echo'1'; else echo'0';?>){//esqueceu a senha: desenvolver metodo de recuperação
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='block';
 					document.getElementById("cad_user").style.display="none";
-					document.getElementById("alarmes").style.display='none';
+					document.getElementById("notificações").style.display='none';
 				}if(<?if(isset($_GET['cad_user']))echo'1'; else echo'0';?>){
 					document.getElementById('lin').style.display='none';
 					document.getElementById('fp').style.display='none';
 					document.getElementById("cad_user").style.display="block";
-					document.getElementById("alarmes").style.display='none';
+					document.getElementById("notificações").style.display='none';
 				}
 				if (<?php if(isset($_SESSION['newerror']) AND isset($_SESSION['name'])) echo '1';else echo '0';?>) {
-					document.getElementById('alarmes').style.display='none';
+					document.getElementById('notificações').style.display='none';
 					document.getElementById('cad_user').style.display='block';
 				}
 			}
@@ -296,14 +296,14 @@
 				</div>
 			</section>
 
-			<div id="alarmes">
+			<div id="notificações">
 				<?php
 				//percorrer todos os produtos e verificar se hÃ¡ algum com qtd menor ou igual a qtdmin.
 					if(isset($_SESSION['name'])){
 						$sql = "SELECT * FROM localizacao JOIN produto ON codp = cod WHERE qtd<=qtdmin AND alarm=1";
 						$res = mysqli_query($conexao, $sql);
 						$count=0;
-						echo '<div align="center"><h1>Alarmes</h1></div>';
+						echo '<div align="center"><h1>Notificações</h1></div>';
 						if($res) {
 							while ($resu = mysqli_fetch_assoc($res)){
 								$count++;
